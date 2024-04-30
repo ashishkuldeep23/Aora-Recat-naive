@@ -7,9 +7,12 @@ import { useRouter } from 'expo-router'
 import CBotton from '../../components/CBotton'
 
 import { createNewUser } from '../../lib/appwrite'
+import { useGlobalContext } from '../../context/ContextProvider'
 
 
 const SignUp = () => {
+
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   const router = useRouter()
 
@@ -35,17 +38,16 @@ const SignUp = () => {
       const result = await createNewUser(fromFields.email, fromFields.password, fromFields.username)
 
       // // // Set it to global state -------->
+      setUser(result)
+      setIsLoggedIn(true)
 
       router.replace('/home')
-
 
     } catch (error) {
       Alert.alert('Error', `${error}`)
     } finally {
       setIsLoading(false);
     }
-
-
 
   }
 

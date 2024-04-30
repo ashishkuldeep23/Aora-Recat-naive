@@ -1,16 +1,20 @@
 // import { StatusBar } from 'expo-status-bar';
 // import { Text, View } from 'react-native';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
-import { Link, router } from "expo-router"
+import { Link, Redirect, router } from "expo-router"
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../constants';
 import CBotton from '../components/CBotton';
 import { StatusBar } from 'expo-status-bar';
+import { useGlobalContext } from '../context/ContextProvider';
 
 
 export default function App() {
 
+    const { isLoggedIn, isLoading } = useGlobalContext();
+
+    if (!isLoading && isLoggedIn) return <Redirect href={'/home'} />
 
     return (
         // <View

@@ -6,12 +6,12 @@ import { useFonts } from 'expo-font'
 // // 1st. by using slots --->
 // // 2nd.
 import { Slot, Stack, SplashScreen } from "expo-router"
+import GlobalProvider from '../context/ContextProvider'
 
 
 SplashScreen.preventAutoHideAsync()
 
 const RootLayout = () => {
-
 
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
@@ -55,37 +55,43 @@ const RootLayout = () => {
   // // 2nd way: By using Stack of different screen coming from expo router ----->
 
   return (
-    <Stack>
 
-      <Stack.Screen
-        name='index'
-        options={{
-          headerShadowVisible: false,
-          headerShown: false
-        }}
-      />
+    <GlobalProvider>
 
-      <Stack.Screen
-        name='(tabs)'
-        options={{
-          headerShadowVisible: false,
-          headerShown: false
-        }}
-      />
+      <Stack>
 
-      <Stack.Screen
-        name='(auth)'
-        options={{
-          headerShadowVisible: false,
-          headerShown: false
-        }}
-      />
+        <Stack.Screen
+          name='index'
+          options={{
+            headerShadowVisible: false,
+            headerShown: false
+          }}
+        />
 
-      <Stack.Screen
-        name='search/[query]'
-      />
+        <Stack.Screen
+          name='(tabs)'
+          options={{
+            headerShadowVisible: false,
+            headerShown: false
+          }}
+        />
 
-    </Stack>
+        <Stack.Screen
+          name='(auth)'
+          options={{
+            headerShadowVisible: false,
+            headerShown: false
+          }}
+        />
+
+        <Stack.Screen
+          name='search/[query]'
+        />
+
+      </Stack>
+
+    </GlobalProvider>
+
   )
 
 }

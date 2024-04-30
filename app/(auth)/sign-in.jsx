@@ -6,8 +6,11 @@ import CInput from '../../components/CInput'
 import CBotton from '../../components/CBotton'
 import { useRouter } from 'expo-router'
 import { signIn } from "../../lib/appwrite"
+import { useGlobalContext } from '../../context/ContextProvider'
 
 const SignIn = () => {
+
+    const { setUser, setIsLoggedIn } = useGlobalContext();
 
     const router = useRouter()
 
@@ -28,9 +31,11 @@ const SignIn = () => {
         setIsLoading(true);
 
         try {
-            await signIn(fromFields.email, fromFields.password)
+            const result = await signIn(fromFields.email, fromFields.password)
 
             // // // Set it to global state -------->
+            setUser(result)
+            setIsLoggedIn(true)
 
             router.replace('/home')
 
