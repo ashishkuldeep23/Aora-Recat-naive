@@ -67,10 +67,18 @@ const RootLayout = () => {
 
       <Stack.Screen
         name='(tabs)'
+        options={{
+          headerShadowVisible: false,
+          headerShown: false
+        }}
       />
 
       <Stack.Screen
         name='(auth)'
+        options={{
+          headerShadowVisible: false,
+          headerShown: false
+        }}
       />
 
       <Stack.Screen
