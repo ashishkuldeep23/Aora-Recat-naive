@@ -1,5 +1,5 @@
 
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { icons } from '../constants'
 import { ResizeMode, Video } from 'expo-av'
@@ -22,7 +22,7 @@ const VideoCard = ({ item }) => {
             className=" flex-col items-center px-4 mb-14"
         >
 
-            <View className={"flex-row gap-3 items-start"}>
+            <View className={"flex-row gap-3 items-center"}>
 
                 <View
                     className="flex-1 justify-center items-center flex-row"
@@ -51,14 +51,17 @@ const VideoCard = ({ item }) => {
                     </View>
                 </View>
 
-                <View className="mt-2">
+                <TouchableOpacity
+                    className="mt-2 mx-0.5 py-1 px-1.5 "
+                    onPress={() => { Alert.alert("OK", "Menu clicked.") }}
+                >
                     <Image
                         source={icons.menu}
                         className="w5 h-5"
                         resizeMode="contain"
                     />
 
-                </View>
+                </TouchableOpacity>
 
             </View>
 

@@ -8,7 +8,7 @@ import { StatusBar } from 'expo-status-bar'
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
     <View
-      className=" justify-center items-center gap-1.5"
+      className={`justify-center items-center gap-1.5`}
     >
       <Image
         source={icon}
@@ -25,12 +25,16 @@ const TabIcon = ({ icon, color, name, focused }) => {
 }
 
 
-
 const TabsLayout = () => {
 
   return (
 
     <>
+
+      <StatusBar
+        backgroundColor='#161622'
+        style='light'
+      />
 
       <Tabs
         screenOptions={{
@@ -118,11 +122,6 @@ const TabsLayout = () => {
 
 
       </Tabs>
-
-      <StatusBar
-        backgroundColor='#161622'
-        style='light'
-      />
 
     </>
 

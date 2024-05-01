@@ -1,20 +1,20 @@
 import { View, Text, Image, FlatList, RefreshControl } from 'react-native'
-import React, { useState } from 'react'
-import { useGlobalContext } from "../../context/ContextProvider"
+import React, { useEffect, useState } from 'react'
+// import { useGlobalContext } from "../../context/ContextProvider"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from "../../constants"
 import SearchInput from '../../components/SearchInput'
 import Tranding from '../../components/Tranding'
 import EmptyState from '../../components/Empty'
-import { getAllPosts, getLatestPosts } from '../../lib/appwrite'
+import { fatch, getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 
 const Home = () => {
 
-  const { user } = useGlobalContext()
+  // const { user } = useGlobalContext()
 
-  const { data: posts, isLoading, refetch } = useAppwrite(getAllPosts)
+  const { data: posts, refetch } = useAppwrite(getAllPosts)
 
   const { data: latestPosts } = useAppwrite(getLatestPosts)
 
@@ -28,6 +28,20 @@ const Home = () => {
 
     setRefreshing(false)
   }
+
+
+
+  // // // //  This is how we can get data in our dedicated server ------->
+  // useEffect(() => {
+  //   console.log("calling....")
+  //   fatch()
+  //     .then((res) => {
+  //       console.log(res.data[0].feedbackMsg)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }, [])
 
 
   return (

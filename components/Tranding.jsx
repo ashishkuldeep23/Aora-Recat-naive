@@ -54,7 +54,6 @@ const TrandingItem = ({ activeItem, item }) => {
                                 setPlay(false)
                             }
                         }}
-                        // onPress={setPlay(false)}
                     />
                     :
                     <TouchableOpacity

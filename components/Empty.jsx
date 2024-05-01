@@ -2,9 +2,12 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { images } from '../constants'
 import CBotton from './CBotton'
-import { router } from 'expo-router'
+import { router, usePathname } from 'expo-router'
 
 const EmptyState = ({ title, subtite }) => {
+
+    const pathname = usePathname()
+
     return (
         <View className="justify-center items-center px-4 ">
             <Image
@@ -20,11 +23,18 @@ const EmptyState = ({ title, subtite }) => {
                 {subtite}
             </Text>
 
-            <CBotton
-                title={"Create Video"}
-                handlePress={() => { router.push("/create") }}
-                containerStyle={'w-full my-5'}
-            />
+            {
+                (!pathname.startsWith("/search"))
+                &&
+                <CBotton
+                    title={"Create Video"}
+                    handlePress={() => { router.push("/create") }}
+                    containerStyle={'w-full my-5 bg-secondary '}
+                    textStyle={'text-white'}
+                />
+            }
+
+
 
 
         </View>

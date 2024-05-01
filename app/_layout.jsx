@@ -58,37 +58,41 @@ const RootLayout = () => {
 
     <GlobalProvider>
 
-      <Stack>
+        <Stack >
 
-        <Stack.Screen
-          name='index'
-          options={{
-            headerShadowVisible: false,
-            headerShown: false
-          }}
-        />
+          <Stack.Screen
+            name='index'
+            options={{
+              headerShadowVisible: false,
+              headerShown: false
+            }}
+          />
 
-        <Stack.Screen
-          name='(tabs)'
-          options={{
-            headerShadowVisible: false,
-            headerShown: false
-          }}
-        />
+          <Stack.Screen
+            name='(tabs)'
+            options={{
+              headerShadowVisible: false,
+              headerShown: false
+            }}
+          />
 
-        <Stack.Screen
-          name='(auth)'
-          options={{
-            headerShadowVisible: false,
-            headerShown: false
-          }}
-        />
+          <Stack.Screen
+            name='(auth)'
+            options={{
+              headerShadowVisible: false,
+              headerShown: false
+            }}
+          />
 
-        <Stack.Screen
-          name='search/[query]'
-        />
+          <Stack.Screen
+            name='search/[query]'
+            options={{
+              // headerShadowVisible: false,
+              headerShown: false
+            }}
+          />
 
-      </Stack>
+        </Stack>
 
     </GlobalProvider>
 
