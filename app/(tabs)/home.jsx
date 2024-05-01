@@ -9,10 +9,11 @@ import EmptyState from '../../components/Empty'
 import { fatch, getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
+import { useGlobalContext } from '../../context/ContextProvider'
 
 const Home = () => {
 
-  // const { user } = useGlobalContext()
+  const { user } = useGlobalContext()
 
   const { data: posts, refetch } = useAppwrite(getAllPosts)
 
@@ -71,7 +72,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-xl font-psemibold text-white">
-                  JSMastery
+                  {user?.username}
                 </Text>
               </View>
 

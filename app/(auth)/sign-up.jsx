@@ -5,7 +5,6 @@ import { images } from "../../constants"
 import CInput from '../../components/CInput'
 import { useRouter } from 'expo-router'
 import CBotton from '../../components/CBotton'
-
 import { createNewUser } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/ContextProvider'
 
