@@ -28,7 +28,7 @@ const VideoCard = ({ item }) => {
                     className="flex-1 justify-center items-center flex-row"
                 >
 
-                    <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
+                    <View className="w-[46px] h-[46px] rounded-lg justify-center items-center p-0.5 border border-secondary">
 
                         <Image source={{ uri: avatar }}
                             className="w-full h-full rounded-md "
@@ -73,7 +73,7 @@ const VideoCard = ({ item }) => {
                     ?
                     <Video
                         source={{ uri: video }}
-                        className="w-full h-60 rounded-xl mt-3"
+                        className="w-full h-60 rounded-xl mt-3 border border-sky-500/50 p-[2px]"
                         resizeMode={ResizeMode.CONTAIN}
                         useNativeControls={true}
                         shouldPlay={true}
@@ -86,13 +86,13 @@ const VideoCard = ({ item }) => {
                     />
                     :
                     <TouchableOpacity
-                        className="w-full h-60 rounded-xl relative justify-center items-center mt-3 border border-sky-500"
+                        className="w-full h-60 rounded-xl relative justify-center items-center mt-3 overflow-hidden border border-sky-500/50 p-[2px]"
                         activeOpacity={0.7}
                         onPress={() => setPlay(true)}
                     >
                         <Image
                             source={{ uri: thumbnail }}
-                            className="w-full h-full rounded-xl mt-3"
+                            className="w-full h-full rounded-xl "
                             resizeMode='cover'
                         />
 

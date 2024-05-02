@@ -45,7 +45,7 @@ const TrandingItem = ({ activeItem, item }) => {
                     // <Text className=" text-white">Playing...</Text>
                     <Video
                         source={{ uri: video }}
-                        className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
+                        className="w-52 h-72 rounded-lg mt-3 bg-white/10 border border-rose-500/50 "
                         resizeMode={ResizeMode.CONTAIN}
                         useNativeControls={true}
                         shouldPlay={true}
@@ -57,13 +57,13 @@ const TrandingItem = ({ activeItem, item }) => {
                     />
                     :
                     <TouchableOpacity
-                        className="rounded-xl relative justify-center items-center mt-3 border border-rose-500"
+                        className="rounded-xl relative justify-center items-center mt-3 p-[2px] overflow-hidden border border-rose-500/50"
                         activeOpacity={0.7}
                         onPress={() => setPlay(true)}
                     >
                         <ImageBackground
                             source={{ uri: thumbnail }}
-                            className=" w-52 h-72 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40"
+                            className=" w-52 h-72 rounded-lg overflow-hidden shadow-lg shadow-black/40"
                             resizeMode='cover'
                         />
 

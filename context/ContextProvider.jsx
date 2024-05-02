@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getCurrentUser } from '../lib/appwrite'
+import { View } from "react-native-animatable";
+import { Text } from "react-native";
 
 const GlobalContext = createContext();
 
@@ -47,6 +49,16 @@ const GlobalProvider = ({ children }) => {
                 setUser
             }}
         >
+
+            {/* <View className={`w-[100vw] h-[100vh] justify-center items-center`}>
+
+                <View className="w-20 h-20 rounded-lg bg-black border border-secondary justify-center items-center">
+                    <Text className=" text-lg text-secondary font-psemibold">Getting user data</Text>
+
+                </View>
+
+            </View> */}
+
             {children}
         </GlobalContext.Provider>
     )
