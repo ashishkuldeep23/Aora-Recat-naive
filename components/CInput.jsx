@@ -2,8 +2,11 @@
 import { View, Text, TextInput, Pressable, Image, Alert, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { icons } from '../constants'
+import { useGlobalContext } from '../context/ContextProvider'
 
 const CInput = ({ title, value, onChangeHander, placeholder, otherStyles }) => {
+
+    const { theme } = useGlobalContext()
 
     const [showPass, setshowPass] = useState(false)
 
@@ -11,17 +14,17 @@ const CInput = ({ title, value, onChangeHander, placeholder, otherStyles }) => {
         <View
             className={`w-full  mt-2 ${otherStyles} `}
         >
-            <Text className=" ml-2 text-base text-gray-100
-             font-pmedium">{title}</Text>
+            <Text className={` ml-2 text-base ${!theme ? "text-gray-100" : "text-gray-900"} 
+             font-pmedium`}>{title}</Text>
 
-            <View className="relative items-end w-full h-16 px-4 rounded-2xl  bg-black-100 border-2 border-black-200 focus:border-secondary">
+            <View className={`relative items-end w-full h-16 px-4 rounded-2xl   border-2 border-black-200 focus:border-secondary ${!theme ? "bg-black-100" : "bg-gray-100"} `}>
 
 
                 <TextInput
-                    className=" w-full flex-1 text-white font-psemibold text-base text-start"
+                    className={`w-full flex-1 font-psemibold text-base text-start ${!theme ? "text-white" : " text-black-200"}`}
                     value={value}
                     placeholder={`${placeholder ? `${placeholder}` : `Enter your ${title}`}.`}
-                    placeholderTextColor={'#7b7b8b'}
+                    placeholderTextColor={`${!theme ? "#7b7b8b" : "#474747"}`}
                     // onPress={() => { console.log("click") }}
                     onChangeText={(e) => {
                         onChangeHander(e);

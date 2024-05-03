@@ -3,11 +3,14 @@ import { View, Text, Image, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { icons } from '../constants'
 import { ResizeMode, Video } from 'expo-av'
+import { useGlobalContext } from '../context/ContextProvider'
 
 const VideoCard = ({ item }) => {
 
     const { title, thumbnail, video, creator } = item
     const { username, email, avatar } = creator
+
+    const { theme } = useGlobalContext()
 
     const [play, setPlay] = useState(false)
 
@@ -41,13 +44,13 @@ const VideoCard = ({ item }) => {
                         className='flex-1 justify-center ml-3 gap-y-1'
                     >
                         <Text
-                            className="text-white font-psemibold text-sm"
+                            className={` font-psemibold text-sm ${!theme ? "text-white" : "text-black"}`}
                             numberOfLines={1}
                         >{title}</Text>
                         <Text
-                            className="text-xs text-gray-100 font-pregular"
+                            className={`text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}
                             numberOfLines={1}
-                        >{username}</Text>
+                        >By : {username}</Text>
                     </View>
                 </View>
 

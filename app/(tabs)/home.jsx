@@ -13,7 +13,7 @@ import { useGlobalContext } from '../../context/ContextProvider'
 
 const Home = () => {
 
-  const { user } = useGlobalContext()
+  const { user, theme } = useGlobalContext()
 
   const { data: posts, refetch } = useAppwrite(getAllPosts)
 
@@ -48,7 +48,7 @@ const Home = () => {
   return (
 
     <SafeAreaView
-      className=' bg-primary min-h-[100vh]'
+      className={` min-h-[100vh] ${!theme ? "bg-primary " : "bg-gray-100"}`}
     >
 
       <FlatList
@@ -68,10 +68,10 @@ const Home = () => {
             <View className="justify-between items-start flex-row mb-6">
 
               <View className="items-center justify-center">
-                <Text className="font-pmedium text-sm text-gray-100">
+                <Text className={`font-pmedium text-sm ${!theme ? 'text-gray-100' : "text-gray-800"} `}>
                   Welcome Back
                 </Text>
-                <Text className="text-xl font-psemibold text-white">
+                <Text className={`text-xl font-psemibold   ${!theme ? 'text-white' : "text-black"} `}>
                   {user?.username}
                 </Text>
               </View>
@@ -95,7 +95,7 @@ const Home = () => {
               className="w-full flex-1 pt-5 pb-8"
             >
 
-              <Text className="text-gray-100 text-lg font-pregular mb-3">
+              <Text className={` text-lg font-pregular mb-3 ${!theme ? "text-gray-100" : "text-gray-900"}`}>
                 Lestest Videos
               </Text>
 

@@ -1,4 +1,4 @@
-import { View, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, FlatList, TouchableOpacity, Image, Text } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import SearchInput from '../../components/SearchInput'
@@ -14,9 +14,8 @@ import { router } from 'expo-router'
 
 const SearchPage = () => {
 
-    // const { user } = useGlobalContext()
 
-    const { user, setUser, setIsLoggedIn } = useGlobalContext()
+    const { user, setUser, setIsLoggedIn, theme, setTheme } = useGlobalContext()
 
     const { data: posts } = useAppwrite(() => getUserPosts(user.$id))
 
@@ -33,7 +32,7 @@ const SearchPage = () => {
     return (
 
         <SafeAreaView
-            className=' bg-primary h-full'
+            className={`h-full ${!theme ? "bg-primary " : " bg-gray-100"}`}
         >
 
             <FlatList
@@ -50,17 +49,36 @@ const SearchPage = () => {
                 ListHeaderComponent={() => {
                     return <View className="w-full justify-center items-center mt-6 mb-12 px-4">
 
-                        <TouchableOpacity
-                            className="w-full items-end mb-10"
-                            onPress={logOut}
-                        >
-                            <Image
-                                source={icons.logout}
-                                resizeMode='contain'
-                                className="w-6 h-6"
-                            />
+                        <View className='w-full mb-10 mt-5 flex-row items-center flex-1 '>
 
-                        </TouchableOpacity>
+
+                            <TouchableOpacity
+                                className=" items-end mr-auto "
+                                onPress={() => { setTheme(pre => !pre) }}
+                            >
+                                <Text className={` border px-2 rounded-full ${!theme ? " text-white border-white" : " border-black text-black"}`}>
+                                    {!theme ? "Light" : "Dark"}
+                                </Text>
+                            </TouchableOpacity>
+
+
+
+
+                            <TouchableOpacity
+                                className="flex-row justify-end items-end "
+                                onPress={logOut}
+                            >
+                                <Text className={` text-lg mr-1 ${!theme ? " text-red-400" : " text-red-500"}`}>LogOut</Text>
+                                <Image
+                                    source={icons.logout}
+                                    resizeMode='contain'
+                                    className="w-6 h-6"
+                                />
+
+                            </TouchableOpacity>
+
+                        </View>
+
 
                         <View className="w-20 h-20 border p-1 border-secondary rounded-lg justify-center items-center">
                             <Image

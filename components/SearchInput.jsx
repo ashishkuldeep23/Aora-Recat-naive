@@ -3,8 +3,11 @@ import { View, Text, TextInput, Pressable, Image, Alert, TouchableOpacity } from
 import React, { useState } from 'react'
 import { icons } from '../constants'
 import { router, usePathname } from 'expo-router'
+import { useGlobalContext } from '../context/ContextProvider'
 
 const SearchInput = ({ initialQuery }) => {
+
+    const { theme } = useGlobalContext()
 
     const pathname = usePathname()
 
@@ -13,13 +16,14 @@ const SearchInput = ({ initialQuery }) => {
 
     return (
 
-        <View className="relative flex-1 justify-between w-full h-16 px-4 rounded-2xl  bg-black-100 border-2 border-black-200 focus:border-secondary space-x-4">
+        <View className={`relative flex-1 justify-between w-full h-16 px-4 rounded-2xl   border-2 focus:border-secondary space-x-4  border-black-200   ${!theme ? 'bg-black-100  ' : ' bg-gray-100 '
+            }`}>
 
             <TextInput
-                className=" text-base mt-0.5 text-white flex-1 font-pregular"
+                className={`text-base mt-0.5 flex-1 font-pregular ${!theme ? "text-white" : " text-black"}`}
                 value={query}
                 placeholder={'Search for a video topic.'}
-                placeholderTextColor={'#CDCDE0'}
+                placeholderTextColor={`${!theme ? "#CDCDE0" : "#000"}`}
                 onChangeText={(e) => {
                     setQuery(e)
                 }}
@@ -40,7 +44,7 @@ const SearchInput = ({ initialQuery }) => {
                         router.setParams({ query: modQuery })
                     }
                     else {
-                        router.push(`/search/${query.trim()}`)
+                        router.push(`/search/${query.trim()} `)
                     }
 
                 }}

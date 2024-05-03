@@ -9,32 +9,28 @@ import CBotton from '../components/CBotton';
 import { StatusBar } from 'expo-status-bar';
 import { useGlobalContext } from '../context/ContextProvider';
 
+import CLoading from "../components/CLoading"
+
 
 export default function App() {
 
-    const { isLoggedIn, isLoading } = useGlobalContext();
+    const { isLoggedIn, isLoading, theme } = useGlobalContext();
 
+
+    // // // This line is reponsiable for sending user to home -------->
     if (!isLoading && isLoggedIn) return <Redirect href={'/home'} />
 
     return (
-        // <View
-        // // style={styles.container}
-        // >
 
-        // <View >
-        //     <Text className={'text-5xl text-teal-400 '} >TESTING</Text>
-        //     <Text className={'text-xl text-teal-100 '} >TESTING</Text>
-        //     <Link href='/home' className=' text-blue-500 underline my-1.5'  >Go To Home</Link>
-        // </View>
-
-
-        <SafeAreaView className={"bg-primary h-full"} >
+        <SafeAreaView className={` h-full ${!theme ? "bg-primary" : " bg-gray-100"}`} >
 
             <ScrollView
                 contentContainerStyle={{
                     height: '100%'
                 }}
             >
+
+                <CLoading isLoading={isLoading} />
 
                 <View
                     className='w-full min-h-[85vh] justify-center items-center px-4'
@@ -53,7 +49,7 @@ export default function App() {
                     />
 
                     <View className="relative mt-5">
-                        <Text className="text-3xl text-white font-bold text-center">
+                        <Text className={`text-3xl font-bold text-center ${!theme ? "text-white" : "text-black"}`}>
                             Discover Endless Possibilities {" "}
                             <Text className="text-secondary">Aora</Text>
                         </Text>
@@ -83,8 +79,8 @@ export default function App() {
                         handlePress={() => {
                             router.push("/sign-in")
                         }}
-                        textStyle={' text-red-300'}
-                        containerStyle='w-full mt-2 border border-red-300'
+                        textStyle={` ${!theme ? "text-red-300" : "text-red-700"} `}
+                        containerStyle={`w-full mt-2 border ${!theme ? "border-red-300" : "border-red-700"} `}
                     />
 
 

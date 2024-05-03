@@ -3,9 +3,13 @@ import React from 'react'
 import { Tabs } from 'expo-router'
 import { icons } from '../../constants'
 import { StatusBar } from 'expo-status-bar'
+import { useGlobalContext } from '../../context/ContextProvider'
 
 
 const TabIcon = ({ icon, color, name, focused }) => {
+
+  const { theme } = useGlobalContext()
+
   return (
     <View
       className={`justify-center items-center gap-1.5`}
@@ -17,7 +21,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
         tintColor={color}
       />
       <Text
-        className={`${focused ? `font-psemibold ` : " font-pregular"}  text-xs`}
+        className={`${focused ? `font-psemibold ` : " font-pregular"} text-xs`}
         style={{ color }}
       >{name}</Text>
     </View>
@@ -26,6 +30,9 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 
 const TabsLayout = () => {
+
+  const { theme } = useGlobalContext()
+
 
   return (
 
@@ -39,12 +46,12 @@ const TabsLayout = () => {
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
-          tabBarActiveTintColor: "#FFA001",
-          tabBarInactiveTintColor: '#CDCDE0',
+          tabBarActiveTintColor: `${!theme ? "#FFA001" : "#d48500"}`,
+          tabBarInactiveTintColor: `${!theme ? "#fff" : "#808080"}`,
           tabBarStyle: {
-            backgroundColor: "#161622",
+            backgroundColor: `${!theme ? "#161622" : "#c4cbd9"}`,
             borderTopWidth: 1,
-            borderTopColor: "#232523",
+            borderTopColor: `${!theme ? "#232523" : "#c4cbd9"}`,
             height: 84
           }
 

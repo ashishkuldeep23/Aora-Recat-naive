@@ -13,6 +13,8 @@ const GlobalProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [theme, setTheme] = useState(false)
+    // const [theme, setTheme] = useState(true)
 
 
 
@@ -33,6 +35,7 @@ const GlobalProvider = ({ children }) => {
             })
             .finally(() => {
                 setIsLoading(false)
+                // setIsLoading(true)
             })
 
     }, [])
@@ -46,7 +49,9 @@ const GlobalProvider = ({ children }) => {
                 isLoggedIn,
                 setIsLoggedIn,
                 user,
-                setUser
+                setUser,
+                theme,
+                setTheme
             }}
         >
 
