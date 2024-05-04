@@ -6,11 +6,12 @@ import { ResizeMode, Video } from 'expo-av'
 import { useGlobalContext } from '../context/ContextProvider'
 import { savePost, savePostRemove } from '../lib/appwrite'
 import * as Animatable from 'react-native-animatable';
-import { router } from 'expo-router'
+import { router, usePathname } from 'expo-router'
 import useAppwrite from '../lib/useAppwrite'
 
 const VideoCard = ({ item, allData }) => {
 
+    const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
     const { username, avatar } = creator
     const { theme, user, updateAllData } = useGlobalContext()
@@ -133,53 +134,60 @@ const VideoCard = ({ item, allData }) => {
                         duration={500}
                         easing="ease-out"
                     >
-                        <View
-                            className={`border px-2 py-1  rounded-xl ${!theme ? " border-white bg-black" : " border-black bg-white"}`}
-                        >
 
-                            {
+                        {
+                            (!pathname.startsWith("/profile"))
+                            &&
 
-                                [
-                                    {
-                                        name: "Save",
-                                        handler: (() => saveHandler())
-                                    },
-                                    // {
-                                    //     name: "Dummy",
-                                    //     handler: (() => Alert.alert("I'm Dummy"))
-                                    // },
+                            <View
+                                className={`border px-2 py-1  rounded-xl ${!theme ? " border-white bg-black" : " border-black bg-white"}`}
+                            >
 
-                                ].map((ele, i) => {
-                                    return <Fragment key={i}>
-                                        <TouchableOpacity
-                                            onPress={() => ele?.handler ? ele.handler() : Alert.alert("I'm Dummy")}
-                                            className="my-0.5 "
-                                        >
-                                            <Text
-                                                className={` text-lg font-psemibold ${!theme ? "text-white" : "text-black"}`}
+                                {
+
+                                    [
+                                        {
+                                            name: "Save",
+                                            handler: (() => saveHandler())
+                                        },
+                                        // {
+                                        //     name: "Dummy",
+                                        //     handler: (() => Alert.alert("I'm Dummy"))
+                                        // },
+
+                                    ].map((ele, i) => {
+                                        return <Fragment key={i}>
+                                            <TouchableOpacity
+                                                onPress={() => ele?.handler ? ele.handler() : Alert.alert("I'm Dummy")}
+                                                className="my-0.5 "
                                             >
-                                                {
-                                                    ele.name === "Save"
-                                                        ?
-                                                        userSavedThisItem ? "Remove" : "Save"
+                                                <Text
+                                                    className={` text-lg font-psemibold ${!theme ? "text-white" : "text-black"}`}
+                                                >
+                                                    {
+                                                        ele.name === "Save"
+                                                            ?
+                                                            userSavedThisItem ? "Remove" : "Save"
 
-                                                        :
-                                                        `${ele.name}`
-                                                }
-                                            </Text>
+                                                            :
+                                                            `${ele.name}`
+                                                    }
+                                                </Text>
 
-                                        </TouchableOpacity>
+                                            </TouchableOpacity>
 
-                                    </Fragment>
-                                })
-
-
-
-                            }
-
+                                        </Fragment>
+                                    })
 
 
-                        </View>
+
+                                }
+
+
+
+                            </View>
+                        }
+
 
 
 

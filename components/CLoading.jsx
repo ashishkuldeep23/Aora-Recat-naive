@@ -2,6 +2,7 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { gifs } from '../constants'
 import { ResizeMode } from 'expo-av'
+import * as Animatable from 'react-native-animatable';
 
 export default function CLoading({ isLoading }) {
     return (
@@ -12,7 +13,13 @@ export default function CLoading({ isLoading }) {
             {
                 isLoading
                 &&
-                <View className=" w-full h-[100vh] justify-center items-center absolute z-10">
+                <Animatable.View
+                    className=" w-full h-[100vh] mt-[37vh] items-center absolute z-10"
+                    animation='slideInDown'
+                    duration={2000}
+                    iterationCount="infinite"
+                    direction='alternate'
+                >
 
                     <View className={` relative overflow-hidden w-[45%] h-[20%] rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400`}>
 
@@ -27,7 +34,7 @@ export default function CLoading({ isLoading }) {
                     </View>
 
 
-                </View>
+                </Animatable.View>
             }
 
         </>
