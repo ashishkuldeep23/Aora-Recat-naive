@@ -14,12 +14,12 @@ export default function CLoading({ isLoading }) {
                 &&
                 <View className=" w-full h-[100vh] justify-center items-center absolute z-10">
 
-                    <View className={` relative overflow-hidden w-[80%] h-[35%] rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400`}>
+                    <View className={` relative overflow-hidden w-[45%] h-[20%] rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400`}>
 
                         <Image
                             source={gifs.loadingGif}
                             className="w-full h-full  rounded-2xl"
-                            resizeMode={ResizeMode.CONTAIN}
+                            resizeMode={ResizeMode.COVER}
                             useNativeControls
                             isLooping
                         />

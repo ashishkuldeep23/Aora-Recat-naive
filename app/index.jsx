@@ -19,6 +19,7 @@ export default function App() {
 
     // // // This line is reponsiable for sending user to home -------->
     if (!isLoading && isLoggedIn) return <Redirect href={'/home'} />
+    // if (!isLoading && isLoggedIn) return <Redirect href={'/post/okay'} />
 
     return (
 

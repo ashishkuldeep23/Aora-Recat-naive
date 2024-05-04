@@ -25,13 +25,35 @@ const EmptyState = ({ title, subtite }) => {
 
             {
                 (!pathname.startsWith("/search"))
-                &&
-                <CBotton
-                    title={"Create Video"}
-                    handlePress={() => { router.push("/create") }}
-                    containerStyle={'w-full my-5 bg-secondary '}
-                    textStyle={'text-white'}
-                />
+                    ?
+                    <CBotton
+                        title={"Create Video"}
+                        handlePress={() => { router.push("/create") }}
+                        containerStyle={'w-full my-5 bg-secondary '}
+                        textStyle={'text-white'}
+                    />
+
+                    :
+
+                    (pathname.startsWith("/bookmark"))
+                        ?
+                        <CBotton
+                            title={"Goto Home"}
+                            handlePress={() => { router.push("/home") }}
+                            containerStyle={'w-full my-5 bg-secondary '}
+                            textStyle={'text-white'}
+                        />
+
+                        :
+
+                        <CBotton
+                            title={"Create Video"}
+                            handlePress={() => { router.push("/create") }}
+                            containerStyle={'w-full my-5 bg-secondary '}
+                            textStyle={'text-white'}
+                        />
+
+
             }
 
 

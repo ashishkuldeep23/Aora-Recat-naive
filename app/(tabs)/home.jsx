@@ -6,17 +6,16 @@ import { images } from "../../constants"
 import SearchInput from '../../components/SearchInput'
 import Tranding from '../../components/Tranding'
 import EmptyState from '../../components/Empty'
-import { fatch, getAllPosts, getLatestPosts } from '../../lib/appwrite'
+import { getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/ContextProvider'
 
 const Home = () => {
 
-  const { user, theme } = useGlobalContext()
+  const { user, theme, allPost, setAllPost, allLetestPost, setAllLetestPost } = useGlobalContext()
 
   const { data: posts, refetch } = useAppwrite(getAllPosts)
-
   const { data: latestPosts } = useAppwrite(getLatestPosts)
 
   const [refreshing, setRefreshing] = useState(false)
@@ -29,6 +28,34 @@ const Home = () => {
 
     setRefreshing(false)
   }
+
+
+  // console.log(JSON.stringify(allPost[0], null, 4))
+
+
+  // // // // These two var is very imp. if we remove this then when ever our data got change then our state var also get updated with old data ---------->
+
+  let firstTimeAllPost = true;
+  let firstTimeLatestPost = true;
+
+
+  // // // Set all post data ---------->>
+  useEffect(() => {
+    if (firstTimeAllPost || posts.length > 0) {
+      setAllPost(posts)
+      firstTimeAllPost = false
+    }
+  }, [posts])
+
+
+  // // // Set lastest post data ---------->>
+  useEffect(() => {
+    if (firstTimeLatestPost || latestPosts.length > 0) {
+      setAllLetestPost(latestPosts)
+      firstTimeLatestPost = false
+    }
+  }, [latestPosts])
+
 
 
 
@@ -55,13 +82,15 @@ const Home = () => {
 
         // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
         // data={[]}
-        data={posts}
+        data={allPost}
         keyExtractor={(item) => item.$id}
 
+        // // // Here all data get render ---------->>
         renderItem={({ item }) => {
-          return <VideoCard item={item} />
+          return <VideoCard item={item} allData={allPost} />
         }}
 
+        // // // This code will used as header of flatList ----->>
         ListHeaderComponent={() => {
           return <View className="my-6 px-4 space-y-6">
 
@@ -101,7 +130,7 @@ const Home = () => {
 
               <Tranding
                 // posts={[{ id: 1 }, { id: 2 }, { id: 3 }]} 
-                posts={latestPosts}
+                posts={allLetestPost}
               />
 
             </View>

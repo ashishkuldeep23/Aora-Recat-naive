@@ -25,7 +25,7 @@ const zoomOut = {
 
 
 
-const TrandingItem = ({ activeItem, item }) => {
+const TrandingItem = ({ activeItem, item, index, posts }) => {
 
     const { title, thumbnail, video, creator } = item
     const { username, email, avatar } = creator
@@ -33,9 +33,15 @@ const TrandingItem = ({ activeItem, item }) => {
     const [play, setPlay] = useState(false)
 
 
+    // console.log(activeItem === item.$id)
+
     return (
         <Animatable.View
-            className="mr-5"
+            className={` relative -mx-[6px] 
+                ${activeItem === item.$id ? 'z-10' : "-z-[10]"} 
+                ${index === 0 && " ml-2"}
+                ${index === posts.length - 1 && "mr-2 -z-50"}
+            `}
             animation={activeItem === item.$id ? zoomIn : zoomOut}
             duration={700}
         >
@@ -96,12 +102,15 @@ const Tranding = ({ posts }) => {
     // console.log(posts[0].id)
     return (
         <FlatList
+            // className="px-5"
             data={posts}
             keyExtractor={posts => posts.$id}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
                 return <TrandingItem
                     activeItem={activeItem}
                     item={item}
+                    index={index}
+                    posts={posts}
                 />
             }}
             onViewableItemsChanged={ViewableItemsChanges}

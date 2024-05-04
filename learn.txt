@@ -1,0 +1,15 @@
+
+
+1.
+use this type to print data in json style in yorr terminal -------->
+
+JSON.stringify(obj, null, 4)
+
+// // // Here ==>>
+// obj -> value to convert to a JSON string
+// null -> (do nothing)
+// 2 -> 2 spaces per indent level
+
+
+
+2.
