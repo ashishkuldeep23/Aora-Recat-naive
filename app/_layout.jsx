@@ -2,10 +2,10 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { useFonts } from 'expo-font'
 
-// // // we can define our paths by two type ----->
+// // // we can define our paths by two type =============================>>
 // // 1st. by using slots --->
-// // 2nd.
-import { Slot, Stack, SplashScreen } from "expo-router"
+// // 2nd. By providing stcaks and declearing screens --->
+import { Stack, SplashScreen } from "expo-router"
 import GlobalProvider from '../context/ContextProvider'
 
 

@@ -5,7 +5,7 @@ import { icons } from '../constants';
 import { Video, ResizeMode } from 'expo-av';
 
 
-const zoomIn = {
+export const zoomIn = {
     0: {
         scale: 0.9
     },
@@ -14,7 +14,7 @@ const zoomIn = {
     },
 }
 
-const zoomOut = {
+export const zoomOut = {
     0: {
         scale: 1
     },
@@ -22,6 +22,46 @@ const zoomOut = {
         scale: 0.9
     },
 }
+
+
+const Tranding = ({ posts }) => {
+    const [activeItem, setActiveItem] = useState(posts[1]);
+
+    const ViewableItemsChanges = ({ viewableItems }) => {
+        if (viewableItems.length > 0) {
+            setActiveItem(viewableItems[0].key)
+        }
+
+    }
+
+    // console.log(posts)
+    // console.log(posts[0].id)
+    return (
+        <FlatList
+            // className="px-5"
+            data={posts}
+            keyExtractor={post => post.$id}
+            renderItem={({ item, index }) => {
+                return <TrandingItem
+                    activeItem={activeItem}
+                    item={item}
+                    index={index}
+                    posts={posts}
+                />
+            }}
+            onViewableItemsChanged={ViewableItemsChanges}
+            viewabilityConfig={{
+                itemVisiblePercentThreshold: 70
+            }}
+            contentOffset={{ x: 170 }}
+
+            horizontal={true}
+        />
+    )
+}
+
+export default Tranding
+
 
 
 
@@ -86,42 +126,3 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
     )
 }
 
-
-
-const Tranding = ({ posts }) => {
-    const [activeItem, setActiveItem] = useState(posts[1]);
-
-    const ViewableItemsChanges = ({ viewableItems }) => {
-        if (viewableItems.length > 0) {
-            setActiveItem(viewableItems[0].key)
-        }
-
-    }
-
-    // console.log(posts)
-    // console.log(posts[0].id)
-    return (
-        <FlatList
-            // className="px-5"
-            data={posts}
-            keyExtractor={posts => posts.$id}
-            renderItem={({ item, index }) => {
-                return <TrandingItem
-                    activeItem={activeItem}
-                    item={item}
-                    index={index}
-                    posts={posts}
-                />
-            }}
-            onViewableItemsChanged={ViewableItemsChanges}
-            viewabilityConfig={{
-                itemVisiblePercentThreshold: 70
-            }}
-            contentOffset={{ x: 170 }}
-
-            horizontal={true}
-        />
-    )
-}
-
-export default Tranding

@@ -20,6 +20,10 @@ const GlobalProvider = ({ children }) => {
     const [allLetestPost, setAllLetestPost] = useState([])
     const [allSavedPost, setAllSavedPost] = useState([])
 
+    // // // Below status used in single post page ---------->
+    const [singlePostGlobal, setSinglePostGlobal] = useState({})
+    const [restPostGlobal, setRestPostGlobal] = useState([])
+
     // const [theme, setTheme] = useState(true)
 
 
@@ -31,7 +35,7 @@ const GlobalProvider = ({ children }) => {
     // let firstTimeLatestPost = true;
 
 
-
+    // // // This fn is used to upadate data on user action (save or remove)
     const updateAllData = (upadtedPost) => {
 
         // console.log(JSON.stringify(upadtedPost, null, 4))
@@ -44,7 +48,6 @@ const GlobalProvider = ({ children }) => {
         //         return { ...ele }
         //     }
         // })
-
 
 
         let index1 = allPost.findIndex(ele => ele.$id === upadtedPost.$id)
@@ -68,14 +71,54 @@ const GlobalProvider = ({ children }) => {
         let index3 = allSavedPost.findIndex(ele => ele.$id === upadtedPost.$id)
         allSavedPost.splice(index3, 1, upadtedPost)
         setAllSavedPost([...allSavedPost])
+
+
+        // // // Update single post data  ------>
+        setSinglePostGlobal(upadtedPost)
+
     }
 
 
 
+    const updateSinglePostState = (singlePost, restPost) => {
+
+        // // // Update rest post data ----->
+        // let index4 = restPostGlobal.findIndex((ele) => ele?.$id === upadtedPost?.$id)
+        // restPostGlobal.splice(index4, 1, upadtedPost)
+
+
+        setRestPostGlobal([...restPost])
+
+        // // // Update single post data  ------>
+        setSinglePostGlobal(singlePost)
+
+    }
+
+
+
+    const upadateFollowList = (byUser, toUser) => {
+
+        // console.log({ byUser, toUser })
+
+        if (!byUser || !toUser) return
+
+        // // // Update user data who send following request ---->
+        setUser(byUser)
+
+        // // // Update single post user's data in single post ---->
+
+        setSinglePostGlobal({ ...singlePostGlobal, creator: toUser })
+
+    }
+
+
+    // // // fetch used data here ---------->
     useEffect(() => {
 
         getCurrentUser()
             .then((res) => {
+
+                // console.log({ res })
                 if (res) {
                     setIsLoggedIn(true)
                     setUser(res)
@@ -85,7 +128,7 @@ const GlobalProvider = ({ children }) => {
                 }
             })
             .catch(e => {
-                console.log(e);
+                console.log({ e });
             })
             .finally(() => {
                 setIsLoading(false)
@@ -142,7 +185,11 @@ const GlobalProvider = ({ children }) => {
                 setAllLetestPost,
                 allSavedPost,
                 setAllSavedPost,
-                updateAllData
+                updateAllData,
+                restPostGlobal,
+                singlePostGlobal,
+                updateSinglePostState,
+                upadateFollowList
             }}
         >
             {children}

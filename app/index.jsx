@@ -1,25 +1,94 @@
 // import { StatusBar } from 'expo-status-bar';
 // import { Text, View } from 'react-native';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
-import { Link, Redirect, router } from "expo-router"
+import { Redirect, router } from "expo-router"
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../constants';
 import CBotton from '../components/CBotton';
 import { StatusBar } from 'expo-status-bar';
 import { useGlobalContext } from '../context/ContextProvider';
+import { useEffect, useState } from 'react';
 
-import CLoading from "../components/CLoading"
+// import NetInfo from '@react-native-community/netinfo'
+import NetInfo from '@react-native-community/netinfo';
+
+// import * as Linking from 'expo-linking';
+import * as Animatable from 'react-native-animatable';
+import { logInByGoogle } from '../lib/appwrite';
+
+
+// // // Alert fn. for check User connection with network
+export const connectionErrAlert = () => {
+    Alert.alert(
+        'Internet Connection',
+        "You are offline. You can't use this application in offline mode.",
+
+        // // // You can define btn and their action by giving in a arr -------------->
+
+        // [
+        //     {
+        //         text: 'Cancel',
+        //         onPress: () => console.log('Cancel Pressed'),
+        //         style: 'cancel',
+        //         className: " text-red-600"
+        //     },
+        //     {
+        //         text: 'Open Setting',
+        //         // onPress: () => Linking.openURL('https://expo.dev')
+        //         // onPress: () => Linking.openURL('whatsapp://send?text=New msg&phone=9264981073')
+        //         // onPress: () => Linking.openSettings()
+        //         // onPress: () => Linking.openSettings('app-settings:')
+        //         // onPress: () => Linking.openSettings('app-settings://notification')
+        //         // onPress: async () => await Linking.openSettings('android-settings:')
+        //         // onPress: async () => await Linking.openSettings()
+        //         // onPress: async () => Linking.openURL('app-settings://notification')
+        //         onPress: async () => await Linking.openURL('android-settings:')
+
+        //     },
+        // ]
+
+
+    );
+};
+
 
 
 export default function App() {
 
     const { isLoggedIn, isLoading, theme } = useGlobalContext();
 
+    const [isConnected, setConnected] = useState(false);
 
-    // // // This line is reponsiable for sending user to home -------->
-    if (!isLoading && isLoggedIn) return <Redirect href={'/home'} />
+    // console.log({ isConnected })
+
+
+
+    // // // Check Internet connection here -------------->>
+    useEffect(() => {
+
+        const unsubscribe = NetInfo.addEventListener((state) => {
+            setConnected(state.isConnected);
+            if (!state.isConnected) {
+                connectionErrAlert();
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+
+
+        // NetInfo.fetch().then(state => {
+        //     console.log('Connection type', state.type);
+        //     console.log('Is connected?', state.isConnected);
+        // });
+
+    }, []);
+
     // if (!isLoading && isLoggedIn) return <Redirect href={'/post/okay'} />
+    // // // This line is reponsiable for sending user to home -------->
+    if (isConnected && (!isLoading && isLoggedIn)) return <Redirect href={'/home'} />
 
     return (
 
@@ -31,7 +100,28 @@ export default function App() {
                 }}
             >
 
-                <CLoading isLoading={isLoading} />
+                {/* New loading added that shows checking user insted of showing loading gif. */}
+
+                {
+                    isLoading
+                    &&
+                    <Animatable.View
+                        className=" w-full h-[100vh] mt-[0vh] items-center absolute z-10"
+                        animation='fadeIn'
+                        duration={700}
+                        iterationCount="infinite"
+                        direction='alternate'
+                    >
+
+                        <View className={` relative overflow-hidden rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400 px-2 py-1`}>
+                            <Text className=" relative font-semibold">
+                                Checking User Session
+                            </Text>
+                        </View>
+
+                    </Animatable.View>
+                }
+
 
                 <View
                     className='w-full min-h-[85vh] justify-center items-center px-4'
@@ -69,31 +159,21 @@ export default function App() {
                     <CBotton
                         title={'Continue with Email'}
                         handlePress={() => {
-                            router.push("/sign-in")
+                            isConnected && router.push("/sign-in")
                         }}
                         containerStyle='w-full mt-7 bg-secondary'
                         textStyle={'text-primary'}
                     />
 
-                    <CBotton
-                        title={'Continue with Google'}
-                        handlePress={() => {
-                            router.push("/sign-in")
-                        }}
-                        textStyle={` ${!theme ? "text-red-300" : "text-red-700"} `}
-                        containerStyle={`w-full mt-2 border ${!theme ? "border-red-300" : "border-red-700"} `}
-                    />
-
-
                 </View>
 
             </ScrollView>
+
 
             <StatusBar
                 backgroundColor='#161622'
                 style='light'
             />
-
         </SafeAreaView>
 
     );

@@ -7,17 +7,33 @@ import { useGlobalContext } from '../context/ContextProvider'
 import { savePost, savePostRemove } from '../lib/appwrite'
 import * as Animatable from 'react-native-animatable';
 import { router, usePathname } from 'expo-router'
-import useAppwrite from '../lib/useAppwrite'
+import { zoomIn, zoomOut } from './Tranding'
+// import useAppwrite from '../lib/useAppwrite'
+// import * as Animatable from 'react-native-animatable';
 
-const VideoCard = ({ item, allData }) => {
+import Icons from "react-native-vector-icons/FontAwesome5"
+
+
+
+// // // Props comment ----------->
+// // item :- that we are showing 
+// // allData  :- whole arr that containing this item
+// // width :- a bool or str used in single page to show res post by user
+// // activeItem :- ID used in single page to show res post by user that currently visiable to user
+// // PostPgae :- single post main page (Upper post) (to prevent not open same page for same post).
+
+const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
-    const { username, avatar } = creator
+    // const { username, avatar } = creator
     const { theme, user, updateAllData } = useGlobalContext()
     const [play, setPlay] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
-    const [userSavedThisItem, setUserSavedThisItem] = useState(false)
+    const [userPresentInSavedPost, setUserPresentInSavedPost] = useState(false)
+
+    const [userInLikedBy, setUserInLikedBy] = useState(false)
+    const [likeLoading, setLikeLoading] = useState(false)
 
     // console.log({ title, thumbnail, video, username, email, avatar })
 
@@ -36,7 +52,7 @@ const VideoCard = ({ item, allData }) => {
 
             let result;
 
-            if (!userSavedThisItem) {
+            if (!userPresentInSavedPost) {
                 result = await savePost(item, user.$id)
             } else {
                 result = await savePostRemove(item, user.$id)
@@ -51,8 +67,6 @@ const VideoCard = ({ item, allData }) => {
                 updateAllData(result)
 
             }
-
-
             // console.log({ result })
 
         } catch (error) {
@@ -65,26 +79,95 @@ const VideoCard = ({ item, allData }) => {
 
 
     const redirectToPost = () => {
-
         // // // Here set single post data ------------> 
 
-        router.push(`/post/${item.$id}`)
+        if (!postPage) {
+            router.push(`/post/${item.$id}`)
+        }
+
+    }
+
+
+    const likeHandler = async () => {
+
+        Alert.alert("Baad me")
+
+        // // // Postponded now ------->
+
+        // if (likeLoading) return
+        // try {
+
+        //     setLikeLoading(true)
+
+        //     let result;
+
+        //     if (!userInLikedBy) {
+        //         // // Call here like post ------->
+        //         result = await savePost(item, user.$id)
+        //     } else {
+        //         // // Call here dislike post ----->
+        //         result = await savePostRemove(item, user.$id)
+        //     }
+
+
+        //     if (result) {
+
+        //         // console.log(JSON.stringify(result))
+
+        //         // // // Now upadte state ------>
+        //         updateAllData(result)
+
+        //     }
+        //     // console.log({ result })
+
+        // } catch (error) {
+        //     Alert.alert(error)
+        // }
+        // finally {
+        //     setLikeLoading(false)
+
+        // }
+
+    }
+
+
+    const commentHandler = () => {
+
     }
 
 
     useEffect(() => {
 
-        let check = item?.savedBy.map(ele => ele.$id).includes(user.$id)
+        if (item && item?.savedBy && item?.savedBy?.length > 0) {
+            let checkUserIdInSavedPost = item?.savedBy?.map(ele => ele.$id).includes(user.$id)
+            setUserPresentInSavedPost(checkUserIdInSavedPost || false)
+        }
 
-        setUserSavedThisItem(check || false)
+
+        if (item && item?.likedBy && item?.likedBy?.length > 0) {
+
+            let checkUserIdInLikePost = item?.likedBy?.map(ele => ele.$id).includes(user.$id)
+
+            setUserInLikedBy(checkUserIdInLikePost || false)
+        }
+
+
+
 
     }, [item])
 
 
+    // console.log(activeItem)
+
 
     return (
-        <View
-            className=" relative overflow-hidden flex-col items-center px-4 mb-14"
+        <Animatable.View
+            className={` 
+                ${width && `w-[32vh]`} 
+                relative overflow-hidden flex-col items-center px-4 mb-10
+            `}
+            animation={activeItem === item.$id ? zoomIn : zoomOut}
+            duration={700}
         >
 
             <View className={"flex-row gap-3 items-center"}>
@@ -101,7 +184,7 @@ const VideoCard = ({ item, allData }) => {
 
                         <View className="w-[46px] h-[46px] rounded-lg justify-center items-center p-0.5 border border-secondary">
 
-                            <Image source={{ uri: avatar }}
+                            <Image source={{ uri: item?.creator?.avatar }}
                                 className="w-full h-full rounded-md "
                                 resizeMode='contain'
                             />
@@ -118,7 +201,7 @@ const VideoCard = ({ item, allData }) => {
                             <Text
                                 className={`text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}
                                 numberOfLines={1}
-                            >By : {username}</Text>
+                            >By : {item?.creator?.username}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -167,7 +250,7 @@ const VideoCard = ({ item, allData }) => {
                                                     {
                                                         ele.name === "Save"
                                                             ?
-                                                            userSavedThisItem ? "Remove" : "Save"
+                                                            userPresentInSavedPost ? "Remove" : "Save"
 
                                                             :
                                                             `${ele.name}`
@@ -288,7 +371,46 @@ const VideoCard = ({ item, allData }) => {
                     </TouchableOpacity>
             }
 
-        </View>
+
+
+            {
+                // // // If width is not given then only show below div (With is give for only page in this app)
+                !width
+                &&
+
+                <View className=" mt-1 flex-1 justify-end items-end gap-x-5 w-[90%] flex-row">
+
+                    <TouchableOpacity
+                        onPress={commentHandler}
+                    >
+                        <Icons
+                            name='comment'
+                            size={30}
+                            color="#FF9C01"
+                            light
+                        />
+
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity
+                        onPress={likeHandler}
+                    >
+                        <Icons
+                            name='heart'
+                            size={30}
+                            color="#FF9C01"
+                            solid={true}
+                            light={false}
+                        />
+                    </TouchableOpacity>
+
+                </View>
+
+            }
+
+
+        </Animatable.View>
     )
 }
 

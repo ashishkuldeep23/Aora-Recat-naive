@@ -33,7 +33,7 @@ const Home = () => {
   // console.log(JSON.stringify(allPost[0], null, 4))
 
 
-  // // // // These two var is very imp. if we remove this then when ever our data got change then our state var also get updated with old data ---------->
+  // // // // These two var is very imp. if we remove this then when ever our data got change by user action then our state var also get fetched/updated by old data ---------->
 
   let firstTimeAllPost = true;
   let firstTimeLatestPost = true;
