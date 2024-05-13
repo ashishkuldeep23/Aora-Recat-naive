@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { icons } from '../constants'
 import { ResizeMode, Video } from 'expo-av'
 import { useGlobalContext } from '../context/ContextProvider'
-import { savePost, savePostRemove } from '../lib/appwrite'
+import { disLikePost, likePost, savePostAdd, savePostRemove } from '../lib/appwrite'
 import * as Animatable from 'react-native-animatable';
 import { router, usePathname } from 'expo-router'
 import { zoomIn, zoomOut } from './Tranding'
@@ -27,13 +27,15 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
     // const { username, avatar } = creator
-    const { theme, user, updateAllData } = useGlobalContext()
+    const { theme, user, updateUser, updateAllData } = useGlobalContext()
     const [play, setPlay] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
+
     const [userPresentInSavedPost, setUserPresentInSavedPost] = useState(false)
 
     const [userInLikedBy, setUserInLikedBy] = useState(false)
     const [likeLoading, setLikeLoading] = useState(false)
+
 
     // console.log({ title, thumbnail, video, username, email, avatar })
 
@@ -53,9 +55,9 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
             let result;
 
             if (!userPresentInSavedPost) {
-                result = await savePost(item, user.$id)
+                result = await savePostAdd(item.$id, user)
             } else {
-                result = await savePostRemove(item, user.$id)
+                result = await savePostRemove(item.$id, user)
             }
 
 
@@ -64,7 +66,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                 // console.log(JSON.stringify(result))
 
                 // // // Now upadte state ------>
-                updateAllData(result)
+                updateUser(result)
 
             }
             // console.log({ result })
@@ -90,81 +92,88 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     const likeHandler = async () => {
 
-        Alert.alert("Baad me")
+        // Alert.alert("Baad me")
 
+
+        // console.log("osdjd-------------->")
         // // // Postponded now ------->
 
-        // if (likeLoading) return
-        // try {
+        if (likeLoading) return
 
-        //     setLikeLoading(true)
+        try {
 
-        //     let result;
+            setLikeLoading(true)
 
-        //     if (!userInLikedBy) {
-        //         // // Call here like post ------->
-        //         result = await savePost(item, user.$id)
-        //     } else {
-        //         // // Call here dislike post ----->
-        //         result = await savePostRemove(item, user.$id)
-        //     }
+            let result;
+
+            if (!userInLikedBy) {
+                // // Call here like post ------->
+                result = await likePost(item.$id, user.$id)
+            } else {
+                // // Call here dislike post ----->
+                result = await disLikePost(item.$id, user.$id)
+            }
+
+            // console.log({ result })
 
 
-        //     if (result) {
+            if (result) {
 
-        //         // console.log(JSON.stringify(result))
+                // console.log(JSON.stringify(result))
 
-        //         // // // Now upadte state ------>
-        //         updateAllData(result)
+                // // // Now upadte state ------>
+                updateAllData(result)
 
-        //     }
-        //     // console.log({ result })
+            }
+            // console.log({ result })
 
-        // } catch (error) {
-        //     Alert.alert(error)
-        // }
-        // finally {
-        //     setLikeLoading(false)
+        } catch (error) {
+            Alert.alert(error)
+        }
+        finally {
+            setLikeLoading(false)
 
-        // }
+        }
 
     }
 
 
     const commentHandler = () => {
 
+        // // // Mtlb agr ap already post[id] page pr ho to user ko us page pr move nhi krna chahoge (Don't redirect to user on singlePost page if he/she already on that page.)
+        if (!postPage) {
+            router.push(`/post/${item.$id}`)
+        }
+
     }
 
 
     useEffect(() => {
 
-        if (item && item?.savedBy && item?.savedBy?.length > 0) {
-            let checkUserIdInSavedPost = item?.savedBy?.map(ele => ele.$id).includes(user.$id)
+        if (item.$id && user.$id) {
+            let checkUserIdInSavedPost = user?.savedPost?.includes(item.$id)
             setUserPresentInSavedPost(checkUserIdInSavedPost || false)
         }
 
 
-        if (item && item?.likedBy && item?.likedBy?.length > 0) {
+        if (item.$id && user.$id) {
 
-            let checkUserIdInLikePost = item?.likedBy?.map(ele => ele.$id).includes(user.$id)
-
+            let checkUserIdInLikePost = item?.likes.includes(user.$id)
             setUserInLikedBy(checkUserIdInLikePost || false)
         }
 
+    }, [item, user])
 
 
 
-    }, [item])
-
-
-    // console.log(activeItem)
 
 
     return (
         <Animatable.View
-            className={` 
+            className={`
                 ${width && `w-[32vh]`} 
-                relative overflow-hidden flex-col items-center px-4 mb-10
+                ${!postPage && "mb-10"}
+                relative overflow-hidden flex-col items-center px-4
             `}
             animation={activeItem === item.$id ? zoomIn : zoomOut}
             duration={700}
@@ -373,41 +382,70 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
 
 
-            {
-                // // // If width is not given then only show below div (With is give for only page in this app)
-                !width
-                &&
 
-                <View className=" mt-1 flex-1 justify-end items-end gap-x-5 w-[90%] flex-row">
-
-                    <TouchableOpacity
-                        onPress={commentHandler}
-                    >
-                        <Icons
-                            name='comment'
-                            size={30}
-                            color="#FF9C01"
-                            light
-                        />
-
-                    </TouchableOpacity>
+            <View className=" h-11 mt-1 flex-1 justify-end items-start gap-x-5 w-[90%] flex-row px-1">
 
 
-                    <TouchableOpacity
-                        onPress={likeHandler}
-                    >
-                        <Icons
-                            name='heart'
-                            size={30}
-                            color="#FF9C01"
-                            solid={true}
-                            light={false}
-                        />
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    className='justify-center items-center'
+                    onPress={commentHandler}
+                >
+                    <Icons
+                        name='comment'
+                        size={27}
+                        color="#FF9C01"
+                        light
+                    />
 
-                </View>
 
-            }
+                    {
+                        item?.comments?.length > 0
+                        &&
+                        <Text
+                            className=' text-white text-xs'
+                            style={{ color: "#FF9C01" }}
+                        >{item?.comments?.length}</Text>
+                    }
+
+
+
+                </TouchableOpacity>
+
+
+                <TouchableOpacity
+                    className='justify-center items-center'
+                    onPress={likeHandler}
+                >
+                    <Icons
+                        name='heart'
+                        size={27}
+                        color="#FF9C01"
+                        solid={userInLikedBy}
+                        // light={false}
+                    />
+
+                    {
+                        item?.likes?.length > 0
+                        &&
+                        <Text
+                            style={{ color: "#FF9C01" }}
+                            className=' text-white text-xs'
+                        >{item.likes.length}</Text>
+                    }
+
+
+                </TouchableOpacity>
+
+
+            </View>
+
+
+
+            {/* // // // If width is not given then only show below div (With is give for only page in this app)
+
+                // !width
+                // && */}
+
 
 
         </Animatable.View>

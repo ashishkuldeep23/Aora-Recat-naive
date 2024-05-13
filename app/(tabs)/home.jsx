@@ -10,12 +10,13 @@ import { getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/ContextProvider'
+import * as Animatable from 'react-native-animatable';
 
 const Home = () => {
 
   const { user, theme, allPost, setAllPost, allLetestPost, setAllLetestPost } = useGlobalContext()
 
-  const { data: posts, refetch } = useAppwrite(getAllPosts)
+  const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts)
   const { data: latestPosts } = useAppwrite(getLatestPosts)
 
   const [refreshing, setRefreshing] = useState(false)
@@ -78,6 +79,30 @@ const Home = () => {
       className={` min-h-[100vh] ${!theme ? "bg-primary " : "bg-gray-100"}`}
     >
 
+      {/* Loading text here --------> */}
+
+      {
+        isLoading
+        &&
+        <Animatable.View
+          className=" w-full items-center absolute top-20 z-10 "
+          animation='fadeIn'
+          duration={700}
+          iterationCount="infinite"
+          direction='alternate'
+        >
+
+          <View className={` relative overflow-hidden rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400 px-2 py-1`}>
+            <Text className=" relative font-semibold">
+              Getting posts data...
+            </Text>
+          </View>
+
+        </Animatable.View>
+      }
+
+
+
       <FlatList
 
         // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
@@ -87,7 +112,10 @@ const Home = () => {
 
         // // // Here all data get render ---------->>
         renderItem={({ item }) => {
-          return <VideoCard item={item} allData={allPost} />
+          return <VideoCard
+            item={item}
+            allData={allPost}
+          />
         }}
 
         // // // This code will used as header of flatList ----->>

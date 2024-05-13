@@ -95,6 +95,13 @@ const SearchPage = () => {
                             titleStyle="text-lg"
                         />
 
+                        <InfoBox
+                            title={user?.email}
+                            subtite=""
+                            containerStyle={" -mt-4"}
+                            titleStyle="text-xs"
+                        />
+
                         <View className="mt-5 flex-row ">
 
                             <InfoBox

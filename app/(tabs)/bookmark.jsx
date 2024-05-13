@@ -1,4 +1,4 @@
-import { View, Text, Alert, FlatList } from 'react-native'
+import { View, Text, Alert, FlatList, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '../../context/ContextProvider'
@@ -7,12 +7,27 @@ import VideoCard from '../../components/VideoCard'
 import CLoading from '../../components/CLoading'
 import EmptyState from '../../components/Empty'
 import useAppwrite from '../../lib/useAppwrite'
+import { Link } from 'expo-router'
 
 const Bookmark = () => {
 
   const { theme, user, allSavedPost, setAllSavedPost } = useGlobalContext()
 
-  const { data: savedPosts, isLoading } = useAppwrite(() => getAllSavedPost(user.$id))
+  const { data: savedPosts, isLoading, refetch } = useAppwrite(() => getAllSavedPost(user.$id))
+
+
+
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = async () => {
+    setRefreshing(true)
+
+    // // // re call new videos ------>
+    await refetch();
+
+    setRefreshing(false)
+  }
+
 
 
 
@@ -51,7 +66,17 @@ const Bookmark = () => {
           </View>
         }}
 
-        ListEmptyComponent={() => <EmptyState title="No Video Found" subtite={`No saved posts found for you.`} />}
+        ListEmptyComponent={() => <View className='mt-20 flex justify-center items-center'>
+          <Text className="text-white text-center font-pbold text-4xl ">
+            No saved post found
+          </Text>
+          <Link className='text-white font-pregular border px-2 border-white rounded-md' href={'/home'}>Home</Link>
+        </View>}
+
+        refreshControl={<RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />}
 
       />
 

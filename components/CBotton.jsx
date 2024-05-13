@@ -8,7 +8,12 @@ const CBotton = ({ title, handlePress, containerStyle, textStyle, isLoading }) =
 
     return (
         <TouchableOpacity
-            className={` ${!theme ? "#FFA001" : "#d48500"} rounded-xl min-h-[62px] justify-center items-center focus:scale-75 ${containerStyle} ${isLoading && "opacity-50"}`}
+            className={` 
+                rounded-xl min-h-[62px] justify-center items-center focus:scale-75 
+                ${!theme ? "#FFA001" : "#d48500"} 
+                ${containerStyle} 
+                ${isLoading && "opacity-50"}
+            `}
             onPress={() => {
                 // console.log("cccc") 
                 handlePress();

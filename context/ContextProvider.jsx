@@ -78,8 +78,7 @@ const GlobalProvider = ({ children }) => {
 
     }
 
-
-
+    // // // This is used in single post page ------>
     const updateSinglePostState = (singlePost, restPost) => {
 
         // // // Update rest post data ----->
@@ -95,7 +94,7 @@ const GlobalProvider = ({ children }) => {
     }
 
 
-
+    // // // This is alos used in single post page but for user ---->
     const upadateFollowList = (byUser, toUser) => {
 
         // console.log({ byUser, toUser })
@@ -109,6 +108,58 @@ const GlobalProvider = ({ children }) => {
 
         setSinglePostGlobal({ ...singlePostGlobal, creator: toUser })
 
+    }
+
+
+    // // // This is also used in single post page but for commnets ----->
+    const updateComment = (resultData, whatUpdate) => {
+
+        // // // whatUpdate will have 3 values (1. created , 2. updated , 3. deleted)
+        // // Based on these value you should chnage the current state of singlePostGlobal.
+
+
+        if (whatUpdate === 'created') {
+
+            // if (singlePostGlobal && singlePostGlobal?.commentBy) {
+            //     singlePostGlobal.commentBy.unshift(resultData)
+            // }
+            if (singlePostGlobal && singlePostGlobal?.comments) {
+                singlePostGlobal.comments.unshift(resultData.$id)
+            }
+
+            // updateAllData(resultData)
+
+        }
+        // else if (whatUpdate === "updated") {
+        //     if (singlePostGlobal && singlePostGlobal?.commentBy) {
+        //         let index = singlePostGlobal.commentBy.findIndex(ele => ele.$id === resultData.$id)
+        //         singlePostGlobal.commentBy.splice(index, 1, resultData)
+        //     }
+        // }
+        else if (whatUpdate === "deleted") {
+
+
+            if (singlePostGlobal && singlePostGlobal?.commentBy) {
+
+                // // // now for delete resultData, should be comment id that you deleted recentlly.
+
+                let index = singlePostGlobal.comments.findIndex(ele => ele === resultData)
+                singlePostGlobal.commentBy.splice(index, 1)
+
+            }
+
+        }
+
+        updateAllData(singlePostGlobal)
+    }
+
+
+    // // // Update User data 
+    // // Currently using only in saved and remove post.
+
+    const updateUser = (newUserData) => {
+        // // // Make sure new user data is coming.
+        setUser(newUserData)
     }
 
 
@@ -189,7 +240,9 @@ const GlobalProvider = ({ children }) => {
                 restPostGlobal,
                 singlePostGlobal,
                 updateSinglePostState,
-                upadateFollowList
+                upadateFollowList,
+                updateComment,
+                updateUser
             }}
         >
             {children}
