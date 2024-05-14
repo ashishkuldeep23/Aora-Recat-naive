@@ -1,8 +1,9 @@
-import { View, Text, FlatList, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, FlatList, ImageBackground, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { icons } from '../constants';
 import { Video, ResizeMode } from 'expo-av';
+import { useGlobalContext } from '../context/ContextProvider';
 
 
 export const zoomIn = {
@@ -53,7 +54,7 @@ const Tranding = ({ posts }) => {
             viewabilityConfig={{
                 itemVisiblePercentThreshold: 70
             }}
-            contentOffset={{ x: 170 }}
+            contentOffset={{ x: 10 }}
 
             horizontal={true}
         />
@@ -68,16 +69,20 @@ export default Tranding
 const TrandingItem = ({ activeItem, item, index, posts }) => {
 
     const { title, thumbnail, video, creator } = item
-    const { username, email, avatar } = creator
-
-    const [play, setPlay] = useState(false)
+    const { username, email, avatar, $id } = creator
 
 
-    // console.log(activeItem === item.$id)
+    const [playingTrandingVidHere, setPlayingTrandingVidHere] = useState({
+        mode: false,
+        videoId: "",
+        videoUri: ""
+    })
+
+
 
     return (
         <Animatable.View
-            className={` relative -mx-[6px] 
+            className={` relative -mx-[6px]
                 ${activeItem === item.$id ? 'z-10' : "-z-[10]"} 
                 ${index === 0 && " ml-2"}
                 ${index === posts.length - 1 && "mr-2 -z-50"}
@@ -85,27 +90,60 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
             animation={activeItem === item.$id ? zoomIn : zoomOut}
             duration={700}
         >
+
+            {/* User image here --------> */}
+            <TouchableOpacity
+                className="w-[46px] h-[46px] rounded-full justify-center items-center p-[1px] border border-secondary absolute top-1 -left-1 z-[2]"
+                onPress={() => { Alert.alert("GOTO", `Goto profile. ${username} ${$id}`) }}
+            >
+
+                <Image source={{ uri: avatar }}
+                    className="w-full h-full rounded-full "
+                    resizeMode='contain'
+                />
+
+            </TouchableOpacity>
+
+
             {
-                play
+                (
+                    playingTrandingVidHere.mode
+                    &&
+                    playingTrandingVidHere.videoId === item.$id
+
+                    // play
+                )
                     ?
                     // <Text className=" text-white">Playing...</Text>
                     <Video
-                        source={{ uri: video }}
+                        // source={{ uri: playingTrandingVidHere.videoUri }}
+                        source={{ uri: playingTrandingVidHere.videoUri }}
                         className="w-52 h-72 rounded-lg mt-3 bg-white/10 border border-rose-500/50 "
                         resizeMode={ResizeMode.CONTAIN}
                         useNativeControls={true}
                         shouldPlay={true}
                         onPlaybackStatusUpdate={(status) => {
                             if (status.didJustFinish) {
-                                setPlay(false)
+                                setPlayingTrandingVidHere({
+                                    mode: false,
+                                    videoId: "",
+                                    videoUri: ""
+                                })
                             }
                         }}
                     />
                     :
                     <TouchableOpacity
-                        className="rounded-xl relative justify-center items-center mt-3 p-[2px] overflow-hidden border border-rose-500/50"
+                        className="justify-center  rounded-lg items-center mt-3 p-[2px] overflow-hidden border border-rose-500/50"
                         activeOpacity={0.7}
-                        onPress={() => setPlay(true)}
+                        onPress={() => {
+
+                            setPlayingTrandingVidHere({
+                                mode: true,
+                                videoId: item.$id,
+                                videoUri: video
+                            })
+                        }}
                     >
                         <ImageBackground
                             source={{ uri: thumbnail }}
@@ -122,7 +160,7 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
                     </TouchableOpacity>
             }
 
-        </Animatable.View>
+        </Animatable.View >
     )
 }
 

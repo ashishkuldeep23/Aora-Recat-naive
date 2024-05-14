@@ -29,6 +29,9 @@ const SearchPage = () => {
     }
 
 
+    console.log(JSON.stringify(user, null, 4))
+
+
     return (
 
         <SafeAreaView
@@ -112,7 +115,7 @@ const SearchPage = () => {
                             />
 
                             <InfoBox
-                                title={'1.2k'}
+                                title={user?.followedBy.length}
                                 subtite="Followers"
                                 titleStyle="text-lg"
                             />

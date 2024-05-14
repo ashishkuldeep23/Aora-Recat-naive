@@ -24,6 +24,13 @@ const GlobalProvider = ({ children }) => {
     const [singlePostGlobal, setSinglePostGlobal] = useState({})
     const [restPostGlobal, setRestPostGlobal] = useState([])
 
+    const [playingVideo, setPlayingVideo] = useState({
+        mode: false,
+        videoId: "",
+        videoUri: ""
+    })
+
+
     // const [theme, setTheme] = useState(true)
 
 
@@ -166,6 +173,9 @@ const GlobalProvider = ({ children }) => {
     // // // fetch used data here ---------->
     useEffect(() => {
 
+
+        // // // Get current user data --------->
+
         getCurrentUser()
             .then((res) => {
 
@@ -186,12 +196,8 @@ const GlobalProvider = ({ children }) => {
                 // setIsLoading(true)
             })
 
-    }, [])
 
-
-    // // // This is used to get data from loacl and set into provider ------->
-    useEffect(() => {
-
+        // // // Get data from localStorage/SecureStore ----------->
         SecureStore.getItemAsync("themeMode")
             .then((result) => {
                 if (result) {
@@ -202,7 +208,24 @@ const GlobalProvider = ({ children }) => {
                 Alert.alert("Error", err)
             })
 
+
     }, [])
+
+
+    // // // This is used to get data from loacl and set into provider ------->
+    // useEffect(() => {
+
+    //     SecureStore.getItemAsync("themeMode")
+    //         .then((result) => {
+    //             if (result) {
+    //                 setTheme(JSON.parse(result));
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             Alert.alert("Error", err)
+    //         })
+
+    // }, [])
 
 
     // // // This is used to get data from provider and set into local ------->
@@ -242,7 +265,9 @@ const GlobalProvider = ({ children }) => {
                 updateSinglePostState,
                 upadateFollowList,
                 updateComment,
-                updateUser
+                updateUser,
+                playingVideo,
+                setPlayingVideo,
             }}
         >
             {children}

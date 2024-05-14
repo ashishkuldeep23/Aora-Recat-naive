@@ -27,8 +27,11 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
     // const { username, avatar } = creator
-    const { theme, user, updateUser, updateAllData } = useGlobalContext()
-    const [play, setPlay] = useState(false)
+    const { theme, user, updateUser, updateAllData, setPlayingVideo, playingVideo } = useGlobalContext()
+
+    // const [play, setPlay] = useState(false)
+    // // // Not usimg now, currently using a global state var that holds info which song should play. (Problem solve :- only one video play at a time.)
+
     const [openMenu, setOpenMenu] = useState(false)
 
     const [userPresentInSavedPost, setUserPresentInSavedPost] = useState(false)
@@ -342,17 +345,27 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
 
             {
-                play
+                // play
+                (
+                    playingVideo.mode
+                    &&
+                    playingVideo.videoId === item.$id
+                )
                     ?
                     <Video
-                        source={{ uri: video }}
+                        // source={{ uri: video }}
+                        source={{ uri: playingVideo.videoUri }}
                         className="w-full h-60 rounded-xl mt-3 border border-sky-500/50 p-[2px]"
                         resizeMode={ResizeMode.CONTAIN}
                         useNativeControls={true}
                         shouldPlay={true}
                         onPlaybackStatusUpdate={(status) => {
                             if (status.didJustFinish) {
-                                setPlay(false)
+                                setPlayingVideo({
+                                    mode: false,
+                                    videoId: "",
+                                    videoUri: ""
+                                });
                             }
                         }}
                     />
@@ -361,8 +374,10 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                         className="w-full h-60 rounded-xl relative justify-center items-center mt-3 overflow-hidden border border-sky-500/50 p-[2px]"
                         activeOpacity={0.7}
                         onPress={() => {
+                            // setPlay(true);
+                            setPlayingVideo({ mode: true, videoId: item.$id, videoUri: video })
+
                             setOpenMenu(false);
-                            setPlay(true);
                         }}
                     >
                         <Image
@@ -421,7 +436,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                         size={27}
                         color="#FF9C01"
                         solid={userInLikedBy}
-                        // light={false}
+                    // light={false}
                     />
 
                     {

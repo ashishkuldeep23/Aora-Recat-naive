@@ -4,7 +4,7 @@ import { useGlobalContext } from '../../context/ContextProvider'
 import { router, useLocalSearchParams } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import useAppwrite from '../../lib/useAppwrite'
-import { addFollow, createComment, deleteComment, getAllCommentsForThisPost, getSinglePostWithAllData, removeFollow, updateCommentApi } from '../../lib/appwrite'
+import { addFollow, createComment, deleteComment, getAllCommentsForThisPost, getAllLikes, getSinglePostWithAllData, removeFollow, updateCommentApi } from '../../lib/appwrite'
 import Tranding from '../../components/Tranding'
 import VideoCard from '../../components/VideoCard'
 import CLoading from '../../components/CLoading'
@@ -198,6 +198,13 @@ const SinglePostPage = () => {
                                     postPage={true}
                                 />
                             </View>
+
+
+
+                            <SeeAllLikesDiv
+                                singlePostGlobal={singlePostGlobal}
+                            />
+
 
 
                             <CommentDivGiveCmntAndAllCmnt
@@ -818,6 +825,126 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
         </View>
 
+    )
+}
+
+
+
+
+const SeeAllLikesDiv = ({ singlePostGlobal }) => {
+
+
+    const [allLikesData, setAllLikesData] = useState([])
+
+
+
+    function fetchAndSetAllLikes(postId) {
+
+        // console.log("Called for ---------->", singlePostGlobal.title)
+
+        getAllLikes(postId)
+            .then((res) => {
+                // console.log(JSON.stringify(res))
+
+                if (res.length > 0) {
+                    setAllLikesData(res)
+                }
+            })
+            .catch((err) => Alert.alert("Error", JSON.stringify(err)))
+    }
+
+
+    // console.log(JSON.stringify(allLikesData))
+
+
+
+    return (
+        <View>
+
+            {
+                singlePostGlobal?.likes.length > 0 && allLikesData.length <= 0
+                &&
+
+                <TouchableOpacity
+                    className="my-3 flex"
+                    onPress={() => fetchAndSetAllLikes(singlePostGlobal.$id)}
+                >
+                    <Text className="  text-white text-center font-psemibold">Click to See all Likes</Text>
+                </TouchableOpacity>
+            }
+
+
+
+            {/* Show all comments here -------------> */}
+            <View>
+                {
+
+                    allLikesData.length > 0
+
+                    &&
+
+                    <>
+
+                        <View className="flex flex-row items-center justify-between">
+
+                            <Text
+                                className=' w-auto text-xl text-white mt-5 ml-6 font-pregular'
+                            >Total likes are : {allLikesData.length}</Text>
+
+                            <TouchableOpacity
+                                className=" mr-4 mt-5"
+                                onPress={() => setAllLikesData([])}
+                            >
+                                <Text className=" text-2xl text-red-500  text-center font-bold">X</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* <Text className="text-white text-center">
+                            {
+                                JSON.stringify(singlePostGlobal.comments)
+                            }
+                        </Text> */}
+
+                        <View
+                            className=' flex items-start px-6 flex-wrap flex-row gap-0.5'
+                        >
+
+
+                            {
+
+                                allLikesData.map((ele, i) => {
+                                    // console.log(JSON.stringify(ele) , null , 4)
+                                    return <TouchableOpacity
+                                        key={i}
+                                        className=" h-7  border border-secondary rounded-full flex-row items-center overflow-hidden "
+                                        onPress={() => { Alert.alert("GOTO", `Goto profile. ${ele.username} ${ele.$id}`) }}
+                                        activeOpacity={0.2}
+                                    >
+
+                                        <Image
+                                            source={{ uri: ele?.avatar }}
+                                            className="w-7 h-7 rounded-full"
+                                            resizeMode='contain'
+                                        // className={"w-full max-w-[380px] h-[300px]"}
+                                        />
+
+                                    </TouchableOpacity>
+                                })
+
+                            }
+
+                        </View>
+
+
+                    </>
+
+
+                }
+            </View>
+
+
+
+        </View>
     )
 }
 
