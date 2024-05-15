@@ -115,7 +115,7 @@ const SearchPage = () => {
                             />
 
                             <InfoBox
-                                title={user?.followedBy.length}
+                                title={user?.followers.length}
                                 subtite="Followers"
                                 titleStyle="text-lg"
                             />

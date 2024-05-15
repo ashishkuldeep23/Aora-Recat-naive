@@ -189,7 +189,6 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                     onPress={redirectToPost}
                 >
 
-
                     <View
                         className="flex-1 justify-center items-center flex-row"
                     >
@@ -395,11 +394,22 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                     </TouchableOpacity>
             }
 
+            {/* Prompt for video here  */}
+
+            <TouchableOpacity
+                onPress={redirectToPost}
+                className=" items-center"
+            >
+
+                <View>
+                    <Text className={`${!theme ? "text-white" : "text-black"} text-xl text-start w-[90vw] `}>{item.prompt}</Text>
+                </View>
+            </TouchableOpacity>
 
 
+            {/* Like and comment btn here -------> */}
 
             <View className=" h-11 mt-1 flex-1 justify-end items-start gap-x-5 w-[90%] flex-row px-1">
-
 
                 <TouchableOpacity
                     className='justify-center items-center'
@@ -421,8 +431,6 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                             style={{ color: "#FF9C01" }}
                         >{item?.comments?.length}</Text>
                     }
-
-
 
                 </TouchableOpacity>
 
@@ -453,13 +461,6 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
 
             </View>
-
-
-
-            {/* // // // If width is not given then only show below div (With is give for only page in this app)
-
-                // !width
-                // && */}
 
 
 

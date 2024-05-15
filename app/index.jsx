@@ -15,7 +15,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 // import * as Linking from 'expo-linking';
 import * as Animatable from 'react-native-animatable';
-import { logInByGoogle } from '../lib/appwrite';
+// import { logInByGoogle } from '../lib/appwrite';
 
 
 // // // Alert fn. for check User connection with network

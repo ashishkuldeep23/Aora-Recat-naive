@@ -71,7 +71,7 @@ const SinglePostPage = () => {
             //     result = await savePostRemove(item, user.$id)
             // }
 
-            if (!user?.followedBy?.includes(toUser?.$id)) {
+            if (!user?.following?.includes(toUser?.$id)) {
                 result = await addFollow(user, toUser)
             } else {
                 result = await removeFollow(user, toUser)
@@ -179,7 +179,7 @@ const SinglePostPage = () => {
                     <TouchableOpacity
                         onPress={() => { router.back() }}
                     >
-                        <Text className="font-pmedium ml-1 text-gray-100 py-2 px-1 active:bg-red-800">
+                        <Text className={`font-pmedium ml-1 ${!theme ? "text-gray-100" : "text-black-100"} py-2 px-1 active:bg-red-800`}>
                             👈Back
                         </Text>
 
@@ -222,7 +222,7 @@ const SinglePostPage = () => {
                 {
                     Object.keys(singlePostGlobal).length > 0
                     &&
-                    <Text className="text-white text-center my-2 font-psemibold text-xl ">User Details & other posts</Text>
+                    <Text className={`${!theme ? "text-white" : "text-black"} text-center my-2 font-psemibold text-xl `}>User Details & other posts</Text>
                 }
 
 
@@ -256,8 +256,8 @@ const SinglePostPage = () => {
 
                                         </View>
 
-                                        <Text className='text-white'>{singlePostGlobal?.creator?.username}</Text>
-                                        <Text className='text-white'>{singlePostGlobal?.creator?.email}</Text>
+                                        <Text className={`${!theme ? "text-white" : "text-black"}`}>{singlePostGlobal?.creator?.username}</Text>
+                                        <Text className={`${!theme ? "text-white" : "text-black"} `}>{singlePostGlobal?.creator?.email}</Text>
 
                                         <View className="mt-1 flex-row ">
 
@@ -269,7 +269,7 @@ const SinglePostPage = () => {
                                             />
 
                                             <InfoBox
-                                                title={singlePostGlobal?.creator?.followedBy?.length}
+                                                title={singlePostGlobal?.creator?.followers?.length}
                                                 subtite="Followers"
                                                 titleStyle="text-base"
                                             />
@@ -292,16 +292,16 @@ const SinglePostPage = () => {
                                                             >
                                                                 <Text
                                                                     className={`
-                                                                    font-pmedium text-gray-100 px-2 rounded-full my-1
-                                                                    
-                                                                   ${(!user?.followedBy?.includes(singlePostGlobal?.creator?.$id))
+                                                                        font-pmedium text-gray-100 px-2 rounded-full my-1
+                                                                        ${(!user?.following?.includes(singlePostGlobal?.creator?.$id))
                                                                             ? "bg-blue-600"
-                                                                            : "bg-red-600"}
+                                                                            : "bg-red-600"
+                                                                        }
 
                                                                     `}
                                                                 >
                                                                     {
-                                                                        (!user?.followedBy?.includes(singlePostGlobal?.creator?.$id))
+                                                                        (!user?.following?.includes(singlePostGlobal?.creator?.$id))
                                                                             ? "Follow"
                                                                             : "Unfollow"
 
@@ -326,7 +326,7 @@ const SinglePostPage = () => {
                                             &&
 
                                             <Text
-                                                className='text-white text-xs mt-2'
+                                                className={`${!theme ? "text-white" : "text-black"} text-xs mt-2`}
                                                 numberOfLines={1}
                                             >See more videos by him/her 👉</Text>
                                         }
@@ -377,7 +377,7 @@ export default SinglePostPage
 
 const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
-    const { user, updateComment } = useGlobalContext()
+    const { theme, user, updateComment } = useGlobalContext()
 
 
     const initialValue = {
@@ -641,14 +641,14 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                 <>
 
                     <Text
-                        className=' text-white text-start ml-5 font-pregular'
+                        className={`${!theme ? "text-white" : "text-black"}text-start ml-5 font-pregular`}
                     >Update this :-</Text>
 
                     <View
                         className=" w-[70%] mx-auto border border-secondary rounded-full flex-row items-center overflow-hidden "
                     >
 
-                        <Text className='text-white ml-1 font-psemibold'>{cmntForm.textComment}</Text>
+                        <Text className={`${!theme ? "text-white" : "text-black"} ml-1 font-psemibold`}>{cmntForm.textComment}</Text>
 
 
                         {/* Update and detele present here -----> */}
@@ -713,7 +713,7 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                     className="my-3 flex"
                     onPress={() => fetchAndSetAllComments(singlePostGlobal.$id)}
                 >
-                    <Text className="  text-white text-center font-psemibold">Click to See all comments</Text>
+                    <Text className={`${!theme ? "text-white" : "text-black"} text-center font-psemibold`}>Click to see all comments</Text>
                 </TouchableOpacity>
             }
 
@@ -738,7 +738,7 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                     &&
 
                     <>
-                        <Text className=' text-xl text-white mt-5 ml-6 font-pregular'>All Comments about this post</Text>
+                        <Text className={`text-xl ${!theme ? "text-white" : "text-black"} mt-5 ml-6 font-pregular`}>All Comments about this post</Text>
 
                         {/* <Text className="text-white text-center">
                             {
@@ -764,7 +764,7 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                                     />
 
 
-                                    <Text className='text-white ml-1 font-psemibold'>{ele.textComment}</Text>
+                                    <Text className={`${!theme ? "text-white" : "text-black"} ml-1 font-psemibold`}>{ele.textComment}</Text>
 
 
                                     {/* Update and detele present here -----> */}
@@ -834,6 +834,9 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 const SeeAllLikesDiv = ({ singlePostGlobal }) => {
 
 
+
+    const { theme } = useGlobalContext()
+
     const [allLikesData, setAllLikesData] = useState([])
 
 
@@ -869,7 +872,7 @@ const SeeAllLikesDiv = ({ singlePostGlobal }) => {
                     className="my-3 flex"
                     onPress={() => fetchAndSetAllLikes(singlePostGlobal.$id)}
                 >
-                    <Text className="  text-white text-center font-psemibold">Click to See all Likes</Text>
+                    <Text className={`${!theme ? "text-white" : "text-black"} text-center font-psemibold`}>Click to see all Likes</Text>
                 </TouchableOpacity>
             }
 
@@ -888,7 +891,7 @@ const SeeAllLikesDiv = ({ singlePostGlobal }) => {
                         <View className="flex flex-row items-center justify-between">
 
                             <Text
-                                className=' w-auto text-xl text-white mt-5 ml-6 font-pregular'
+                                className={`w-auto text-xl ${!theme ? "text-white" : "text-black"} mt-5 ml-6 font-pregular`}
                             >Total likes are : {allLikesData.length}</Text>
 
                             <TouchableOpacity
