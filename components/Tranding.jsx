@@ -4,6 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { icons } from '../constants';
 import { Video, ResizeMode } from 'expo-av';
 import { useGlobalContext } from '../context/ContextProvider';
+import { router } from 'expo-router';
 
 
 export const zoomIn = {
@@ -68,6 +69,8 @@ export default Tranding
 
 const TrandingItem = ({ activeItem, item, index, posts }) => {
 
+    const userId = useGlobalContext().user.$id
+
     const { title, thumbnail, video, creator } = item
     const { username, email, avatar, $id } = creator
 
@@ -77,6 +80,21 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
         videoId: "",
         videoUri: ""
     })
+
+    // // // Go to profile handler ---------->
+
+    function goToProfileHandler() {
+
+        // console.log("-------------------------->",userId)
+        console.log($id, username)
+
+        if (userId === $id) {
+            return router.push(`profile`)
+        }
+
+        router.push(`/user/${$id}`)
+    }
+
 
 
 
@@ -94,7 +112,10 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
             {/* User image here --------> */}
             <TouchableOpacity
                 className="w-[46px] h-[46px] rounded-full justify-center items-center p-[1px] border border-secondary absolute top-1 -left-1 z-[2]"
-                onPress={() => { Alert.alert("GOTO", `Goto profile. ${username} ${$id}`) }}
+                onPress={() => {
+                    goToProfileHandler();
+                    // Alert.alert("GOTO", `Goto profile. ${username} ${$id}`)
+                }}
             >
 
                 <Image source={{ uri: avatar }}

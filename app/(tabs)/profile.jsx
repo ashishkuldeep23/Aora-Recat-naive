@@ -19,6 +19,8 @@ const SearchPage = () => {
 
     const { data: posts } = useAppwrite(() => getUserPosts(user.$id))
 
+
+    // // Logout Handler fn here -------------->
     const logOut = async () => {
 
         await SignOut();
@@ -28,8 +30,7 @@ const SearchPage = () => {
         router.replace('/sign-in')
     }
 
-
-    console.log(JSON.stringify(user, null, 4))
+    // console.log(JSON.stringify(user, null, 4))
 
 
     return (

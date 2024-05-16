@@ -8,7 +8,7 @@ import { useGlobalContext } from '../../context/ContextProvider'
 
 const TabIcon = ({ icon, color, name, focused }) => {
 
-  const { theme } = useGlobalContext()
+  // const { theme } = useGlobalContext()
 
   return (
     <View
@@ -17,11 +17,11 @@ const TabIcon = ({ icon, color, name, focused }) => {
       <Image
         source={icon}
         resizeMode='contain'
-        className="w-5 h-5"
+        className={`w-5 h-5 ${focused ? "-translate-y-2 scale-125" : "translate-y-0 scale-100"} `}
         tintColor={color}
       />
       <Text
-        className={`${focused ? `font-psemibold ` : " font-pregular"} text-xs`}
+        className={`${focused ? `font-psemibold -translate-y-2 scale-125 ` : " font-pregular translate-y-0 scale-100"} text-xs`}
         style={{ color }}
       >{name}</Text>
     </View>
@@ -125,8 +125,6 @@ const TabsLayout = () => {
 
           }}
         />
-
-
 
       </Tabs>
 

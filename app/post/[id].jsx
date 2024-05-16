@@ -5,9 +5,9 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import useAppwrite from '../../lib/useAppwrite'
 import { addFollow, createComment, deleteComment, getAllCommentsForThisPost, getAllLikes, getSinglePostWithAllData, removeFollow, updateCommentApi } from '../../lib/appwrite'
-import Tranding from '../../components/Tranding'
+// import Tranding from '../../components/Tranding'
 import VideoCard from '../../components/VideoCard'
-import CLoading from '../../components/CLoading'
+// import CLoading from '../../components/CLoading'
 import InfoBox from '../../components/InfoBox'
 import CInput from '../../components/CInput'
 import CBotton from '../../components/CBotton'
@@ -16,7 +16,15 @@ import * as Animatable from 'react-native-animatable';
 
 const SinglePostPage = () => {
 
-    const { theme, user, restPostGlobal, singlePostGlobal, updateSinglePostState, updateAllData, upadateFollowList } = useGlobalContext()
+    const {
+        theme,
+        user,
+        restPostGlobal,
+        singlePostGlobal,
+        updateSinglePostState,
+        updateAllData,
+        upadateFollowList
+    } = useGlobalContext()
 
     const { id } = useLocalSearchParams()
 
@@ -138,7 +146,6 @@ const SinglePostPage = () => {
     }, [returnedData])
 
 
-
     // // // Set user info here ----------->>
 
     useEffect(() => {
@@ -191,7 +198,7 @@ const SinglePostPage = () => {
                     {
                         Object.keys(singlePostGlobal).length > 0
                         &&
-                        <>
+                        <View>
                             <View className="mt-7 w-[107%] -ml-3">
                                 <VideoCard
                                     item={singlePostGlobal}
@@ -211,7 +218,7 @@ const SinglePostPage = () => {
                                 singlePostGlobal={singlePostGlobal}
                             />
 
-                        </>
+                        </View>
 
                     }
 
@@ -370,9 +377,6 @@ const SinglePostPage = () => {
 }
 
 export default SinglePostPage
-
-
-
 
 
 const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
@@ -595,6 +599,22 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
     }
 
 
+    function goToProfileHandler(userId) {
+
+        // console.log("-------------------------->",userId)
+        // console.log($id, username)
+        // console.log(userId, user.$id)
+        // console.log(userId === user.$id)
+
+        if (userId === user.$id) {
+            return router.push(`/profile`)
+        }
+
+        router.push(`/user/${userId}`)
+    }
+
+
+
     // useState(() => {
 
     //     if (Object.keys(singlePostGlobal).length > 0) {
@@ -718,18 +738,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
             }
 
 
-
-
-            {/* <Text className="text-white text-center mt-3">
-                {
-                    JSON.stringify(singlePostGlobal.commentBy.length)
-                }
-            </Text> */}
-
-
-
-
-            {/* Show all comments here -------------> */}
             <View>
                 {
 
@@ -750,18 +758,28 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                         {
 
                             allCommentData.map((ele, i) => {
-                                // console.log(JSON.stringify(ele) , null , 4)
+                                // console.log(JSON.stringify(ele.usersId.$id) , null , 4)
                                 return <View
                                     key={i}
                                     className=" w-[70%] mx-auto my-3  border border-secondary rounded-full flex-row items-center overflow-hidden "
                                 >
+                                    <TouchableOpacity
 
-                                    <Image
-                                        source={{ uri: ele?.usersId?.avatar }}
-                                        className="w-7 h-7 rounded-full"
-                                        resizeMode='contain'
-                                    // className={"w-full max-w-[380px] h-[300px]"}
-                                    />
+                                        onPress={() => {
+                                            goToProfileHandler(ele?.usersId?.$id)
+                                        }}
+                                    >
+
+
+                                        <Image
+                                            source={{ uri: ele?.usersId?.avatar }}
+                                            className="w-7 h-7 rounded-full"
+                                            resizeMode='contain'
+                                        // className={"w-full max-w-[380px] h-[300px]"}
+                                        />
+
+
+                                    </TouchableOpacity>
 
 
                                     <Text className={`${!theme ? "text-white" : "text-black"} ml-1 font-psemibold`}>{ele.textComment}</Text>
@@ -829,16 +847,13 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 }
 
 
-
-
 const SeeAllLikesDiv = ({ singlePostGlobal }) => {
 
 
 
-    const { theme } = useGlobalContext()
+    const { theme, user } = useGlobalContext()
 
     const [allLikesData, setAllLikesData] = useState([])
-
 
 
     function fetchAndSetAllLikes(postId) {
@@ -855,6 +870,22 @@ const SeeAllLikesDiv = ({ singlePostGlobal }) => {
             })
             .catch((err) => Alert.alert("Error", JSON.stringify(err)))
     }
+
+
+    function goToProfileHandler(userId) {
+
+        // console.log("-------------------------->",userId)
+        // console.log($id, username)
+        console.log(userId, user.$id)
+        console.log(userId === user.$id)
+
+        if (userId === user.$id) {
+            return router.push(`/profile`)
+        }
+
+        router.push(`/user/${userId}`)
+    }
+
 
 
     // console.log(JSON.stringify(allLikesData))
@@ -920,7 +951,7 @@ const SeeAllLikesDiv = ({ singlePostGlobal }) => {
                                     return <TouchableOpacity
                                         key={i}
                                         className=" h-7  border border-secondary rounded-full flex-row items-center overflow-hidden "
-                                        onPress={() => { Alert.alert("GOTO", `Goto profile. ${ele.username} ${ele.$id}`) }}
+                                        onPress={() => { goToProfileHandler(ele?.$id); }}
                                         activeOpacity={0.2}
                                     >
 

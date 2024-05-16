@@ -100,6 +100,14 @@ const RootLayout = () => {
           }}
         />
 
+        <Stack.Screen
+          name='user/[id]'
+          options={{
+            // headerShadowVisible: false,
+            headerShown: false
+          }}
+        />
+
       </Stack>
 
     </GlobalProvider>

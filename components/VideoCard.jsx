@@ -173,8 +173,8 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     return (
         <Animatable.View
-            className={`
-                ${width && `w-[32vh]`} 
+            className={` 
+                ${width && `w-[32vh] pt-3`} 
                 ${!postPage && "mb-10"}
                 relative overflow-hidden flex-col items-center px-4
             `}
