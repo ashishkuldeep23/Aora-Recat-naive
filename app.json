@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo-small.png",
+        "foregroundImage": "./assets/images/mom.png",
         "backgroundColor": "#000"
       },
       "package": "com.ashish.aora"
