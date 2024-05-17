@@ -32,6 +32,12 @@ const GlobalProvider = ({ children }) => {
 
     const [playingVideo, setPlayingVideo] = useState(initialPlayingVideoState)
 
+    const [updatingPostData, setUpdatingPostData] = useState({
+        mode: false,
+        postData: null
+    })
+
+
 
     // const [theme, setTheme] = useState(true)
 
@@ -45,7 +51,9 @@ const GlobalProvider = ({ children }) => {
 
 
     // // // This fn is used to upadate data on user action (save or remove)
-    const updateAllData = (upadtedPost) => {
+    // // // upadtedPost can be updated data -------> (In case of deleting this should be a object with only key that is $id of deleted post id.)
+    // // // isDeletingThisPost is going true or false.
+    const updateAllData = (upadtedPost, isDeletingThisPost) => {
 
         // console.log(JSON.stringify(upadtedPost, null, 4))
 
@@ -60,7 +68,14 @@ const GlobalProvider = ({ children }) => {
 
 
         let index1 = allPost.findIndex(ele => ele.$id === upadtedPost.$id)
-        allPost.splice(index1, 1, upadtedPost)
+
+        if (!isDeletingThisPost) {
+            allPost.splice(index1, 1, upadtedPost)
+        }
+        else {
+            allPost.splice(index1, 1)
+        }
+
 
         // console.log(JSON.stringify(allPost, null, 4))
 
@@ -78,13 +93,20 @@ const GlobalProvider = ({ children }) => {
 
 
         let index3 = allSavedPost.findIndex(ele => ele.$id === upadtedPost.$id)
-        allSavedPost.splice(index3, 1, upadtedPost)
+
+        if (!isDeletingThisPost) {
+            allSavedPost.splice(index3, 1, upadtedPost)
+        } else {
+            allSavedPost.splice(index3, 1)
+        }
+
         setAllSavedPost([...allSavedPost])
 
 
         // // // Update single post data  ------>
-        setSinglePostGlobal(upadtedPost)
-
+        if (!isDeletingThisPost) {
+            setSinglePostGlobal(upadtedPost)
+        }
     }
 
     // // // This is used in single post page ------>
@@ -174,7 +196,6 @@ const GlobalProvider = ({ children }) => {
 
     // // // fetch used data here ---------->
     useEffect(() => {
-
 
         // // // Get current user data --------->
 
@@ -271,6 +292,8 @@ const GlobalProvider = ({ children }) => {
                 playingVideo,
                 setPlayingVideo,
                 initialPlayingVideoState,
+                updatingPostData,
+                setUpdatingPostData
             }}
         >
             {children}

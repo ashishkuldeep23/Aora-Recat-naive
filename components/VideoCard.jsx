@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { icons } from '../constants'
 import { ResizeMode, Video } from 'expo-av'
 import { useGlobalContext } from '../context/ContextProvider'
-import { disLikePost, likePost, savePostAdd, savePostRemove } from '../lib/appwrite'
+import { deletePostById, disLikePost, likePost, savePostAdd, savePostRemove } from '../lib/appwrite'
 import * as Animatable from 'react-native-animatable';
 import { router, usePathname } from 'expo-router'
 import { zoomIn, zoomOut } from './Tranding'
@@ -15,19 +15,29 @@ import Icons from "react-native-vector-icons/FontAwesome5"
 
 
 
-// // // Props comment ----------->
-// // item :- that we are showing 
-// // allData  :- whole arr that containing this item
-// // width :- a bool or str used in single page to show res post by user
-// // activeItem :- ID used in single page to show res post by user that currently visiable to user
-// // PostPgae :- single post main page (Upper post) (to prevent not open same page for same post).
+// // Props comment ----------->
+// item :- that we are showing 
+// allData  :- whole arr that containing this item
+// width :- a bool or str used in single page to show res post by user
+// activeItem :- ID used in single page to show res post by user that currently visiable to user
+// PostPgae :- single post main page (Upper post) (to prevent not open same page for same post).
 
 const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
     // const { username, avatar } = creator
-    const { theme, user, updateUser, updateAllData, setPlayingVideo, playingVideo, initialPlayingVideoState } = useGlobalContext()
+    const {
+        theme,
+        user,
+        updateUser,
+        updateAllData,
+        setPlayingVideo,
+        playingVideo,
+        initialPlayingVideoState,
+        updatingPostData,
+        setUpdatingPostData
+    } = useGlobalContext()
 
     // const [play, setPlay] = useState(false)
     // // // Not usimg now, currently using a global state var that holds info which song should play. (Problem solve :- only one video play at a time.)
@@ -40,15 +50,6 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     const [likeLoading, setLikeLoading] = useState(false)
 
 
-    // console.log({ title, thumbnail, video, username, email, avatar })
-
-    // console.log(video)
-    // console.log(item.title)
-
-    // console.log(JSON.stringify(item.savedBy))
-
-    // console.log("Render ---------------->")
-    // console.log(JSON.stringify(item, null, 4))
 
 
     const saveHandler = async () => {
@@ -151,6 +152,100 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     }
 
 
+    // // // Delete post handler here ---------->
+    const deletePostHandler = async (postId) => {
+
+        if (likeLoading) return
+
+        try {
+
+            setLikeLoading(true)
+
+            let result = await deletePostById(postId);
+
+
+            // console.log({ result })
+
+            if (result) {
+
+                // console.log(JSON.stringify(result))
+
+                // // // Now upadte state ------>
+                updateAllData({ $id: result }, true)
+
+            }
+            // console.log({ result })
+
+        } catch (error) {
+            Alert.alert(error)
+        }
+        finally {
+            setLikeLoading(false)
+
+        }
+
+
+
+    }
+
+
+    // // // Update post handler here ---------->
+    const updatePostHandler = async (item) => {
+
+        // Alert.alert("Update")
+
+
+        setUpdatingPostData({
+            mode: true,
+            postData: item
+        })
+
+
+        router.push("/create")
+
+
+        // if (likeLoading) return
+
+        // try {
+
+        //     setLikeLoading(true)
+
+        //     let result;
+
+        //     if (!userInLikedBy) {
+        //         // // Call here like post ------->
+        //         result = await likePost(item.$id, user.$id)
+        //     } else {
+        //         // // Call here dislike post ----->
+        //         result = await disLikePost(item.$id, user.$id)
+        //     }
+
+        //     // console.log({ result })
+
+
+        //     if (result) {
+
+        //         // console.log(JSON.stringify(result))
+
+        //         // // // Now upadte state ------>
+        //         updateAllData(result)
+
+        //     }
+        //     // console.log({ result })
+
+        // } catch (error) {
+        //     Alert.alert(error)
+        // }
+        // finally {
+        //     setLikeLoading(false)
+
+        // }
+
+
+    }
+
+
+
     useEffect(() => {
 
         if (item.$id && user.$id) {
@@ -192,6 +287,8 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
             animation={activeItem === item.$id ? zoomIn : zoomOut}
             duration={700}
         >
+
+            {/* User info dive here for vieo card ---------------------> */}
 
             <View className={"flex-row gap-3 items-center"}>
 
@@ -306,11 +403,17 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                                     [
                                         {
                                             name: "Update",
-                                            handler: (() => { Alert.alert("Update") })
+                                            handler: (() => {
+                                                updatePostHandler(item);
+                                                // Alert.alert("Update")
+                                            })
                                         },
                                         {
                                             name: "Delete",
-                                            handler: (() => { Alert.alert("Delete") })
+                                            handler: (() => {
+                                                deletePostHandler(item.$id);
+                                                // Alert.alert("Delete");
+                                            })
                                         },
                                     ]
                                         .map((ele, i) => {
@@ -322,7 +425,13 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                                                 >
 
                                                     <Text
-                                                        className={` text-lg font-psemibold ${!theme ? "text-white" : "text-black"}`}
+                                                        className={` 
+                                                            text-lg font-psemibold
+                                                                ${!theme
+                                                                ? "text-white"
+                                                                : "text-black"
+                                                            }
+                                                        `}
                                                     >{ele.name}</Text>
 
                                                 </TouchableOpacity>

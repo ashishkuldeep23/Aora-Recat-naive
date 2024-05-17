@@ -13,3 +13,16 @@ JSON.stringify(obj, null, 4)
 
 
 2.
+
+
+
+
+UPDATES =============================================================================>
+
+1. Create feature to upload profile picture. (Make everything from taking new pic from profile page and uplaod to appwrite bucket and the update user database to take the url.)
+
+2. Update and delete video.✅
+
+3. Give your defied photo fro laoding application.✅
+
+4. Google logIn if possiable.

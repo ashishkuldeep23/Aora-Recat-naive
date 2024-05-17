@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CInput from '../../components/CInput'
 import { ResizeMode, Video } from 'expo-av'
@@ -7,16 +7,15 @@ import { icons } from '../../constants'
 import CBotton from '../../components/CBotton'
 import * as DocumentPicker from 'expo-document-picker'
 import { router } from 'expo-router'
-import { createVideoPost } from '../../lib/appwrite'
+import { createVideoPost, updatePostData } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/ContextProvider'
-import { gifs } from "../../constants"
 import CLoading from '../../components/CLoading'
 
 
 
 const Create = () => {
 
-  const { user, theme } = useGlobalContext()
+  const { user, theme, updatingPostData, setUpdatingPostData, updateAllData } = useGlobalContext()
   const initialValue = {
     title: "",
     video: null,
@@ -25,6 +24,10 @@ const Create = () => {
   }
 
   const [form, setForm] = useState(initialValue)
+
+
+  const [updatingPostAllData, setUpdateingPostAllData] = useState(null)
+
 
   const [uploading, setUploading] = useState(false)
 
@@ -63,13 +66,34 @@ const Create = () => {
       return Alert.alert('Please fill in all the fields.')
     }
 
+    if (!user.$id) return Alert.alert('User id not getting for some reason.')
+
     setUploading(true)
 
     try {
 
-      await createVideoPost({ ...form, userId: user.$id })
+      let result;
 
-      Alert.alert("Sucess", "Video uploaded.")
+      if (!updatingPostData.mode) {
+        result = await createVideoPost({ ...form, userId: user.$id })
+      } else {
+        result = await updatePostData(form, updatingPostAllData)
+      }
+
+
+      // console.log(result)
+
+
+      if (updatePostData.mode) {
+        // // Upadte list of post in state ------>
+        updateAllData(result)
+
+        // // set updating to initial data ------>
+        setUpdatingPostData({ mode: false, postData: null })
+      }
+
+
+      Alert.alert("Sucess", `Video ${updatingPostData.mode ? "updated" : "uploaded"}.`)
       router.push("/home")
 
     } catch (error) {
@@ -84,17 +108,83 @@ const Create = () => {
   }
 
 
+  // // // Update video code here ------>
+  useEffect(() => {
+
+    if (updatingPostData.mode) {
+      // // // set data into form ----->
+      setForm({
+        title: updatingPostData.postData.title,
+        video: { uri: updatingPostData.postData.video },
+        thumbnail: { uri: updatingPostData.postData.thumbnail },
+        prompt: updatingPostData.postData.prompt,
+      })
+
+      // // // set updating data item -------->
+
+      setUpdateingPostAllData(updatingPostData.postData)
+
+
+    }
+
+  }, [updatingPostData])
+
+
+
+  // // // If user data is not getting by any reason then prevent to create new video.
+  if (!user.$id) {
+    return (
+      <SafeAreaView className={` relative h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
+        <Text className={`${!theme ? " text-white" : " text-black"} text-4xl my-10 mx-5`}>Refesh the application because not getting user data for now.</Text>
+      </SafeAreaView>
+    )
+  }
+
+
   return (
 
     <SafeAreaView className={` relative h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
       <ScrollView className='px-4 my-6'>
 
+        {/* Universal loader heer ------------> */}
         <CLoading isLoading={uploading} />
 
 
         <Text className={`text-2xl font-psemibold ${!theme ? "text-white" : " text-black"} `}>
-          Upload Video
+          {!updatingPostData.mode ? "Upload" : "Update"} Video
         </Text>
+
+
+        {/* Show user info to insure user data is comming */}
+        <View
+          className="flex-1 justify-center items-center flex-row my-4"
+        >
+
+          <View className="w-[46px] h-[46px] rounded-lg justify-center items-center p-0.5 border border-secondary">
+
+            <Image
+              source={{ uri: user?.avatar }}
+              className="w-full h-full rounded-md "
+              resizeMode='contain'
+            />
+
+          </View>
+
+          <View
+            className='flex-1 justify-center ml-3 gap-y-1'
+          >
+            <Text
+              className={` font-psemibold text-sm ${!theme ? "text-white" : "text-black"}`}
+              numberOfLines={1}
+            >{user?.username}</Text>
+
+            <Text
+              className={`text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}
+              numberOfLines={1}
+            >Create new post by filling this form properly.</Text>
+
+          </View>
+        </View>
 
 
         <CInput
@@ -151,6 +241,7 @@ const Create = () => {
                 ?
                 <Image
                   source={{ uri: form.thumbnail.uri }}
+                  // source={{ uri: form.thumbnail }}
                   resizeMode="contain"
                   className="w-full h-64 rounded-2xl"
                 />
@@ -172,10 +263,10 @@ const Create = () => {
 
 
         <CInput
-          title={'*AI Prompt'}
+          title={'*About Post'}
           value={form.prompt}
           onChangeHander={(e) => setForm({ ...form, prompt: e })}
-          placeholder={"The prompt you used to create this video"}
+          placeholder={"About your video, originally form etc"}
           otherStyles={'mt-7'}
         />
 
@@ -184,7 +275,7 @@ const Create = () => {
 
 
         <CBotton
-          title="Submit & Publish"
+          title={!updatingPostData.mode ? "Submit & Publish" : "Update post"}
           handlePress={submit}
           isLoading={uploading}
           containerStyle={"mt-5 bg-secondary"}

@@ -31,7 +31,7 @@ const SinglePostPage = () => {
     const { data: returnedData, refetch, isLoading } = useAppwrite(() => getSinglePostWithAllData(id))
 
     // console.log(JSON.stringify(returnedData.restPost, null, 2))
-    // console.log(JSON.stringify(returnedData.singlePost, null, 2))
+    // console.log(JSON.stringify(singlePostGlobal, null, 2))
 
     const post = [returnedData?.singlePost]
 
@@ -48,7 +48,6 @@ const SinglePostPage = () => {
 
     }
 
-
     const onRefresh = async () => {
         setRefreshing(true)
 
@@ -57,7 +56,6 @@ const SinglePostPage = () => {
 
         setRefreshing(false)
     }
-
 
     const followClickHandler = async (toUser) => {
 
@@ -129,9 +127,7 @@ const SinglePostPage = () => {
             &&
             Object.keys(returnedData).length > 0
             &&
-            Object.keys(returnedData?.singlePost).length > 0
-            &&
-            returnedData?.restPost.length > 0
+            (Object.keys(returnedData?.singlePost).length > 0 || returnedData?.restPost.length > 0)
         ) {
 
             // // upadte single post state from global
@@ -206,23 +202,16 @@ const SinglePostPage = () => {
                                 />
                             </View>
 
-
-
                             <SeeAllLikesDiv
                                 singlePostGlobal={singlePostGlobal}
                             />
-
-
 
                             <CommentDivGiveCmntAndAllCmnt
                                 singlePostGlobal={singlePostGlobal}
                             />
 
                         </View>
-
                     }
-
-
 
                 </View>
 

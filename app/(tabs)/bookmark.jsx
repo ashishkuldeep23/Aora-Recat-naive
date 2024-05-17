@@ -13,7 +13,7 @@ const Bookmark = () => {
 
   const { theme, user, allSavedPost, setAllSavedPost } = useGlobalContext()
 
-  const { data: savedPosts, isLoading, refetch } = useAppwrite(() => getAllSavedPost(user.$id))
+  const { data: savedPosts, isLoading, refetch } = useAppwrite(() => getAllSavedPost(user?.$id))
 
 
 

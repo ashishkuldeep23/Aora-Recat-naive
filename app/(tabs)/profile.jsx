@@ -17,7 +17,7 @@ const SearchPage = () => {
 
     const { user, setUser, setIsLoggedIn, theme, setTheme } = useGlobalContext()
 
-    const { data: posts } = useAppwrite(() => getUserPosts(user.$id))
+    const { data: posts } = useAppwrite(() => getUserPosts(user?.$id))
 
 
     // // Logout Handler fn here -------------->
@@ -109,14 +109,14 @@ const SearchPage = () => {
                         <View className="mt-5 flex-row ">
 
                             <InfoBox
-                                title={posts.length || 0}
+                                title={posts?.length || 0}
                                 subtite="Posts"
                                 containerStyle={"mr-5"}
                                 titleStyle="text-xl"
                             />
 
                             <InfoBox
-                                title={user?.followers.length}
+                                title={user?.followers?.length}
                                 subtite="Followers"
                                 titleStyle="text-lg"
                             />

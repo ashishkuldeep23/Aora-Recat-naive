@@ -7,9 +7,9 @@
     "icon": "./assets/images/logo-small.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/mom.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "scheme": "aora",
     "assetBundlePatterns": [
@@ -27,7 +27,7 @@
       "package": "com.ashish.aora"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/mom.png"
     },
     "plugins": [
       "expo-router",
