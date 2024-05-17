@@ -27,7 +27,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
     // const { username, avatar } = creator
-    const { theme, user, updateUser, updateAllData, setPlayingVideo, playingVideo } = useGlobalContext()
+    const { theme, user, updateUser, updateAllData, setPlayingVideo, playingVideo, initialPlayingVideoState } = useGlobalContext()
 
     // const [play, setPlay] = useState(false)
     // // // Not usimg now, currently using a global state var that holds info which song should play. (Problem solve :- only one video play at a time.)
@@ -168,6 +168,17 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     }, [item, user])
 
 
+    useEffect(() => {
+
+
+        // console.log("------------------>")
+        // console.log(JSON.stringify(playingVideo, null, 5))
+
+        // if (playingVideo.videoId !== item.$id) {
+        setPlayingVideo(initialPlayingVideoState)
+        // }    
+
+    }, [])
 
 
 

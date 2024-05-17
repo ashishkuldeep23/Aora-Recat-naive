@@ -383,7 +383,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
     const { theme, user, updateComment } = useGlobalContext()
 
-
     const initialValue = {
         usersId: "",
         postId: "",
@@ -401,7 +400,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
     }
 
     const [isUpdating, setIsUpdating] = useState(intitialUpdatingVal)
-
 
     const [allCommentData, setAllCommentData] = useState([])
 
@@ -488,7 +486,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
     }
 
-
     function editClickHandler(commentData) {
 
         setIsUpdating({
@@ -503,7 +500,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
     }
 
-
     function cancelUpdating() {
 
         setIsUpdating(intitialUpdatingVal)
@@ -514,7 +510,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
         })
 
     }
-
 
     function deleteClickHandler(commentData) {
         Alert.alert(
@@ -535,8 +530,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
             ]
         )
     }
-
-
 
     async function actualDeleteCmntFn(commentId) {
         if (!commentId) {
@@ -582,7 +575,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
     }
 
-
     function fetchAndSetAllComments(postId) {
 
         // console.log("Called for ---------->", singlePostGlobal.title)
@@ -597,7 +589,6 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
             })
             .catch((err) => Alert.alert("Error", JSON.stringify(err)))
     }
-
 
     function goToProfileHandler(userId) {
 

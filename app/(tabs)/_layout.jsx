@@ -21,7 +21,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
         tintColor={color}
       />
       <Text
-        className={`${focused ? `font-psemibold -translate-y-2 scale-125 ` : " font-pregular translate-y-0 scale-100"} text-xs`}
+        className={` ${focused ? `font-psemibold -translate-y-2 scale-125 ` : " font-pregular translate-y-0 scale-90"} transition-all duration-1000 text-xs`}
         style={{ color }}
       >{name}</Text>
     </View>

@@ -24,11 +24,13 @@ const GlobalProvider = ({ children }) => {
     const [singlePostGlobal, setSinglePostGlobal] = useState({})
     const [restPostGlobal, setRestPostGlobal] = useState([])
 
-    const [playingVideo, setPlayingVideo] = useState({
+    const initialPlayingVideoState = {
         mode: false,
         videoId: "",
         videoUri: ""
-    })
+    }
+
+    const [playingVideo, setPlayingVideo] = useState(initialPlayingVideoState)
 
 
     // const [theme, setTheme] = useState(true)
@@ -268,6 +270,7 @@ const GlobalProvider = ({ children }) => {
                 updateUser,
                 playingVideo,
                 setPlayingVideo,
+                initialPlayingVideoState,
             }}
         >
             {children}

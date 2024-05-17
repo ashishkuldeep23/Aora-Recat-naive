@@ -132,9 +132,7 @@ const UserProfile = () => {
 
 
     // console.log(JSON.stringify(posts))
-
     // console.log(JSON.stringify(searchUser, null, 4))
-
     // console.log(id)
 
     return (
