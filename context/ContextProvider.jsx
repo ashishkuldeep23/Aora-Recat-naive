@@ -187,10 +187,24 @@ const GlobalProvider = ({ children }) => {
 
     // // // Update User data 
     // // Currently using only in saved and remove post.
+    // // whatUpdate will take waht you going to update here ---------->
 
-    const updateUser = (newUserData) => {
+    const updateUser = (newUserData, whatUpdate) => {
         // // // Make sure new user data is coming.
-        setUser(newUserData)
+
+        if (whatUpdate === "profilePic") {
+
+            setUser(pre => ({
+                ...pre,
+                avatar: newUserData.avatar,
+                allProfilePic: newUserData.allProfilePic
+            }))
+
+
+        } else {
+            setUser(newUserData)
+        }
+
     }
 
 

@@ -229,7 +229,6 @@ const SinglePostPage = () => {
                     // data={post}
                     keyExtractor={(item) => item?.$id}
 
-
                     ListHeaderComponent={() => {
                         return (
                             <View className=' w-[25vh] ml-7'>
@@ -352,12 +351,10 @@ const SinglePostPage = () => {
 
                     horizontal
 
-
                     refreshControl={<RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />}
-
                 />
 
             </ScrollView>
