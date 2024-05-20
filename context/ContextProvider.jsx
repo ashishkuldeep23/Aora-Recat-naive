@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getCurrentUser } from '../lib/appwrite'
-import { Alert } from "react-native";
+import { Alert, Text, View } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 
 const GlobalContext = createContext();
@@ -37,6 +37,12 @@ const GlobalProvider = ({ children }) => {
         postData: null
     })
 
+    const MODAL_INIT_CONTENT = <View>
+        <Text className=" text-center text-4xl text-red-500">Hello World</Text>
+    </View>
+
+    const [modalContent, setModalContent] = useState(MODAL_INIT_CONTENT)
+    const [modalVisible, setModalVisible] = useState(false);
 
 
     // const [theme, setTheme] = useState(true)
@@ -307,7 +313,11 @@ const GlobalProvider = ({ children }) => {
                 setPlayingVideo,
                 initialPlayingVideoState,
                 updatingPostData,
-                setUpdatingPostData
+                setUpdatingPostData,
+                modalContent,
+                setModalContent,
+                modalVisible,
+                setModalVisible
             }}
         >
             {children}

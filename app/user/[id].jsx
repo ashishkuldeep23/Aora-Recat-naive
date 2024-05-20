@@ -2,7 +2,7 @@
 
 import { View, Text, ScrollView, TouchableOpacity, FlatList, Alert, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import { useGlobalContext } from '../../context/ContextProvider'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Animatable from 'react-native-animatable';
@@ -17,7 +17,9 @@ const UserProfile = () => {
     const {
         theme,
         user,
-        upadateFollowList
+        upadateFollowList,
+        setModalContent,
+        setModalVisible
     } = useGlobalContext()
 
 
@@ -116,6 +118,34 @@ const UserProfile = () => {
     }
 
 
+    // // // Show modal handler hare ----------->
+    const ShowModalhandler = () => {
+
+        let MODAL_CONTENT = <View className=" flex justify-center items-center">
+            <View
+                className=" relative h-[30vh] w-[30vh] border p-0.5 border-secondary rounded-lg flex justify-center items-center bg-secondary"
+            >
+
+                <Image
+                    resizeMode="contain"
+                    source={{ uri: `${searchUser?.avatar}` }}
+                    className=" w-full h-full rounded-lg"
+                />
+
+                {/* <Text>{user.username}</Text> */}
+
+            </View>
+
+            {/* <Text className="text-black text-center">Okay</Text> */}
+
+        </View>
+
+        setModalContent(MODAL_CONTENT)
+        setModalVisible(true)
+
+    }
+
+
 
 
     useEffect(() => {
@@ -162,15 +192,36 @@ const UserProfile = () => {
             }
 
 
-            <View className="w-full justify-center items-center mt-6 mb-10 px-4">
+            <View className=" relative w-full flex justify-center items-center mt-6 mb-10 px-4">
 
-                <View className="w-20 h-20 border p-1 border-secondary rounded-lg justify-center items-center">
-                    <Image
-                        resizeMode="contain"
-                        source={{ uri: searchUser?.avatar }}
-                        className="w-full h-full rounded-lg"
-                    />
-                </View>
+
+                <TouchableOpacity
+                    onPress={() => { router.back() }}
+                    className=" absolute left-0 -top-5 "
+                >
+                    <Text className={`font-pmedium ml-1 ${!theme ? "text-gray-100" : "text-black-100"} py-2 px-1 active:bg-red-800`}>
+                        👈Back
+                    </Text>
+
+                </TouchableOpacity>
+
+
+
+                <TouchableOpacity
+
+                    onPress={ShowModalhandler}
+                >
+
+                    <View className="w-20 h-20 border p-1 border-secondary rounded-lg justify-center items-center">
+                        <Image
+                            resizeMode="contain"
+                            source={{ uri: searchUser?.avatar }}
+                            className="w-full h-full rounded-lg"
+                        />
+                    </View>
+
+                </TouchableOpacity>
+
 
                 <InfoBox
                     title={searchUser?.username}
@@ -272,14 +323,14 @@ const UserProfile = () => {
                 }}
 
                 ListEmptyComponent={() => <View>
-                    <Text className="text-2xl text-white">No post found by this user.</Text>
+                    <Text className="text-2xl text-white text-center">No post found by this user.</Text>
                 </View>}
 
             />
 
 
         </SafeAreaView>
-        
+
     )
 }
 

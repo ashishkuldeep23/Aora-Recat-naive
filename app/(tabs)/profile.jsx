@@ -1,4 +1,4 @@
-import { View, FlatList, TouchableOpacity, Image, Text, Alert } from 'react-native'
+import { View, FlatList, TouchableOpacity, Image, Text, Alert, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import SearchInput from '../../components/SearchInput'
@@ -14,16 +14,19 @@ import { router } from 'expo-router'
 import * as DocumentPicker from 'expo-document-picker'
 import * as Animatable from 'react-native-animatable';
 import { zoomIn, zoomOut } from '../../components/Tranding'
+import ModalComponent from '../../components/Modal'
 
 
 
-const SearchPage = () => {
+const LoggedInUserProfile = () => {
 
 
-    const { user, setUser, setIsLoggedIn, theme, setTheme, updateUser } = useGlobalContext()
+    const { user, setUser, setIsLoggedIn, theme, setTheme, updateUser, setModalVisible, setModalContent } = useGlobalContext()
 
-    const { data: posts } = useAppwrite(() => getUserPosts(user?.$id))
+    const { data: posts, refetch } = useAppwrite(() => getUserPosts(user?.$id))
 
+
+    // // // form of profilePic going to contain a object that have a key name called uri. That uri will hold path or url of profile picture.
     const [form, setForm] = useState({
         profilePic: null
     })
@@ -80,7 +83,7 @@ const SearchPage = () => {
             return Alert.alert('Please give new image.')
         }
 
-        if (!user.$id) return Alert.alert('User id not getting for some reason.Refresh application.')
+        if (!user?.$id) return Alert.alert('User id not getting for some reason.Refresh application.')
 
         if (uploading) return
 
@@ -117,6 +120,50 @@ const SearchPage = () => {
     }
 
 
+    // // // Show modal handler hare ----------->
+    const ShowModalhandler = () => {
+
+        let MODAL_CONTENT = <View
+            className=" flex justify-center items-center"
+        >
+            <View
+                className=" h-[30vh] w-[30vh] relative  border p-0.5 border-secondary rounded-lg flex justify-center items-center bg-secondary"
+            >
+
+                <Image
+                    resizeMode="contain"
+                    source={{ uri: `${form?.profilePic?.uri || user?.avatar}` }}
+                    className=" w-full h-full rounded-lg "
+                />
+
+                {/* <Text>{user.username}</Text> */}
+
+            </View>
+
+            {/* <Text className="text-black text-center">Okay</Text> */}
+
+        </View>
+
+        setModalContent(MODAL_CONTENT)
+        setModalVisible(true)
+
+    }
+
+
+
+    const [refreshing, setRefreshing] = useState(false)
+
+    const onRefresh = async () => {
+        setRefreshing(true)
+
+        // // // re call new videos ------>
+        await refetch();
+        // await refetch2();
+
+        setRefreshing(false)
+    }
+
+
 
     useEffect(() => {
 
@@ -136,12 +183,14 @@ const SearchPage = () => {
             className={`h-full ${!theme ? "bg-primary " : " bg-gray-100"}`}
         >
 
+            <ModalComponent />
+
             <FlatList
 
                 // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
                 // data={[]}
                 data={posts}
-                keyExtractor={(item) => item.$id}
+                keyExtractor={(item) => item?.$id}
 
                 renderItem={({ item }) => {
                     return <VideoCard item={item} />
@@ -150,8 +199,7 @@ const SearchPage = () => {
                 ListHeaderComponent={() => {
                     return <View className="w-full justify-center items-center mt-6 mb-12 px-4">
 
-                        <View className='w-full mb-10 mt-5 flex-row items-center flex-1 '>
-
+                        <View className='w-full mb-10 mt-0 flex-row items-center flex-1 '>
 
                             <TouchableOpacity
                                 className=" items-end mr-auto "
@@ -181,46 +229,59 @@ const SearchPage = () => {
                         </View>
 
 
-                        <View className=" relative w-20 h-20 border p-1 border-secondary rounded-lg justify-center items-center">
-                            <Image
-                                resizeMode="contain"
-                                source={{ uri: form?.profilePic?.uri }}
-                                className="w-full h-full rounded-lg"
-                            />
+                        <TouchableOpacity
+                            onPress={() => ShowModalhandler()}
+                        >
 
-                            {
-                                user?.avatar !== form?.profilePic?.uri
-                                &&
-                                <TouchableOpacity
-                                    className="absolute z-10 top-[5%] left-[75%]"
-                                    onPress={() => {
-                                        setForm({ profilePic: { uri: user?.avatar } })
-                                    }}
-                                >
-                                    <Text className="text-red-300 border border-red-300 rounded px-2 text-xl  ">X</Text>
-                                </TouchableOpacity>
-                            }
+                            <View
+                                className=" relative w-20 h-20 border p-1 border-secondary rounded-lg justify-center items-center"
+                            >
+
+                                <Image
+                                    resizeMode="contain"
+                                    source={{ uri: form?.profilePic?.uri }}
+                                    className="w-full h-full rounded-lg"
+                                />
 
 
 
-                            {
-                                user?.avatar === form?.profilePic?.uri
-                                &&
-                                <TouchableOpacity
-                                    onPress={() => openPicker("image")}
-                                    className="absolute z-10 top-[75%] left-[75%]"
-                                >
-                                    <Image
-                                        source={icons.upload}
-                                        // source={{ uri: form.profilePic.uri }}
-                                        // source={{ uri: form.thumbnail }}
-                                        resizeMode="contain"
-                                        className="w-8 h-8 rounded-xl"
-                                    />
-                                </TouchableOpacity>
-                            }
+                                {/* Cancel upload btn */}
+                                {
+                                    user?.avatar !== form?.profilePic?.uri
+                                    &&
+                                    <TouchableOpacity
+                                        className="absolute z-10 top-[5%] left-[75%]"
+                                        onPress={() => {
+                                            setForm({ profilePic: { uri: user?.avatar } })
+                                        }}
+                                    >
+                                        <Text className="text-red-300 border border-red-300 rounded px-2 text-xl  ">X</Text>
+                                    </TouchableOpacity>
+                                }
 
-                        </View>
+
+                                {/*  upload btn */}
+                                {
+                                    user?.avatar === form?.profilePic?.uri
+                                    &&
+                                    <TouchableOpacity
+                                        onPress={() => openPicker("image")}
+                                        className="absolute z-10 top-[75%] left-[75%]"
+                                    >
+                                        <Image
+                                            source={icons.upload}
+                                            // source={{ uri: form.profilePic.uri }}
+                                            // source={{ uri: form.thumbnail }}
+                                            resizeMode="contain"
+                                            className="w-8 h-8 rounded-xl"
+                                        />
+                                    </TouchableOpacity>
+                                }
+
+                            </View>
+
+                        </TouchableOpacity>
+
 
 
                         {
@@ -280,14 +341,18 @@ const SearchPage = () => {
 
                 ListEmptyComponent={() => <EmptyState title="No Video Found" subtite={`Seem like you have't share any video.`} />}
 
+                refreshControl={<RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />}
+
             />
 
         </SafeAreaView>
     )
 }
 
-export default SearchPage
-
+export default LoggedInUserProfile
 
 
 const AllProfilePhoto = () => {
@@ -317,7 +382,7 @@ const AllProfilePhoto = () => {
             <FlatList
                 // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
                 // data={[]}
-                data={user.allProfilePic || []}
+                data={user?.allProfilePic || []}
                 // data={post}
                 keyExtractor={(item, index) => index}
 
@@ -343,8 +408,6 @@ const AllProfilePhoto = () => {
 
     )
 }
-
-
 
 
 const SinglePhotoCard = ({ item, activeItem }) => {
@@ -397,7 +460,7 @@ const SinglePhotoCard = ({ item, activeItem }) => {
 
 
             {
-                user.avatar !== item
+                user?.avatar !== item
                 &&
                 <TouchableOpacity
                     className=" border border-green-500 rounded-full my-2 mx-auto px-2  "

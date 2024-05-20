@@ -23,7 +23,9 @@ const SinglePostPage = () => {
         singlePostGlobal,
         updateSinglePostState,
         updateAllData,
-        upadateFollowList
+        upadateFollowList,
+        setModalContent,
+        setModalVisible
     } = useGlobalContext()
 
     const { id } = useLocalSearchParams()
@@ -109,6 +111,35 @@ const SinglePostPage = () => {
 
 
     }
+
+
+    // // // Show modal handler hare ----------->
+    const ShowModalhandler = () => {
+
+        let MODAL_CONTENT = <View className=" flex justify-center items-center">
+            <View
+                className=" relative h-[30vh] w-[30vh]  border p-0.5 border-secondary rounded-lg flex justify-center items-center bg-secondary"
+            >
+
+                <Image
+                    resizeMode="contain"
+                    source={{ uri: `${singlePostGlobal?.creator?.avatar}` }}
+                    className=" w-full h-full rounded-lg"
+                />
+
+                {/* <Text>{user.username}</Text> */}
+
+            </View>
+
+            {/* <Text className="text-black text-center">Okay</Text> */}
+
+        </View>
+
+        setModalContent(MODAL_CONTENT)
+        setModalVisible(true)
+
+    }
+
 
 
     // console.log(singlePostGlobal)
@@ -239,17 +270,25 @@ const SinglePostPage = () => {
 
                                     <View className=" flex-1 justify-center items-center mt-2 " >
 
-                                        <View
-                                            className="w-[15vh] h-[15vh] rounded-full my-1 overflow-hidden  border-2 border-secondary p-1"
+                                        <TouchableOpacity
+                                            onPress={ShowModalhandler}
                                         >
 
-                                            <Image
-                                                source={{ uri: singlePostGlobal?.creator?.avatar }}
-                                                className="w-full h-full rounded-full"
-                                                resizeMode='contain'
-                                            />
 
-                                        </View>
+                                            <View
+                                                className="w-[15vh] h-[15vh] rounded-full my-1 overflow-hidden  border-2 border-secondary p-1"
+                                            >
+
+                                                <Image
+                                                    source={{ uri: singlePostGlobal?.creator?.avatar }}
+                                                    className="w-full h-full rounded-full"
+                                                    resizeMode='contain'
+                                                />
+
+                                            </View>
+
+                                        </TouchableOpacity>
+
 
                                         <Text className={`${!theme ? "text-white" : "text-black"}`}>{singlePostGlobal?.creator?.username}</Text>
                                         <Text className={`${!theme ? "text-white" : "text-black"} `}>{singlePostGlobal?.creator?.email}</Text>

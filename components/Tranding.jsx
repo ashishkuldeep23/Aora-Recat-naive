@@ -69,7 +69,7 @@ export default Tranding
 
 const TrandingItem = ({ activeItem, item, index, posts }) => {
 
-    const userId = useGlobalContext().user.$id
+    const userId = useGlobalContext()?.user?.$id
 
     const { title, thumbnail, video, creator } = item
     const { username, email, avatar, $id } = creator

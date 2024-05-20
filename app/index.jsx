@@ -15,6 +15,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 // import * as Linking from 'expo-linking';
 import * as Animatable from 'react-native-animatable';
+import ModalComponent from '../components/Modal';
 // import { logInByGoogle } from '../lib/appwrite';
 
 
@@ -99,6 +100,9 @@ export default function App() {
                     height: '100%'
                 }}
             >
+                {/* This is modal component ---------> */}
+                <ModalComponent />
+
 
                 {/* New loading added that shows checking user insted of showing loading gif. */}
 

@@ -17,8 +17,9 @@ const Home = () => {
   const { user, theme, allPost, setAllPost, allLetestPost, setAllLetestPost } = useGlobalContext()
 
   const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts)
-  const { data: latestPosts } = useAppwrite(getLatestPosts)
+  const { data: latestPosts, refetch: refetch2 } = useAppwrite(getLatestPosts)
 
+  
   const [refreshing, setRefreshing] = useState(false)
 
   const onRefresh = async () => {
@@ -26,6 +27,7 @@ const Home = () => {
 
     // // // re call new videos ------>
     await refetch();
+    await refetch2();
 
     setRefreshing(false)
   }
