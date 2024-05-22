@@ -59,9 +59,9 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
             let result;
 
             if (!userPresentInSavedPost) {
-                result = await savePostAdd(item.$id, user)
+                result = await savePostAdd(item?.$id, user)
             } else {
-                result = await savePostRemove(item.$id, user)
+                result = await savePostRemove(item?.$id, user)
             }
 
 
@@ -88,7 +88,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
         // // // Here set single post data ------------> 
 
         if (!postPage) {
-            router.push(`/post/${item.$id}`)
+            router.push(`/post/${item?.$id}`)
         }
 
     }
@@ -112,10 +112,10 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
             if (!userInLikedBy) {
                 // // Call here like post ------->
-                result = await likePost(item.$id, user.$id)
+                result = await likePost(item?.$id, user?.$id)
             } else {
                 // // Call here dislike post ----->
-                result = await disLikePost(item.$id, user.$id)
+                result = await disLikePost(item?.$id, user?.$id)
             }
 
             // console.log({ result })
@@ -146,7 +146,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
         // // // Mtlb agr ap already post[id] page pr ho to user ko us page pr move nhi krna chahoge (Don't redirect to user on singlePost page if he/she already on that page.)
         if (!postPage) {
-            router.push(`/post/${item.$id}`)
+            router.push(`/post/${item?.$id}`)
         }
 
     }
@@ -248,13 +248,13 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     useEffect(() => {
 
-        if (item.$id && user.$id) {
+        if (item?.$id && user?.$id) {
             let checkUserIdInSavedPost = user?.savedPost?.includes(item.$id)
             setUserPresentInSavedPost(checkUserIdInSavedPost || false)
         }
 
 
-        if (item.$id && user.$id) {
+        if (item?.$id && user?.$id) {
 
             let checkUserIdInLikePost = item?.likes.includes(user.$id)
             setUserInLikedBy(checkUserIdInLikePost || false)
@@ -284,7 +284,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                 ${!postPage && "mb-10"}
                 relative overflow-hidden flex-col items-center px-4
             `}
-            animation={activeItem === item.$id ? zoomIn : zoomOut}
+            animation={activeItem === item?.$id ? zoomIn : zoomOut}
             duration={700}
         >
 
@@ -394,7 +394,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
 
                         {
-                            item?.creator?.$id === user.$id
+                            item?.creator?.$id === user?.$id
                             &&
 
                             <View className={` my-1 px-2 border rounded-xl  ${!theme ? " bg-black border-cyan-300 " : "bg-white border-cyan-600 "} `}>
@@ -411,7 +411,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                                         {
                                             name: "Delete",
                                             handler: (() => {
-                                                deletePostHandler(item.$id);
+                                                deletePostHandler(item?.$id);
                                                 // Alert.alert("Delete");
                                             })
                                         },
@@ -468,7 +468,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                 (
                     playingVideo.mode
                     &&
-                    playingVideo.videoId === item.$id
+                    playingVideo.videoId === item?.$id
                 )
                     ?
                     <Video
@@ -494,7 +494,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                         activeOpacity={0.7}
                         onPress={() => {
                             // setPlay(true);
-                            setPlayingVideo({ mode: true, videoId: item.$id, videoUri: video })
+                            setPlayingVideo({ mode: true, videoId: item?.$id, videoUri: video })
 
                             setOpenMenu(false);
                         }}

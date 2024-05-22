@@ -7,6 +7,7 @@ import CBotton from '../../components/CBotton'
 import { useRouter } from 'expo-router'
 import { signIn } from "../../lib/appwrite"
 import { useGlobalContext } from '../../context/ContextProvider'
+import LogInByDefaultUser from '../../components/LogInByDefaultUser'
 
 const SignIn = () => {
 
@@ -105,6 +106,8 @@ const SignIn = () => {
                                 submitForm();
                             }}
                         />
+
+                        <LogInByDefaultUser />
 
                         <Text className=" font-pregular  text-gray-100 mt-4 text-center">
                             Don't have an account? {""}

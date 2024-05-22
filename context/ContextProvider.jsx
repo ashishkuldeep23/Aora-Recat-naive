@@ -24,6 +24,11 @@ const GlobalProvider = ({ children }) => {
     const [singlePostGlobal, setSinglePostGlobal] = useState({})
     const [restPostGlobal, setRestPostGlobal] = useState([])
 
+
+    // // isConnected var will store info of user mobile data -------->>
+    const [isInternetConnected, setInternetConnected] = useState(false);
+
+
     const initialPlayingVideoState = {
         mode: false,
         videoId: "",
@@ -214,10 +219,9 @@ const GlobalProvider = ({ children }) => {
     }
 
 
-    // // // fetch used data here ---------->
-    useEffect(() => {
 
-        // // // Get current user data --------->
+    // // // Get current user data --------->
+    const fetchCurrentUserData = () => {
 
         getCurrentUser()
             .then((res) => {
@@ -238,6 +242,15 @@ const GlobalProvider = ({ children }) => {
                 setIsLoading(false)
                 // setIsLoading(true)
             })
+    }
+
+
+
+    // // // fetch used data here ---------->
+    useEffect(() => {
+
+        // // // Get current user data --------->
+        fetchCurrentUserData()
 
 
         // // // Get data from localStorage/SecureStore ----------->
@@ -317,7 +330,10 @@ const GlobalProvider = ({ children }) => {
                 modalContent,
                 setModalContent,
                 modalVisible,
-                setModalVisible
+                setModalVisible,
+                isInternetConnected,
+                setInternetConnected,
+                fetchCurrentUserData
             }}
         >
             {children}

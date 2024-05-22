@@ -21,7 +21,17 @@ import ModalComponent from '../../components/Modal'
 const LoggedInUserProfile = () => {
 
 
-    const { user, setUser, setIsLoggedIn, theme, setTheme, updateUser, setModalVisible, setModalContent } = useGlobalContext()
+    const {
+        user,
+        setUser,
+        setIsLoggedIn,
+        theme,
+        setTheme,
+        updateUser,
+        setModalVisible,
+        setModalContent,
+        fetchCurrentUserData
+    } = useGlobalContext()
 
     const { data: posts, refetch } = useAppwrite(() => getUserPosts(user?.$id))
 
@@ -158,7 +168,7 @@ const LoggedInUserProfile = () => {
 
         // // // re call new videos ------>
         await refetch();
-        // await refetch2();
+        await fetchCurrentUserData();
 
         setRefreshing(false)
     }

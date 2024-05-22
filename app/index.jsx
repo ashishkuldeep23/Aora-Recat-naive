@@ -16,6 +16,8 @@ import NetInfo from '@react-native-community/netinfo';
 // import * as Linking from 'expo-linking';
 import * as Animatable from 'react-native-animatable';
 import ModalComponent from '../components/Modal';
+import { signIn } from '../lib/appwrite';
+import LogInByDefaultUser from '../components/LogInByDefaultUser';
 // import { logInByGoogle } from '../lib/appwrite';
 
 
@@ -57,11 +59,11 @@ export const connectionErrAlert = () => {
 
 export default function App() {
 
-    const { isLoggedIn, isLoading, theme } = useGlobalContext();
+    const { isLoggedIn, isLoading, theme, isInternetConnected, setInternetConnected } = useGlobalContext();
 
-    const [isConnected, setConnected] = useState(false);
 
     // console.log({ isConnected })
+
 
 
 
@@ -69,7 +71,7 @@ export default function App() {
     useEffect(() => {
 
         const unsubscribe = NetInfo.addEventListener((state) => {
-            setConnected(state.isConnected);
+            setInternetConnected(state.isConnected);
             if (!state.isConnected) {
                 connectionErrAlert();
             }
@@ -89,7 +91,7 @@ export default function App() {
 
     // if (!isLoading && isLoggedIn) return <Redirect href={'/post/okay'} />
     // // // This line is reponsiable for sending user to home -------->
-    if (isConnected && (!isLoading && isLoggedIn)) return <Redirect href={'/home'} />
+    if (isInternetConnected && (!isLoading && isLoggedIn)) return <Redirect href={'/home'} />
 
     return (
 
@@ -163,11 +165,14 @@ export default function App() {
                     <CBotton
                         title={'Continue with Email'}
                         handlePress={() => {
-                            isConnected && router.push("/sign-in")
+                            isInternetConnected && router.push("/sign-in")
                         }}
                         containerStyle='w-full mt-7 bg-secondary'
                         textStyle={'text-primary'}
+                        isLoading={isLoading}
                     />
+
+                    <LogInByDefaultUser />
 
                 </View>
 
