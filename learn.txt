@@ -26,3 +26,15 @@ UPDATES ========================================================================
 3. Give your defied photo fro laoding application.✅
 
 4. Google logIn if possiable.
+
+
+
+
+
+
+ERROR =======================================>>
+When you getting npm package outdateed error then you should use these commands
+npm outdated
+npm update
+
+While trying to fix the errors (I am also working on the same project), I used the commands npm outdated then npm update to update all packages listed in the package.json file. I then run npx expo-doctor to diagnose and troubleshoot other issues and found none.

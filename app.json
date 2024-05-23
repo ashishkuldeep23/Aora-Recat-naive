@@ -4,7 +4,7 @@
     "slug": "aora",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo-small.png",
+    "icon": "./assets/images/mom.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/mom.png",
@@ -16,8 +16,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "package": "com.ashish.aora"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
