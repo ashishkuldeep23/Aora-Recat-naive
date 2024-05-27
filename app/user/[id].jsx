@@ -121,9 +121,11 @@ const UserProfile = () => {
     // // // Show modal handler hare ----------->
     const ShowModalhandler = () => {
 
-        let MODAL_CONTENT = <View className=" flex justify-center items-center">
+        let MODAL_CONTENT = <View
+            className=" flex justify-center items-center w-full"
+        >
             <View
-                className=" relative h-[30vh] w-[30vh] border p-0.5 border-secondary rounded-lg flex justify-center items-center bg-secondary"
+                className={`h-[50vh] w-full relative  border p-0.5  rounded-lg flex justify-center items-center ${!theme ? " bg-primary" : "bg-gray-100"}`}
             >
 
                 <Image

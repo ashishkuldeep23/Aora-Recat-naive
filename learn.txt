@@ -25,7 +25,11 @@ UPDATES ========================================================================
 
 3. Give your defied photo fro laoding application.✅
 
-4. Google logIn if possiable.
+4. Google logIn if possiable. ❌(For now)
+
+5. Notifiaction system.(Who starting following you )
+
+6. Remove user as ur follower.
 
 
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import SearchInput from '../../components/SearchInput'
 import EmptyState from '../../components/Empty'
-import { SignOut, getUserPosts, updateUserData, uploadProfileImg } from '../../lib/appwrite'
+import { SignOut, getAllFollowerForUser, getUserPosts, removeOneFollowerAndFollowing, updateUserData, uploadProfileImg } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 // import { useLocalSearchParams } from 'expo-router'
@@ -134,10 +134,10 @@ const LoggedInUserProfile = () => {
     const ShowModalhandler = () => {
 
         let MODAL_CONTENT = <View
-            className=" flex justify-center items-center"
+            className=" flex justify-center items-center w-full"
         >
             <View
-                className=" h-[30vh] w-[30vh] relative  border p-0.5 border-secondary rounded-lg flex justify-center items-center bg-secondary"
+                className={`h-[50vh] w-full relative  border p-0.5  rounded-lg flex justify-center items-center ${!theme ? " bg-primary" : "bg-gray-100"}`}
             >
 
                 <Image
@@ -160,7 +160,6 @@ const LoggedInUserProfile = () => {
     }
 
 
-
     const [refreshing, setRefreshing] = useState(false)
 
     const onRefresh = async () => {
@@ -171,6 +170,46 @@ const LoggedInUserProfile = () => {
         await fetchCurrentUserData();
 
         setRefreshing(false)
+    }
+
+
+    const [showFollowers, setShowFollowers] = useState(false)
+
+    const [allFollowers, setAllFollowers] = useState([])
+
+
+    const showAllFollowersList = async () => {
+
+        setShowFollowers(pre => !pre)
+
+
+        try {
+
+            let result = await getAllFollowerForUser(user?.$id)
+
+            // if (!updatingPostData.mode) {
+            //     result = await createVideoPost({ ...form, userId: user.$id })
+            // } else {
+            //     result = await updatePostData(form, updatingPostAllData)
+            // }
+            // console.log({ result })
+
+
+            if (result) {
+
+                setAllFollowers(result)
+
+            }
+
+
+        } catch (error) {
+            Alert.alert("Error", error?.message)
+        }
+        finally {
+            setUploading(false)
+        }
+
+
     }
 
 
@@ -330,17 +369,58 @@ const LoggedInUserProfile = () => {
                             <InfoBox
                                 title={posts?.length || 0}
                                 subtite="Posts"
-                                containerStyle={"mr-5"}
+                                containerStyle={"mr-5 "}
                                 titleStyle="text-xl"
                             />
 
-                            <InfoBox
-                                title={user?.followers?.length}
-                                subtite="Followers"
-                                titleStyle="text-lg"
-                            />
+                            <TouchableOpacity
+
+                                onPress={() => showAllFollowersList()}
+                            >
+
+                                <InfoBox
+                                    title={user?.followers?.length}
+                                    subtite="Followers"
+                                    titleStyle="text-lg"
+                                // containerStyle={"bg-red-600"}
+                                />
+                            </TouchableOpacity>
 
                         </View>
+
+
+
+                        {
+                            showFollowers
+                            &&
+                            <View className="my-2 px-4 w-full">
+
+                                <Text className=" font-psemibold text-white">Followers are : </Text>
+
+                                <View>
+
+                                    {
+                                        allFollowers.map((user) => {
+                                            return <SingleFollowerOrFollowingUser
+                                                user={user}
+                                                key={user?.$id}
+                                            />
+                                        })
+                                    }
+
+
+                                </View>
+
+                                {/* <Text className=' text-white'>
+
+                                    {
+                                        user.username
+                                    }
+                                </Text> */}
+
+                            </View>
+                        }
+
 
 
                         {/* Show all profile images here ------> */}
@@ -486,6 +566,71 @@ const SinglePhotoCard = ({ item, activeItem }) => {
 
         </Animatable.View>
 
+    )
+
+}
+
+const SingleFollowerOrFollowingUser = ({ user }) => {
+
+
+    const {
+        user: yourData
+
+
+    } = useGlobalContext()
+
+
+    const [uploading, setUploading] = useState(false)
+
+
+    const removeThisFollower = async () => {
+
+
+        try {
+
+            let result = await removeOneFollowerAndFollowing('followers', yourData.$id, user?.$id)
+
+            // if (!updatingPostData.mode) {
+            //     result = await createVideoPost({ ...form, userId: user.$id })
+            // } else {
+            //     result = await updatePostData(form, updatingPostAllData)
+            // }
+            console.log({ result })
+
+
+            // if (result) {
+
+            //     setAllFollowers(result)
+
+            // }
+
+
+        } catch (error) {
+            Alert.alert("Error", error?.message)
+        }
+        finally {
+            setUploading(false)
+        }
+
+    }
+
+
+    return (
+        <View
+            className=" relative border-b border-white flex gap-x-2 justify-center rounded-md my-1 py-1"
+        >
+            <TouchableOpacity
+                onPress={removeThisFollower}
+
+                className=' border border-white p-0.5 rounded-md  absolute top-1.5 right-5 z-[1] '
+            >
+                <Text>❌</Text>
+            </TouchableOpacity>
+
+            <Text className=" text-white font-psemibold -my-1">{user.username}</Text>
+            <Text className=" text-white">({user.email})</Text>
+
+        </View>
     )
 
 }
