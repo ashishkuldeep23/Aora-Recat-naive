@@ -129,7 +129,6 @@ const LoggedInUserProfile = () => {
 
     }
 
-
     // // // Show modal handler hare ----------->
     const ShowModalhandler = () => {
 
@@ -159,7 +158,6 @@ const LoggedInUserProfile = () => {
 
     }
 
-
     const [refreshing, setRefreshing] = useState(false)
 
     const onRefresh = async () => {
@@ -169,36 +167,44 @@ const LoggedInUserProfile = () => {
         await refetch();
         await fetchCurrentUserData();
 
+        // // // Back to normal everything. ----------->
         setRefreshing(false)
+        setShowFollowers(false)
     }
 
 
     const [showFollowers, setShowFollowers] = useState(false)
 
     const [allFollowers, setAllFollowers] = useState([])
+    const [allFollowing, setAllFollowing] = useState([])
 
 
+
+    // // // This fn will fetch all followers actual data inside and paste the data into allFollowers arr.
     const showAllFollowersList = async () => {
 
         setShowFollowers(pre => !pre)
 
-
         try {
 
-            let result = await getAllFollowerForUser(user?.$id)
+            let followersResult = await getAllFollowerForUser(user?.$id, 'followers')
+            let followingResult = await getAllFollowerForUser(user?.$id, 'following')
 
             // if (!updatingPostData.mode) {
             //     result = await createVideoPost({ ...form, userId: user.$id })
             // } else {
             //     result = await updatePostData(form, updatingPostAllData)
             // }
-            // console.log({ result })
+            // console.log({ followersResult, followingResult })
 
 
-            if (result) {
+            if (followersResult) {
+                setAllFollowers(followersResult)
+            }
 
-                setAllFollowers(result)
 
+            if (followingResult) {
+                setAllFollowing(followingResult)
             }
 
 
@@ -379,7 +385,7 @@ const LoggedInUserProfile = () => {
                             >
 
                                 <InfoBox
-                                    title={user?.followers?.length}
+                                    title={!showFollowers ? user?.followers?.length : allFollowers.length}
                                     subtite="Followers"
                                     titleStyle="text-lg"
                                 // containerStyle={"bg-red-600"}
@@ -393,32 +399,66 @@ const LoggedInUserProfile = () => {
                         {
                             showFollowers
                             &&
-                            <View className="my-2 px-4 w-full">
+                            <>
+                                {
+                                    allFollowers.length > 0
+                                    &&
+                                    <View className="my-2 px-4 w-full">
 
-                                <Text className=" font-psemibold text-white">Followers are : </Text>
+                                        <Text className=" font-psemibold text-white">Followers are : {allFollowers.length}</Text>
 
-                                <View>
+                                        <View>
 
-                                    {
-                                        allFollowers.map((user) => {
-                                            return <SingleFollowerOrFollowingUser
-                                                user={user}
-                                                key={user?.$id}
-                                            />
-                                        })
-                                    }
+                                            {
+                                                allFollowers.map((user) => {
+                                                    return <SingleFollowerOrFollowingUser
+                                                        usedFor="followers"
+                                                        user={user}
+                                                        key={user?.$id}
+                                                        setAllFollowers={setAllFollowers}
+                                                        allFollowers={allFollowers}
+                                                    />
+                                                })
+                                            }
 
 
-                                </View>
+                                        </View>
 
-                                {/* <Text className=' text-white'>
+                                    </View>
+                                }
 
-                                    {
-                                        user.username
-                                    }
-                                </Text> */}
 
-                            </View>
+                                {
+                                    allFollowing.length > 0
+                                    &&
+                                    <View className="my-2 px-4 w-full">
+
+                                        <Text className=" font-psemibold text-white">Following are : {allFollowing.length}</Text>
+
+
+                                        <View>
+
+                                            {
+                                                allFollowing.map((user) => {
+                                                    return <SingleFollowerOrFollowingUser
+                                                        usedFor="following"
+                                                        user={user}
+                                                        key={user?.$id}
+                                                        setAllFollowing={setAllFollowing}
+                                                        allFollowing={allFollowing}
+                                                    // allFollowers={allFollowing}
+                                                    />
+                                                })
+                                            }
+
+
+                                        </View>
+
+                                    </View>
+
+                                }
+                            </>
+
                         }
 
 
@@ -570,39 +610,65 @@ const SinglePhotoCard = ({ item, activeItem }) => {
 
 }
 
-const SingleFollowerOrFollowingUser = ({ user }) => {
+
+const SingleFollowerOrFollowingUser = ({ user, usedFor, setAllFollowers, setAllFollowing, allFollowers, allFollowing }) => {
 
 
     const {
         user: yourData
-
-
     } = useGlobalContext()
 
 
     const [uploading, setUploading] = useState(false)
 
 
-    const removeThisFollower = async () => {
+    const removeThisFollowerBtnHandler = async () => {
 
 
         try {
 
-            let result = await removeOneFollowerAndFollowing('followers', yourData.$id, user?.$id)
+            let result = await removeOneFollowerAndFollowing(usedFor, yourData.$id, user?.$id)
 
             // if (!updatingPostData.mode) {
             //     result = await createVideoPost({ ...form, userId: user.$id })
             // } else {
             //     result = await updatePostData(form, updatingPostAllData)
             // }
-            console.log({ result })
+            // console.log(JSON.stringify(result, null, 4))
+            // console.log({ allFollowers })
+            // let newFollowersArr = allFollowers.filter(e => {
+            //     console.log(JSON.stringify(e, null, 4))
+            //     if (e.$id !== result.$id) {
+            //         return e
+            //     }
+            // })
 
 
-            // if (result) {
+            // // // Impoove here you can't set directly for now (Change logic here or on appwrite)
 
-            //     setAllFollowers(result)
+            if (result) {
 
-            // }
+
+                if (usedFor === "followers") {
+
+                    setAllFollowers((ele) => {
+                        return ele.filter((e) => e.$id !== user.$id)
+                    })
+
+                    // setAllFollowers(result.followers)
+                }
+                else if (usedFor === "following") {
+
+                    // let newArr = allFollowing.filter(ele => )
+
+                    setAllFollowing((ele) => {
+                        return ele.filter((e) => e.$id !== user.$id)
+                    })
+
+                    // setAllFollowing(result.followers)
+                }
+
+            }
 
 
         } catch (error) {
@@ -615,22 +681,49 @@ const SingleFollowerOrFollowingUser = ({ user }) => {
     }
 
 
+    const goToThisUser = () => {
+        // console.log({ user })
+
+        router.push(`/user/${user.$id}`)
+
+    }
+
+
+
     return (
-        <View
-            className=" relative border-b border-white flex gap-x-2 justify-center rounded-md my-1 py-1"
-        >
-            <TouchableOpacity
-                onPress={removeThisFollower}
 
-                className=' border border-white p-0.5 rounded-md  absolute top-1.5 right-5 z-[1] '
+        <>
+
+            {
+                uploading
+                &&
+                <Text>{"Updating baby"}</Text>
+            }
+
+
+            <View
+                className=" relative border-b border-white flex gap-x-2 justify-center rounded-md my-1 py-1"
             >
-                <Text>❌</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={removeThisFollowerBtnHandler}
+                    className=' border border-white p-0.5 rounded-md  absolute top-1.5 right-5 z-[1] '
+                >
+                    <Text>❌</Text>
+                </TouchableOpacity>
 
-            <Text className=" text-white font-psemibold -my-1">{user.username}</Text>
-            <Text className=" text-white">({user.email})</Text>
+                <TouchableOpacity
+                    onPress={goToThisUser}
+                >
 
-        </View>
+                    <Text className=" text-white font-psemibold -my-1">{user.username}</Text>
+                    <Text className=" text-white">({user.email})</Text>
+                </TouchableOpacity>
+
+
+            </View>
+
+        </>
+
     )
 
 }

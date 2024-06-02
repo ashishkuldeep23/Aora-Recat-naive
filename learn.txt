@@ -31,6 +31,7 @@ UPDATES ========================================================================
 
 6. Remove user as ur follower.
 
+7. Add refresh in single post page.
 
 
 
