@@ -15,6 +15,7 @@ import * as DocumentPicker from 'expo-document-picker'
 import * as Animatable from 'react-native-animatable';
 import { zoomIn, zoomOut } from '../../components/Tranding'
 import ModalComponent from '../../components/Modal'
+import CLoading from '../../components/CLoading'
 
 
 
@@ -292,6 +293,17 @@ const LoggedInUserProfile = () => {
                                 className=" relative w-20 h-20 border p-1 border-secondary rounded-lg justify-center items-center"
                             >
 
+                                {
+                                    uploading
+                                    &&
+                                    <Text
+
+                                        className=" absolute z-[1] text-lg text-center text-rose-600 font-psemibold "
+                                    >Uploading...</Text>
+                                }
+
+
+
                                 <Image
                                     resizeMode="contain"
                                     source={{ uri: form?.profilePic?.uri }}
@@ -338,7 +350,7 @@ const LoggedInUserProfile = () => {
                         </TouchableOpacity>
 
 
-
+                        {/* Main upload btn here --------> */}
                         {
                             user?.avatar !== form?.profilePic?.uri
                             &&
@@ -546,6 +558,43 @@ const SinglePhotoCard = ({ item, activeItem }) => {
 
     const [uploading, setUploading] = useState(false)
 
+    const {
+        theme,
+        setModalVisible,
+        setModalContent,
+    } = useGlobalContext()
+
+
+
+    // // // Show modal handler hare ----------->
+    const ShowModalPicClickHandler = () => {
+
+        let MODAL_CONTENT = <View
+            className=" flex justify-center items-center w-full"
+        >
+            <View
+                className={`h-[50vh] w-full relative  border p-0.5  rounded-lg flex justify-center items-center ${!theme ? " bg-primary" : "bg-gray-100"}`}
+            >
+
+                <Image
+                    resizeMode="contain"
+                    source={{ uri: `${item}` }}
+                    className=" w-full h-full rounded-lg "
+                />
+
+                {/* <Text>{user.username}</Text> */}
+
+            </View>
+
+            {/* <Text className="text-black text-center">Okay</Text> */}
+
+        </View>
+
+        setModalContent(MODAL_CONTENT)
+        setModalVisible(true)
+
+    }
+
 
 
     const makeThisProfilePicHandler = async (newUrl) => {
@@ -579,14 +628,18 @@ const SinglePhotoCard = ({ item, activeItem }) => {
             duration={700}
         >
 
-            <View className=" relative w-48 h-48 border p-1 border-secondary rounded-lg justify-center items-center">
+            <TouchableOpacity
+                className=" relative w-48 h-48 border p-1 border-secondary rounded-lg justify-center items-center"
+                onPress={ShowModalPicClickHandler}
+
+            >
                 <Image
                     resizeMode="contain"
                     source={{ uri: item }}
                     className="w-full h-full rounded-lg"
                 />
 
-            </View>
+            </TouchableOpacity>
 
 
             {

@@ -43,3 +43,8 @@ npm outdated
 npm update
 
 While trying to fix the errors (I am also working on the same project), I used the commands npm outdated then npm update to update all packages listed in the package.json file. I then run npx expo-doctor to diagnose and troubleshoot other issues and found none.
+
+
+
+command is used to upload as android app =================================>>
+eas build -p android --profile preview
