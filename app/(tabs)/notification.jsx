@@ -211,10 +211,10 @@ const SingleNotifiaction = ({ data }) => {
                         />
 
 
-                        <Text className="text-gray-100 font-semibold" >{data.whoSended?.username}</Text>
+                        <Text className="text-gray-100 font-semibold" >{data?.whoSended?.username}</Text>
 
                         {
-                            data.type === "Like"
+                            data?.type === "Like"
                                 ? <Text className="text-gray-100">liked your video</Text>
                                 : <Text className="text-gray-100">started following you</Text>
                         }
@@ -232,7 +232,7 @@ const SingleNotifiaction = ({ data }) => {
                     className=' flex flex-row justify-end w-[20%] ml-auto'
                 >
                     {
-                        data.type === "Like"
+                        data?.type === "Like"
                             ?
                             // // // Post (Video thmnail pic here) details
                             <TouchableOpacity
