@@ -328,6 +328,7 @@ const GlobalProvider = ({ children }) => {
             .then((res) => {
 
                 // console.log({ res })
+                // console.log(res.length)
 
                 if (res && res.length > 0) {
                     setAllNotifications(res)

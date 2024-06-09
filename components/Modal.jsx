@@ -39,7 +39,7 @@ const ModalComponent = () => {
                     >
                         <View
                             // style={styles.modalView}
-                            className=" relative w-[100%] bg-white rounded-lg p-0.5 shadow-lg shadow-rose-700 border border-red-600"
+                            className={`relative w-[100%] bg-white rounded-lg p-0.5 shadow-lg shadow-rose-700 border border-red-600 transition-all duration-700 ${!modalVisible ? "scale-0" : "scale-100"}`}
 
                             style={{
                                 shadowColor: '#000',
@@ -73,6 +73,8 @@ const ModalComponent = () => {
                                 // style={styles.textStyle}
                                 >X</Text>
                             </TouchableOpacity>
+
+
                         </View>
                     </View>
 

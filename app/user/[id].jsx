@@ -280,7 +280,7 @@ const UserProfile = () => {
                                             ?
                                             <Text className=" text-xs text-white font-psemibold text-center">
                                                 {
-                                                    (!user?.following?.includes(singlePostGlobal?.creator?.$id))
+                                                    (!user?.following?.includes(searchUser?.$id))
                                                         ? "Following..."
                                                         : "Unfollowing..."
                                                 }

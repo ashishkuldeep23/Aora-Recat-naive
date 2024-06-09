@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useGlobalContext } from '../../context/ContextProvider'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { addFollow, createNewNotification, removeFollow } from '../../lib/appwrite'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 
 const notification = () => {
 
@@ -35,29 +35,24 @@ const notification = () => {
 
 
 
-    const createNotificationForTesting = async () => {
-
-        // console.log("Clicked --------------->")
-
-        let bakeDataObj = {
-            whoSended: user.$id,
-            notificationFor: user.$id,
-            type: "Like",
-            typeFollowingInfo: '',
-            typeLikeInfo: '6656021d6e325ca22b7c',
-        }
-
-
-        // console.log(bakeDataObj)
-
-        await createNotification(
-            bakeDataObj.whoSended,
-            bakeDataObj.type,
-            bakeDataObj.typeLikeInfo,
-            bakeDataObj.typeFollowingInfo,
-            bakeDataObj.notificationFor
-        )
-    }
+    // const createNotificationForTesting = async () => {
+    //     // console.log("Clicked --------------->")
+    //     let bakeDataObj = {
+    //         whoSended: user.$id,
+    //         notificationFor: user.$id,
+    //         type: "Like",
+    //         typeFollowingInfo: '',
+    //         typeLikeInfo: '6656021d6e325ca22b7c',
+    //     }
+    //     // console.log(bakeDataObj)
+    //     await createNotification(
+    //         bakeDataObj.whoSended,
+    //         bakeDataObj.type,
+    //         bakeDataObj.typeLikeInfo,
+    //         bakeDataObj.typeFollowingInfo,
+    //         bakeDataObj.notificationFor
+    //     )
+    // }
 
 
 
@@ -88,14 +83,13 @@ const notification = () => {
                             >Refresh the page.</Text>
                         </TouchableOpacity>
 
-
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={createNotificationForTesting}
                         >
                             <Text
                                 className="font-pmedium text-sm text-gray-100 rounded-full bg-green-500 px-4"
                             >Create notification</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
                 }}
@@ -107,7 +101,7 @@ const notification = () => {
 
 
                 ListEmptyComponent={() => <View className='mt-20 flex justify-center items-center'>
-                    <Text className="text-white text-center font-pbold text-4xl ">
+                    <Text className="text-white text-center font-pbold text-2xl ">
                         No notification found for now for you.
                     </Text>
                     <Link className='text-white font-pregular border px-2 border-white rounded-md' href={'/home'}>Home</Link>
@@ -157,40 +151,42 @@ const SingleNotifiaction = ({ data }) => {
     }
 
 
-    const followAndFollowingHandler = async () => {
+    // const followAndFollowingHandler = async () => {
+
+    //     if (!user || !user.following) return Alert.alert("Please refresh your profile tab, your data is not loaded till now.")
+
+    //     if (!user.$id || !data.whoSended.$id) return Alert.alert("Mandatory accounts not give. Please wait or reload app.")
+
+    //     let result;
+
+    //     if (user?.following?.includes(data?.whoSended?.$id)) {
+
+    //         result = await addFollow(user.$id, data?.whoSended?.$id)
+
+    //         // result = await addFollow(data?.whoSended?.$id, user.$id)
+    //     }
+    //     else {
+
+    //         result = await removeFollow(user.$id, data?.whoSended?.$id)
+
+    //         // result = await removeFollow(data?.whoSended?.$id, user.$id)
+    //         // // Call here UnFollowing --------->
+    //     }
 
 
-        if (!user.$id || !data.whoSended.$id) return Alert.alert("Mandatory accounts not give. Please wait or reload app.")
-
-        let result;
-
-        if (user?.following?.includes(data?.whoSended?.$id)) {
-
-            result = await addFollow(user.$id, data?.whoSended?.$id)
-
-        }
-        else {
-
-            result = await removeFollow(user.$id, data?.whoSended?.$id)
-
-            // // Call here UnFollowing --------->
-        }
+    //     console.log(JSON.stringify(result, null, 4))
 
 
-        console.log(JSON.stringify(result, null, 4))
+    //     if (result) {
+
+    //         // // // Now upadte state ------>
+
+    //         upadateFollowList(result.byUser, result.toUser)
+
+    //     }
 
 
-        if (result) {
-
-            // // // Now upadte state ------>
-            // updateAllData(result)
-
-            upadateFollowList(result.byUser, result.toUser)
-
-        }
-
-
-    }
+    // }
 
 
 
@@ -256,10 +252,10 @@ const SingleNotifiaction = ({ data }) => {
                             // // // Here follow and following code present ---------->
                             <TouchableOpacity
 
-                                onPress={followAndFollowingHandler}
+                                onPress={goToUser}
                             >
 
-
+                                {/* 
                                 <View
                                     className=" border rounded border-white p-0.5 px-2"
                                 >
@@ -277,8 +273,11 @@ const SingleNotifiaction = ({ data }) => {
                                                 className=" text-green-500 font-semibold "
                                             >Follow</Text>
                                     }
-                                </View>
+                                </View> */}
 
+                                <Text
+                                    className=" border rounded border-white p-0.5 px-2 text-white text-[.6rem] font-semibold"
+                                >Go To Profile</Text>
 
                             </TouchableOpacity>
                     }

@@ -121,16 +121,24 @@ const SignUp = () => {
               }}
             />
 
-            <LogInByDefaultUser />
 
-            <Text className=" font-pregular  text-gray-100 mt-4 text-center">
+            <Text
+              className=" font-pregular  text-gray-100 mt-4 text-center"
+              onPress={() => router.push("/sign-in")}
+            >
               I have an account? {""}
               <Text
                 className="text-secondary"
-                onPress={() => router.push("/sign-in")}
               >Signin</Text>
             </Text>
 
+
+            <View
+              className=" mt-7"
+            >
+              <LogInByDefaultUser />
+
+            </View>
 
           </View>
 
