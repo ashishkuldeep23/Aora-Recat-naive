@@ -80,9 +80,9 @@ const SinglePostPage = () => {
             // }
 
             if (!user?.following?.includes(toUser?.$id)) {
-                result = await addFollow(user, toUser)
+                result = await addFollow(user.$id, toUser.$id)
             } else {
-                result = await removeFollow(user, toUser)
+                result = await removeFollow(user.$id, toUser.$id)
 
                 // Alert.alert("Now remove from following list.")
                 // console.log("Now remove from following list --------->")
@@ -137,8 +137,8 @@ const SinglePostPage = () => {
 
         </View>
 
-        setModalContent(MODAL_CONTENT)
         setModalVisible(true)
+        setModalContent(MODAL_CONTENT)
 
     }
 
@@ -187,29 +187,37 @@ const SinglePostPage = () => {
 
         <SafeAreaView className={`  h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
 
-            {/* Loading text here ----------> */}
-            {
-                isLoading
-                &&
-                <Animatable.View
-                    className=" w-full h-[100vh] items-center absolute top-14 -z-[1] "
-                    animation='fadeIn'
-                    duration={700}
-                    iterationCount="infinite"
-                    direction='alternate'
-                >
-
-                    <View className={` relative overflow-hidden rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400 px-2 py-1`}>
-                        <Text className=" relative font-semibold ">
-                            Getting posts data...
-                        </Text>
-                    </View>
-
-                </Animatable.View>
-            }
+            <ScrollView
+                className='my-6 relative'
+                refreshControl={<RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />}
+            >
 
 
-            <ScrollView className='my-6'>
+                {/* Loading text here ----------> */}
+                {
+                    isLoading
+                    &&
+                    <Animatable.View
+                        className=" w-full h-[100vh] items-center absolute top-0 -z-[1] "
+                        animation='fadeIn'
+                        duration={700}
+                        iterationCount="infinite"
+                        direction='alternate'
+                    >
+
+                        <View className={` relative overflow-hidden rounded-2xl justify-center items-center bg-white border border-double border-rose-200 shadow-lg shadow-rose-400 px-2 py-1`}>
+                            <Text className=" relative font-semibold ">
+                                Getting posts data...
+                            </Text>
+                        </View>
+
+                    </Animatable.View>
+                }
+
+
                 <View >
 
                     <TouchableOpacity
@@ -270,7 +278,8 @@ const SinglePostPage = () => {
                                     returnedData?.singlePost
                                     &&
 
-                                    <View className=" flex-1 justify-center items-center mt-2 " >
+                                    // // User info div here ------->
+                                    <View className=" relative flex-1 justify-center items-center mt-2 " >
 
                                         <TouchableOpacity
                                             onPress={ShowModalhandler}
@@ -323,27 +332,45 @@ const SinglePostPage = () => {
                                                     (singlePostGlobal?.creator?.$id !== user?.$id)
                                                         ?
                                                         <View>
-                                                            <TouchableOpacity
-                                                                onPress={() => { followClickHandler(singlePostGlobal?.creator) }}
-                                                            >
-                                                                <Text
-                                                                    className={`
+
+
+                                                            {
+                                                                follwingLoad
+
+                                                                    ?
+                                                                    <Text className=" text-xs text-white font-psemibold text-center">
+                                                                        {
+                                                                            (!user?.following?.includes(singlePostGlobal?.creator?.$id))
+                                                                                ? "Following..."
+                                                                                : "Unfollowing..."
+                                                                        }
+                                                                    </Text>
+
+                                                                    :
+                                                                    <TouchableOpacity
+                                                                        onPress={() => { followClickHandler(singlePostGlobal?.creator) }}
+                                                                        disabled={follwingLoad}
+                                                                    >
+                                                                        <Text
+                                                                            className={`
                                                                         font-pmedium text-gray-100 px-2 rounded-full my-1
                                                                         ${(!user?.following?.includes(singlePostGlobal?.creator?.$id))
-                                                                            ? "bg-blue-600"
-                                                                            : "bg-red-600"
-                                                                        }
+                                                                                    ? "bg-blue-600"
+                                                                                    : "bg-red-600"
+                                                                                }
 
                                                                     `}
-                                                                >
-                                                                    {
-                                                                        (!user?.following?.includes(singlePostGlobal?.creator?.$id))
-                                                                            ? "Follow"
-                                                                            : "Unfollow"
+                                                                        >
+                                                                            {
+                                                                                (!user?.following?.includes(singlePostGlobal?.creator?.$id))
+                                                                                    ? "Follow"
+                                                                                    : "Unfollow"
 
-                                                                    }
-                                                                </Text>
-                                                            </TouchableOpacity>
+                                                                            }
+                                                                        </Text>
+                                                                    </TouchableOpacity>
+                                                            }
+
                                                         </View>
 
                                                         :
@@ -392,10 +419,11 @@ const SinglePostPage = () => {
 
                     horizontal
 
-                    refreshControl={<RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />}
+                // // // Giving refreshing on top now --------------->>
+                // refreshControl={<RefreshControl
+                //     refreshing={refreshing}
+                //     onRefresh={onRefresh}
+                // />}
                 />
 
             </ScrollView>

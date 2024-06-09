@@ -85,9 +85,9 @@ const UserProfile = () => {
             // }
 
             if (!user?.following?.includes(toUser?.$id)) {
-                result = await addFollow(user, toUser)
+                result = await addFollow(user.$id, toUser.$id)
             } else {
-                result = await removeFollow(user, toUser)
+                result = await removeFollow(user.$id, toUser.$id)
 
                 // Alert.alert("Now remove from following list.")
                 // console.log("Now remove from following list --------->")
@@ -142,8 +142,8 @@ const UserProfile = () => {
 
         </View>
 
-        setModalContent(MODAL_CONTENT)
         setModalVisible(true)
+        setModalContent(MODAL_CONTENT)
 
     }
 
@@ -271,7 +271,47 @@ const UserProfile = () => {
                             (searchUser.$id !== user?.$id)
                                 ?
                                 <View>
-                                    <TouchableOpacity
+
+
+
+                                    {
+                                        follwingLoad
+
+                                            ?
+                                            <Text className=" text-xs text-white font-psemibold text-center">
+                                                {
+                                                    (!user?.following?.includes(singlePostGlobal?.creator?.$id))
+                                                        ? "Following..."
+                                                        : "Unfollowing..."
+                                                }
+                                            </Text>
+
+                                            :
+                                            <TouchableOpacity
+                                                onPress={() => { followClickHandler(searchUser) }}
+                                                disabled={follwingLoad}
+                                            >
+                                                <Text
+                                                    className={`
+                                                            font-pmedium text-gray-100 px-2 rounded-full my-1
+                                                            ${(!user?.following?.includes(searchUser?.$id))
+                                                            ? "bg-blue-600"
+                                                            : "bg-red-600"
+                                                        }
+
+                                                                    `}
+                                                >
+                                                    {
+                                                         (!user?.following?.includes(searchUser.$id))
+                                                            ? "Follow"
+                                                            : "Unfollow"
+
+                                                    }
+                                                </Text>
+                                            </TouchableOpacity>
+                                    }
+
+                                    {/* <TouchableOpacity
                                         className="my-2"
                                         onPress={() => { followClickHandler(searchUser) }}
                                     >
@@ -292,7 +332,9 @@ const UserProfile = () => {
 
                                             }
                                         </Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
+
+
                                 </View>
 
                                 :

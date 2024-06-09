@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useGlobalContext } from '../../context/ContextProvider'
 
 
-const TabIcon = ({ icon, color, name, focused }) => {
+const TabIcon = ({ icon, color, name, focused , scale }) => {
 
   // const { theme } = useGlobalContext()
 
@@ -17,7 +17,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
       <Image
         source={icon}
         resizeMode='contain'
-        className={`w-5 h-5 ${focused ? "-translate-y-2 scale-125" : "translate-y-0 scale-100"} `}
+        className={`w-5 h-5 ${scale}  ${focused ? "-translate-y-2 scale-125" : "translate-y-0 scale-100"} `}
         tintColor={color}
       />
       <Text
@@ -103,6 +103,24 @@ const TabsLayout = () => {
                 name={"Create"}
                 color={color}
                 focused={focused}
+              />
+            )
+
+          }}
+        />
+
+        <Tabs.Screen
+          name='notification'
+          options={{
+            title: "Notification",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.bell}
+                name={"Notification"}
+                color={color}
+                focused={focused}
+                scale={"scale-y-[1.25] scale-x-[1.3]"}
               />
             )
 

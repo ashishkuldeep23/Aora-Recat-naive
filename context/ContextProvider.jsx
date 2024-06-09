@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getCurrentUser } from '../lib/appwrite'
+import { createNewNotification, getAllNotiForThisUser, getCurrentUser } from '../lib/appwrite'
 import { Alert, Text, View } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 
@@ -48,6 +48,10 @@ const GlobalProvider = ({ children }) => {
 
     const [modalContent, setModalContent] = useState(MODAL_INIT_CONTENT)
     const [modalVisible, setModalVisible] = useState(false);
+
+
+    const [allNotifications, setAllNotifications] = useState([])
+
 
 
     // const [theme, setTheme] = useState(true)
@@ -219,7 +223,6 @@ const GlobalProvider = ({ children }) => {
     }
 
 
-
     // // // Get current user data --------->
     const fetchCurrentUserData = () => {
 
@@ -246,26 +249,112 @@ const GlobalProvider = ({ children }) => {
 
 
 
-    // // // fetch used data here ---------->
+    // // // This fn() used to create new notification in appwrite backend.
+    // // // Take care during calling fn() by params. If any get disturbed then notification got created other place or not created.
+
+
+    // // data look like -----> { whoSended, whenCreated, type, typeLikeInfo, typeFollowingInfo, notificationFor, seen }
+
+    const createNotification = async (data) => {
+
+        const {
+            whoSended,
+            type,
+            typeLikeInfo,
+            typeFollowingInfo,
+            notificationFor
+        } = data
+
+        // // Notifaication will look like ------------->
+        // let singleNotificaton = {
+        //     whoSended: " your User Details (We can give user ref or info like dp name email etc.)",
+        //     whenCreated: "A js date object here thet contain date in localStringFormate.",
+        //     type: "Like | Following ",
+        //     typeLikeInfo: "Post $id or null",
+        //     typeFollowingInfo: "your User $id Details or null",
+        //     notificationFor: "Ref (jiske liye notification banaya gaya hai, uski id.) (Front person user.$id)",
+        //     seen: "A boolen value that contain user seen this notification or not."
+        // }
+        // console.log(whoSended, type, typeLikeInfo, typeFollowingInfo, notificationFor)
+
+
+        if (!whoSended || !type || !notificationFor || (!typeLikeInfo && !typeFollowingInfo)) {
+            console.log("something not given.");
+            return new Error("Mandatory fields are not given.");
+        }
+
+
+        try {
+
+            // let data = {
+            //     whoSended, notificationFor, type, typeFollowingInfo, typeLikeInfo
+            // }
+
+            let result = await createNewNotification(data)
+
+            // console.log(result)
+
+            if (result) {
+                // // // Show a alert here --------->
+
+                // Alert.alert("Notification sended.")
+
+            }
+
+
+        } catch (error) {
+            Alert.alert("Error", error?.message)
+        }
+
+
+
+    }
+
+
+
+
+
+    // // // This var will take care about fetching notification.
+    // const [firstTimeFetchingNotification, setFirstTimeFetchingNotification] = useState(false)
+
+
+    // // // // fetch all notifaiction for this user :-------->
+
+    const fetchedNotification = async (userId) => {
+
+        // console.log(userId)
+
+        getAllNotiForThisUser(userId)
+            .then((res) => {
+
+                // console.log({ res })
+
+                if (res && res.length > 0) {
+                    setAllNotifications(res)
+
+                }
+
+            })
+            .catch(e => {
+                console.log({ e });
+            })
+            .finally(() => {
+                // setFirstTimeFetchingNotification(true)
+                setIsLoading(false)
+
+                // setIsLoading(true)
+            })
+    }
+
+
     useEffect(() => {
 
-        // // // Get current user data --------->
-        fetchCurrentUserData()
+        if (allNotifications.length === 0 && user?.$id) {
+            // console.log("Now fetching data -------->")
+            fetchedNotification(user?.$id)
+        }
 
-
-        // // // Get data from localStorage/SecureStore ----------->
-        SecureStore.getItemAsync("themeMode")
-            .then((result) => {
-                if (result) {
-                    setTheme(JSON.parse(result));
-                }
-            })
-            .catch((err) => {
-                Alert.alert("Error", err)
-            })
-
-
-    }, [])
+    }, [user])
 
 
     // // // This is used to get data from loacl and set into provider ------->
@@ -296,6 +385,31 @@ const GlobalProvider = ({ children }) => {
             })
 
     }, [theme])
+
+
+
+
+    // // // fetch used data here ---------->
+    useEffect(() => {
+
+        // // // Get current user data --------->
+        fetchCurrentUserData()
+
+
+        // // // Get data from localStorage/SecureStore ----------->
+        SecureStore.getItemAsync("themeMode")
+            .then((result) => {
+                if (result) {
+                    setTheme(JSON.parse(result));
+                }
+            })
+            .catch((err) => {
+                Alert.alert("Error", err)
+            })
+
+    }, [])
+
+
 
 
     return (
@@ -333,7 +447,10 @@ const GlobalProvider = ({ children }) => {
                 setModalVisible,
                 isInternetConnected,
                 setInternetConnected,
-                fetchCurrentUserData
+                fetchCurrentUserData,
+                fetchedNotification,
+                allNotifications,
+                createNotification
             }}
         >
             {children}

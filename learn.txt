@@ -10,8 +10,6 @@ JSON.stringify(obj, null, 4)
 // null -> (do nothing)
 // 2 -> 2 spaces per indent level
 
-
-
 2.
 
 
@@ -19,7 +17,7 @@ JSON.stringify(obj, null, 4)
 
 UPDATES =============================================================================>
 
-1. Create feature to upload profile picture. (Make everything from taking new pic from profile page and uplaod to appwrite bucket and the update user database to take the url.)
+1. Create feature to upload profile picture. (Make everything from taking new pic from profile page and uplaod to appwrite bucket and the update user database to take the url.)✅
 
 2. Update and delete video.✅
 
@@ -29,9 +27,9 @@ UPDATES ========================================================================
 
 5. Notifiaction system.(Who starting following you )
 
-6. Remove user as ur follower.
+6. Remove user as ur follower.✅
 
-7. Add refresh in single post page.
+7. Add refresh in single post page.✅
 
 
 
@@ -48,3 +46,16 @@ While trying to fix the errors (I am also working on the same project), I used t
 
 command is used to upload as android app =================================>>
 eas build -p android --profile preview
+
+
+
+Learn in React Native ===================================================>>
+
+1. for refresh page we need to use a component called as :- <ScrollView></ScrollView> (As parent div)
+inside this now we can provide refresh comp to handle refresh :-  that will look like :- (
+                refreshControl={<RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />}
+)
+By above way we setup to refesh page.

@@ -36,7 +36,8 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
         playingVideo,
         initialPlayingVideoState,
         updatingPostData,
-        setUpdatingPostData
+        setUpdatingPostData,
+        createNotification,
     } = useGlobalContext()
 
     // const [play, setPlay] = useState(false)
@@ -47,8 +48,8 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     const [userPresentInSavedPost, setUserPresentInSavedPost] = useState(false)
 
     const [userInLikedBy, setUserInLikedBy] = useState(false)
-    const [likeLoading, setLikeLoading] = useState(false)
 
+    const [likeLoading, setLikeLoading] = useState(false)
 
 
 
@@ -113,6 +114,21 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
             if (!userInLikedBy) {
                 // // Call here like post ------->
                 result = await likePost(item?.$id, user?.$id)
+
+
+                // // // Now call here to give notification ----------->
+
+
+                let notificationData = {
+                    whoSended: user.$id,
+                    notificationFor: item?.creator?.$id,
+                    type: "Like",
+                    typeLikeInfo: item.$id,
+                    typeFollowingInfo: ''
+                }
+
+                await createNotification(notificationData)
+
             } else {
                 // // Call here dislike post ----->
                 result = await disLikePost(item?.$id, user?.$id)
@@ -265,14 +281,12 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     useEffect(() => {
 
-
         // console.log("------------------>")
         // console.log(JSON.stringify(playingVideo, null, 5))
 
         // if (playingVideo.videoId !== item.$id) {
         setPlayingVideo(initialPlayingVideoState)
         // }    
-
     }, [])
 
 
