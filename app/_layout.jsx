@@ -108,6 +108,14 @@ const RootLayout = () => {
           }}
         />
 
+        <Stack.Screen
+          name='dev'
+          options={{
+            // headerShadowVisible: false,
+            headerShown: false
+          }}
+        />
+
       </Stack>
 
     </GlobalProvider>

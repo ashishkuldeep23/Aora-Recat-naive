@@ -50,7 +50,7 @@ const Bookmark = () => {
 
       <FlatList
         data={allSavedPost}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item) => item?.$id}
 
         renderItem={({ item }) => {
           return <VideoCard item={item} />
@@ -68,9 +68,12 @@ const Bookmark = () => {
 
         ListEmptyComponent={() => <View className='mt-20 flex justify-center items-center'>
           <Text className="text-white text-center font-pbold text-4xl ">
-            No saved post found
+            No saved post found.
           </Text>
-          <Link className='text-white font-pregular border px-2 border-white rounded-md' href={'/home'}>Home</Link>
+          <Link
+            href={'/home'}
+            className='text-white font-pregular border px-2 border-white rounded-md'
+          >Home</Link>
         </View>}
 
         refreshControl={<RefreshControl

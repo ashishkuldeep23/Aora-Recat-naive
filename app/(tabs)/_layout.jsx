@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useGlobalContext } from '../../context/ContextProvider'
 
 
-const TabIcon = ({ icon, color, name, focused , scale }) => {
+const TabIcon = ({ icon, color, name, focused, scale }) => {
 
   // const { theme } = useGlobalContext()
 
@@ -109,8 +109,9 @@ const TabsLayout = () => {
           }}
         />
 
+
         <Tabs.Screen
-          name='notification'
+          name='bell'
           options={{
             title: "Notification",
             headerShown: false,

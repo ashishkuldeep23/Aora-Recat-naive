@@ -31,7 +31,7 @@ const SearchInput = ({ initialQuery }) => {
 
             <TouchableOpacity
 
-                className=""
+                className="w-7 h-7 absolute top-4 right-1 "
                 onPress={() => {
                     if (!query) {
                         return Alert.alert("Missing query", 'Please input something to search results across database.')
@@ -51,7 +51,7 @@ const SearchInput = ({ initialQuery }) => {
             >
                 <Image
                     source={icons.search}
-                    className='w-5 h-5 absolute -top-10 -right-1 p-3 z-[1]'
+                    className='w-5 h-5 p-3 z-[2]'
                     resizeMode="contain"
                 />
             </TouchableOpacity>

@@ -10,7 +10,7 @@ import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/ContextProvider'
 import { icons } from '../../constants'
 import InfoBox from '../../components/InfoBox'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 import * as DocumentPicker from 'expo-document-picker'
 import * as Animatable from 'react-native-animatable';
 import { zoomIn, zoomOut } from '../../components/Tranding'
@@ -479,6 +479,16 @@ const LoggedInUserProfile = () => {
                         <AllProfilePhoto />
 
                     </View>
+                }}
+
+                ListFooterComponent={() => {
+                    return <Link
+                    href={'/dev'}
+                    
+                        className=" px-5 rounded-full bg-blue-600 my-2 mx-auto"
+                    >
+                        <Text className=' text-center text-white font-psemibold'>Check Developer page</Text>
+                    </Link>
                 }}
 
                 ListEmptyComponent={() => <EmptyState title="No Video Found" subtite={`Seem like you have't share any video.`} />}

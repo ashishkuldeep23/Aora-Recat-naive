@@ -149,7 +149,6 @@ const UserProfile = () => {
 
 
 
-
     useEffect(() => {
 
 
@@ -161,6 +160,19 @@ const UserProfile = () => {
         }
 
     }, [id])
+
+
+
+    useEffect(() => {
+
+        if (searchUser && searchUser?.$id) {
+            if (searchUser?.$id === user?.$id) {
+                router.push("/profile")
+            }
+        }
+
+    }, [searchUser])
+
 
 
     // console.log(JSON.stringify(posts))
@@ -302,7 +314,7 @@ const UserProfile = () => {
                                                                     `}
                                                 >
                                                     {
-                                                         (!user?.following?.includes(searchUser.$id))
+                                                        (!user?.following?.includes(searchUser.$id))
                                                             ? "Follow"
                                                             : "Unfollow"
 
