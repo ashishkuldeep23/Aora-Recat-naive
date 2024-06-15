@@ -707,8 +707,8 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                 <>
 
                     <Text
-                        className={`${!theme ? "text-white" : "text-black"}text-start ml-5 font-pregular`}
-                    >Update this :-</Text>
+                        className={`${!theme ? "text-white " : "text-black "}text-start ml-5 font-pregular`}
+                    >Updating this :-</Text>
 
                     <View
                         className=" w-[70%] mx-auto border border-secondary rounded-full flex-row items-center overflow-hidden "
@@ -810,7 +810,7 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                                     className=" w-[70%] mx-auto my-3  border border-secondary rounded-full flex-row items-center overflow-hidden "
                                 >
                                     <TouchableOpacity
-
+                                        className=" border border-secondary rounded-full"
                                         onPress={() => {
                                             goToProfileHandler(ele?.usersId?.$id)
                                         }}
@@ -819,7 +819,7 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
                                         <Image
                                             source={{ uri: ele?.usersId?.avatar }}
-                                            className="w-7 h-7 rounded-full"
+                                            className="w-7 h-7 rounded-full "
                                             resizeMode='contain'
                                         // className={"w-full max-w-[380px] h-[300px]"}
                                         />

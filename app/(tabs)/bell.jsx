@@ -1,8 +1,9 @@
-import { View, Text, FlatList, RefreshControl, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, FlatList, RefreshControl, TouchableOpacity, Image, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '../../context/ContextProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link, router } from 'expo-router';
+import { Link, router, usePathname } from 'expo-router';
+import { makeNotiSeen } from '../../lib/appwrite';
 // import { addFollow, createNewNotification, removeFollow } from '../../lib/appwrite'
 
 const Notification = () => {
@@ -12,8 +13,13 @@ const Notification = () => {
         user,
         fetchedNotification,
         allNotifications,
+        setAllNotifications
         // createNotification
     } = useGlobalContext()
+
+
+
+    const pathname = usePathname()
 
     // console.log(allNotifications)
 
@@ -29,6 +35,44 @@ const Notification = () => {
         // // // Do something for refetch all notificaton
         setRefreshing(false)
     }
+
+
+
+    const callToUpdateSeenValue = async (arrOfNoti) => {
+
+        try {
+
+            let result = await makeNotiSeen(arrOfNoti, user.$id);
+
+            // console.log(result.length)
+            // console.log({ result })
+            if (result && result.length > 0) {
+                setAllNotifications(result)
+            }
+
+        } catch (error) {
+            Alert.alert("Error", error?.message)
+        }
+
+    }
+
+
+    useEffect(() => {
+
+        if (allNotifications.length > 0) {
+
+            let makeUnSeenArr = allNotifications.filter((ele) => {
+                if (!ele.seen) return ele
+            })
+
+            if (makeUnSeenArr.length > 0 && pathname === "/bell") {
+                // Alert.alert("Now call to seen false.")
+
+                callToUpdateSeenValue(makeUnSeenArr)
+            }
+        }
+
+    }, [allNotifications])
 
 
     return (
@@ -112,7 +156,7 @@ const SingleNotifiaction = ({ data }) => {
 
 
     return (
-        <View className='flex flex-row gap-2 items-center my-1'>
+        <View className={`flex flex-row gap-2 items-center my-1 rounded ${!data.seen && " bg-emerald-800/80"}`}>
 
             <TouchableOpacity
                 onPress={goToUser}
@@ -147,10 +191,6 @@ const SingleNotifiaction = ({ data }) => {
 
             </TouchableOpacity>
 
-
-
-
-
             <View
                 className=' flex flex-row justify-end w-[20%] ml-auto'
             >
@@ -183,8 +223,6 @@ const SingleNotifiaction = ({ data }) => {
                 }
 
             </View>
-
-
 
         </View>
     )

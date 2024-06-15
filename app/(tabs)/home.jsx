@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList, RefreshControl } from 'react-native'
+import { View, Text, Image, FlatList, RefreshControl, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 // import { useGlobalContext } from "../../context/ContextProvider"
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -11,23 +11,36 @@ import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/ContextProvider'
 import * as Animatable from 'react-native-animatable';
+import { router } from 'expo-router'
 
 const Home = () => {
 
-  const { user, theme, allPost, setAllPost, allLetestPost, setAllLetestPost } = useGlobalContext()
+  const {
+    user,
+    theme,
+    allPost,
+    setAllPost,
+    allLetestPost,
+    setAllLetestPost,
+    allNotifications,
+    fetchedNotification
+  } = useGlobalContext()
 
   const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts)
   const { data: latestPosts, refetch: refetch2 } = useAppwrite(getLatestPosts)
 
-  
+
   const [refreshing, setRefreshing] = useState(false)
 
   const onRefresh = async () => {
     setRefreshing(true)
 
-    // // // re call new videos ------>
+    // // // re-call new videos ------>>
     await refetch();
     await refetch2();
+
+    // // // Fetch notifications here ---->>
+    await fetchedNotification(user.$id)
 
     setRefreshing(false)
   }
@@ -73,6 +86,16 @@ const Home = () => {
   //       console.log(err)
   //     })
   // }, [])
+
+
+
+  // // // Fetch natifications ------------->
+  useEffect(() => {
+    if (allNotifications.length === 0) {
+      fetchedNotification(user.$id)
+    }
+  }, [allNotifications])
+
 
 
   return (
@@ -122,9 +145,11 @@ const Home = () => {
 
         // // // This code will used as header of flatList ----->>
         ListHeaderComponent={() => {
-          return <View className="my-6 px-4 space-y-6">
+          return <View className=" relative my-6 px-4 space-y-6">
 
-            <View className="justify-between items-start flex-row mb-6">
+            <NewNotificationDivHome />
+
+            <View className=" flex justify-between items-start flex-row mb-6">
 
               <View className="items-center justify-center">
                 <Text className={`font-pmedium text-sm ${!theme ? 'text-gray-100' : "text-gray-800"} `}>
@@ -165,7 +190,6 @@ const Home = () => {
 
             </View>
 
-
           </View>
         }}
 
@@ -185,3 +209,54 @@ const Home = () => {
 }
 
 export default Home
+
+
+
+
+const NewNotificationDivHome = () => {
+
+
+  const {
+    // theme,
+    // user,
+    // fetchedNotification,
+    allNotifications,
+    // createNotification
+  } = useGlobalContext()
+
+
+  const [unSeenNotis, setUnSeenNotis] = useState([])
+
+  // console.log(allNotifications)
+
+  useEffect(() => {
+
+    if (allNotifications.length > 0) {
+
+      let makeUnSeenArr = allNotifications.filter((ele) => {
+        if (!ele.seen) return ele
+      })
+
+      setUnSeenNotis(makeUnSeenArr)
+
+    }
+
+  }, [allNotifications])
+
+
+  if (unSeenNotis.length > 0) {
+    return (
+
+      <TouchableOpacity
+        onPress={() => router.push("/bell")}
+        className=' w-[100%] bg-emerald-800/80 py-2 px-3 rounded-md'
+      >
+        <Text className=' text-white font-pbold text-center '>{unSeenNotis.length} new notifications</Text>
+      </TouchableOpacity>
+    )
+  } else {
+    return <></>
+  }
+
+
+}

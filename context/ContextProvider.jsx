@@ -171,6 +171,8 @@ const GlobalProvider = ({ children }) => {
             // }
             if (singlePostGlobal && singlePostGlobal?.comments) {
                 singlePostGlobal.comments.unshift(resultData.$id)
+
+                singlePostGlobal.rank = (singlePostGlobal.rank || 0) + 2
             }
 
             // updateAllData(resultData)
@@ -184,13 +186,14 @@ const GlobalProvider = ({ children }) => {
         // }
         else if (whatUpdate === "deleted") {
 
-
             if (singlePostGlobal && singlePostGlobal?.commentBy) {
 
                 // // // now for delete resultData, should be comment id that you deleted recentlly.
 
                 let index = singlePostGlobal.comments.findIndex(ele => ele === resultData)
                 singlePostGlobal.commentBy.splice(index, 1)
+
+                singlePostGlobal.rank = (singlePostGlobal.rank || 0) - 2
 
             }
 
@@ -451,6 +454,7 @@ const GlobalProvider = ({ children }) => {
                 fetchCurrentUserData,
                 fetchedNotification,
                 allNotifications,
+                setAllNotifications,
                 createNotification
             }}
         >

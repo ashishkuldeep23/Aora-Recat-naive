@@ -25,11 +25,21 @@ UPDATES ========================================================================
 
 4. Google logIn if possiable. ❌(For now)
 
-5. Notifiaction system.(Who starting following you )
+5. Notifiaction system.(Who starting following you )✅
 
 6. Remove user as ur follower.✅
 
 7. Add refresh in single post page.✅
+
+
+LAST UPDATE --------------->
+
+1. notification for home at top.✅
+
+2. notification for cmnt also.✅
+
+3. add a var in videos that hold points and pont will increase when someone like or comment
+And use this point during fetch for all videos
 
 
 
