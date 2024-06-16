@@ -1,7 +1,7 @@
 
 
 1.
-use this type to print data in json style in yorr terminal -------->
+use this type to print data in json style in yorr terminal ----------------->
 
 JSON.stringify(obj, null, 4)
 
@@ -15,7 +15,7 @@ JSON.stringify(obj, null, 4)
 
 
 
-UPDATES =============================================================================>
+UPDATES ========================================================================================================>
 
 1. Create feature to upload profile picture. (Make everything from taking new pic from profile page and uplaod to appwrite bucket and the update user database to take the url.)✅
 
@@ -32,20 +32,22 @@ UPDATES ========================================================================
 7. Add refresh in single post page.✅
 
 
-LAST UPDATE --------------->
+LAST UPDATE ---------------------------------------->>
 
 1. notification for home at top.✅
 
 2. notification for cmnt also.✅
 
 3. add a var in videos that hold points and pont will increase when someone like or comment
-And use this point during fetch for all videos
+And use this point during fetch for all videos✅
+
+4. Verification for user if he/she have 100 rank points✅
+
+5 change loading screen from mom to something else.✅
 
 
 
-
-
-ERROR =======================================>>
+ERROR =============================================================================================================================>>
 When you getting npm package outdateed error then you should use these commands
 npm outdated
 npm update
@@ -54,12 +56,12 @@ While trying to fix the errors (I am also working on the same project), I used t
 
 
 
-command is used to upload as android app =================================>>
+command is used to upload as android app ============================================================================================>>
 eas build -p android --profile preview
 
 
 
-Learn in React Native ===================================================>>
+Learn in React Native =================================================================================================================>>
 
 1. for refresh page we need to use a component called as :- <ScrollView></ScrollView> (As parent div)
 inside this now we can provide refresh comp to handle refresh :-  that will look like :- (

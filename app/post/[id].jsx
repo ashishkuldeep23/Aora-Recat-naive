@@ -25,7 +25,8 @@ const SinglePostPage = () => {
         updateAllData,
         upadateFollowList,
         setModalContent,
-        setModalVisible
+        setModalVisible,
+        VerifiedRankValue
     } = useGlobalContext()
 
     const { id } = useLocalSearchParams()
@@ -184,9 +185,7 @@ const SinglePostPage = () => {
     // console.log({ isLoading })
 
     return (
-
         <SafeAreaView className={`  h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
-
             <ScrollView
                 className='my-6 relative'
                 refreshControl={<RefreshControl
@@ -230,7 +229,7 @@ const SinglePostPage = () => {
                     </TouchableOpacity>
 
 
-                    {/* now show single video here --------->  */}
+                    {/* Code here to show single video -------------->  */}
 
                     {
                         Object.keys(singlePostGlobal).length > 0
@@ -240,6 +239,7 @@ const SinglePostPage = () => {
                                 <VideoCard
                                     item={singlePostGlobal}
                                     postPage={true}
+                                    pageName="post"
                                 />
                             </View>
 
@@ -272,19 +272,18 @@ const SinglePostPage = () => {
 
                     ListHeaderComponent={() => {
                         return (
+
+                            // //  // User info div here ------->
                             <View className=' w-[25vh] ml-7'>
 
                                 {
                                     returnedData?.singlePost
                                     &&
-
-                                    // // User info div here ------->
                                     <View className=" relative flex-1 justify-center items-center mt-2 " >
 
                                         <TouchableOpacity
                                             onPress={ShowModalhandler}
                                         >
-
 
                                             <View
                                                 className="w-[15vh] h-[15vh] rounded-full my-1 overflow-hidden  border-2 border-secondary p-1"
@@ -303,6 +302,16 @@ const SinglePostPage = () => {
 
                                         <Text className={`${!theme ? "text-white" : "text-black"}`}>{singlePostGlobal?.creator?.username}</Text>
                                         <Text className={`${!theme ? "text-white" : "text-black"} `}>{singlePostGlobal?.creator?.email}</Text>
+
+                                        {
+                                            (singlePostGlobal.creator?.rank || 0) >= VerifiedRankValue
+                                            &&
+                                            <>
+                                                <Text className={` text-xs ${!theme ? " text-green-400" : "text-green-800"} `}>{(singlePostGlobal.creator?.rank || 0) >= VerifiedRankValue && "Verified ✅"}</Text>
+                                                <Text className={` text-xs ${!theme ? "text-white" : "text-black"} `}>(User have {VerifiedRankValue}+ rank points.)</Text>
+                                            </>
+                                        }
+
 
                                         <View className="mt-1 flex-row ">
 
@@ -408,6 +417,7 @@ const SinglePostPage = () => {
                             allData={post}
                             width={true}
                             activeItem={activeItem}
+                            pageName="post"
                         />
                     }}
                     onViewableItemsChanged={ViewableItemsChanges}
@@ -828,7 +838,7 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                                     </TouchableOpacity>
 
 
-                                    <Text className={`${!theme ? "text-white" : "text-black"} ml-1 font-psemibold`}>{ele.textComment}</Text>
+                                    <Text className={`${!theme ? "text-white" : "text-black"} ml-1 font-psemibold`}>{ele?.textComment}</Text>
 
 
                                     {/* Update and detele present here -----> */}

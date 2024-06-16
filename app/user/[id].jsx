@@ -19,9 +19,9 @@ const UserProfile = () => {
         user,
         upadateFollowList,
         setModalContent,
-        setModalVisible
+        setModalVisible,
+        VerifiedRankValue
     } = useGlobalContext()
-
 
 
     const { id } = useLocalSearchParams();
@@ -31,13 +31,11 @@ const UserProfile = () => {
     // const { data: searchUser, isLoading: isLoading2 } = useAppwrite(() => getSearchUserData(id))
 
 
-
     const [searchUser, setSearchUser] = useState(null)
 
     const [isLoading2, setIsLoading2] = useState(false)
 
     const [follwingLoad, setFollowingLoad] = useState(false)
-
 
 
     const fetchSearchUserData = async (id) => {
@@ -62,7 +60,6 @@ const UserProfile = () => {
         }
 
     }
-
 
     const followClickHandler = async (toUser) => {
 
@@ -117,7 +114,6 @@ const UserProfile = () => {
 
     }
 
-
     // // // Show modal handler hare ----------->
     const ShowModalhandler = () => {
 
@@ -148,7 +144,6 @@ const UserProfile = () => {
     }
 
 
-
     useEffect(() => {
 
 
@@ -160,7 +155,6 @@ const UserProfile = () => {
         }
 
     }, [id])
-
 
 
     useEffect(() => {
@@ -220,9 +214,7 @@ const UserProfile = () => {
                 </TouchableOpacity>
 
 
-
                 <TouchableOpacity
-
                     onPress={ShowModalhandler}
                 >
 
@@ -250,6 +242,28 @@ const UserProfile = () => {
                     containerStyle={" -mt-4"}
                     titleStyle="text-xs"
                 />
+
+                {
+                    (searchUser?.rank || 0) >= VerifiedRankValue
+                    &&
+                    <>
+
+                        <InfoBox
+                            title={'Verified ✅'}
+                            subtite=""
+                            containerStyle={" -mt-4"}
+                            titleStyle="text-xs text-green-400 "
+                        />
+                        <InfoBox
+                            title={`(User have ${VerifiedRankValue}+ rank points.)`}
+                            subtite=""
+                            containerStyle={" -mt-4"}
+                            titleStyle="text-xs"
+                        />
+
+                    </>
+                }
+
 
                 <View className="mt-5 flex-row ">
 
@@ -375,6 +389,7 @@ const UserProfile = () => {
                     return <VideoCard
                         item={item}
                         width={true}
+                        pageName="user"
                     />
                 }}
 

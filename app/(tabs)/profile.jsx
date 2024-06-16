@@ -31,7 +31,8 @@ const LoggedInUserProfile = () => {
         updateUser,
         setModalVisible,
         setModalContent,
-        fetchCurrentUserData
+        fetchCurrentUserData,
+        VerifiedRankValue
     } = useGlobalContext()
 
     const { data: posts, refetch } = useAppwrite(() => getUserPosts(user?.$id))
@@ -180,7 +181,6 @@ const LoggedInUserProfile = () => {
     const [allFollowing, setAllFollowing] = useState([])
 
 
-
     // // // This fn will fetch all followers actual data inside and paste the data into allFollowers arr.
     const showAllFollowersList = async () => {
 
@@ -220,7 +220,6 @@ const LoggedInUserProfile = () => {
     }
 
 
-
     useEffect(() => {
 
         if (user?.$id && user?.avatar) {
@@ -249,7 +248,10 @@ const LoggedInUserProfile = () => {
                 keyExtractor={(item) => item?.$id}
 
                 renderItem={({ item }) => {
-                    return <VideoCard item={item} />
+                    return <VideoCard
+                        item={item}
+                        pageName='profile'
+                    />
                 }}
 
                 ListHeaderComponent={() => {
@@ -265,8 +267,6 @@ const LoggedInUserProfile = () => {
                                     {!theme ? "Light" : "Dark"}
                                 </Text>
                             </TouchableOpacity>
-
-
 
 
                             <TouchableOpacity
@@ -382,6 +382,27 @@ const LoggedInUserProfile = () => {
                             titleStyle="text-xs"
                         />
 
+
+                        {
+                            (user?.rank || 0) >= VerifiedRankValue
+                            &&
+                            <>
+                                <InfoBox
+                                    title={'Verified ✅'}
+                                    subtite=""
+                                    containerStyle={" -mt-4 "}
+                                    titleStyle="text-xs text-green-400 "
+                                />
+                                <InfoBox
+                                    title={`(You have ${VerifiedRankValue}+ rank points.)`}
+                                    subtite=""
+                                    containerStyle={" -mt-4 "}
+                                    titleStyle="text-xs"
+                                />
+                            </>
+                        }
+
+
                         <View className="mt-5 flex-row ">
 
                             <InfoBox
@@ -483,8 +504,8 @@ const LoggedInUserProfile = () => {
 
                 ListFooterComponent={() => {
                     return <Link
-                    href={'/dev'}
-                    
+                        href={'/dev'}
+
                         className=" px-5 rounded-full bg-blue-600 my-2 mx-auto"
                     >
                         <Text className=' text-center text-white font-psemibold'>Check Developer page</Text>

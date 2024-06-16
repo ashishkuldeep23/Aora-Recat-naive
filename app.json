@@ -7,7 +7,7 @@
     "icon": "./assets/images/mom.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/mom.png",
+      "image": "./assets/images/cards.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/mom.png",
+        "foregroundImage": "./assets/images/cards.png",
         "backgroundColor": "#000"
       },
       "package": "com.ashish.aora"

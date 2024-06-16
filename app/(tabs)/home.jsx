@@ -140,6 +140,7 @@ const Home = () => {
           return <VideoCard
             item={item}
             allData={allPost}
+            pageName="home"
           />
         }}
 

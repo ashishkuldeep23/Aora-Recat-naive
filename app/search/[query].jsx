@@ -40,7 +40,7 @@ const SearchPage = () => {
         keyExtractor={(item) => item?.$id}
 
         renderItem={({ item }) => {
-          return <VideoCard item={item} />
+          return <VideoCard item={item} pageName="query/id" />
         }}
 
         ListHeaderComponent={() => {

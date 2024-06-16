@@ -22,7 +22,7 @@ import Icons from "react-native-vector-icons/FontAwesome5"
 // activeItem :- ID used in single page to show res post by user that currently visiable to user
 // PostPgae :- single post main page (Upper post) (to prevent not open same page for same post).
 
-const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
+const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => {
 
     const pathname = usePathname()
     const { title, thumbnail, video, creator } = item
@@ -38,7 +38,26 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
         updatingPostData,
         setUpdatingPostData,
         createNotification,
+        VerifiedRankValue,
+        setSinglePostGlobal
     } = useGlobalContext()
+
+
+    // // // By below log i fixed a err when switch pages then don't play last video if both are same.
+    // console.log({ pathname, pageName })
+    // console.log("page in global data ------->", playingVideo.page)
+
+
+    let lastPath = '';
+
+    useEffect(() => {
+
+        lastPath = pathname
+
+        // if (lastPath !== pathname) setSinglePostGlobal({})
+
+    }, [pathname])
+
 
     // const [play, setPlay] = useState(false)
     // // // Not usimg now, currently using a global state var that holds info which song should play. (Problem solve :- only one video play at a time.)
@@ -51,6 +70,24 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
 
     const [likeLoading, setLikeLoading] = useState(false)
 
+
+    let currentlyPlaying = "";
+
+
+    const playVideo = () => {
+
+        currentlyPlaying = video
+
+        // setPlay(true);
+        setPlayingVideo({
+            mode: true,
+            videoId: item?.$id,
+            videoUri: video,
+            page: pageName
+        })
+
+        setOpenMenu(false);
+    };
 
 
     const saveHandler = async () => {
@@ -88,7 +125,15 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     const redirectToPost = () => {
         // // // Here set single post data ------------> 
 
+        // // // postPage is an true and false given in single post page to prevent show same page for multiple time.
+
         if (!postPage) {
+
+            // // // stop playing current video now -------->>
+            // setPlayingVideo({ ...playingVideo, mode: false })
+            setPlayingVideo(initialPlayingVideoState)
+
+            // // // Redirect user to single post page. ---------------->>
             router.push(`/post/${item?.$id}`)
         }
 
@@ -261,7 +306,6 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
     }
 
 
-
     useEffect(() => {
 
         if (item?.$id && user?.$id) {
@@ -285,7 +329,11 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
         // console.log(JSON.stringify(playingVideo, null, 5))
 
         // if (playingVideo.videoId !== item.$id) {
+
+
         setPlayingVideo(initialPlayingVideoState)
+
+
         // }    
     }, [])
 
@@ -334,16 +382,39 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                             <Text
                                 className={`text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}
                                 numberOfLines={1}
-                            >By : {item?.creator?.username}</Text>
+                            >By : {item?.creator?.username} {(item.creator?.rank || 0) >= VerifiedRankValue && "✅"} </Text>
                         </View>
                     </View>
                 </TouchableOpacity>
 
 
+                <TouchableOpacity
+                    className="mt-2 mx-0.5 py-1 px-1.5 rounded border border-white"
+                    onPress={() => { setOpenMenu(!openMenu) }}
+                >
+                    {/* <Image
+                        source={!openMenu ? icons.menu : icons.rightArrow}
+                        className="w5 h-5"
+                        resizeMode="contain"
+                    /> */}
+
+                    <Text className='text-white'>
+                        {
+                            !openMenu
+                                ? '◀'
+                                : '✕'
+                        }
+                    </Text>
+
+                </TouchableOpacity>
+
+
+
+
                 {
                     openMenu
                     &&
-
+                    // // // Below div will open when every open menu btn clicked.
                     <Animatable.View
                         className={`w-[40%] absolute  z-10  rounded-xl top-1  right-[26px] `}
                         animation='lightSpeedIn'
@@ -462,18 +533,6 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                     </Animatable.View>
                 }
 
-                <TouchableOpacity
-                    className="mt-2 mx-0.5 py-1 px-1.5 "
-                    onPress={() => { setOpenMenu(!openMenu) }}
-                >
-                    <Image
-                        source={!openMenu ? icons.menu : icons.rightArrow}
-                        className="w5 h-5"
-                        resizeMode="contain"
-                    />
-
-                </TouchableOpacity>
-
             </View>
 
 
@@ -482,9 +541,20 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                 (
                     playingVideo.mode
                     &&
-                    playingVideo.videoId === item?.$id
+                    (
+                        playingVideo.videoId === item?.$id
+                        &&
+                        currentlyPlaying !== item?.video
+                        &&
+                        // playingVideo.page.includes(`/${pageName}`)
+                        // playingVideo.page.includes(`${pathname}`)
+                        // pathname.includes(`${playingVideo.page}`)
+
+                        pathname.includes(pageName)
+                    )
                 )
                     ?
+                    // // // Playing Video here ------->
                     <Video
                         // source={{ uri: video }}
                         source={{ uri: playingVideo.videoUri }}
@@ -494,24 +564,16 @@ const VideoCard = ({ item, allData, width, activeItem, postPage }) => {
                         shouldPlay={true}
                         onPlaybackStatusUpdate={(status) => {
                             if (status.didJustFinish) {
-                                setPlayingVideo({
-                                    mode: false,
-                                    videoId: "",
-                                    videoUri: ""
-                                });
+                                setPlayingVideo(initialPlayingVideoState);
                             }
                         }}
                     />
                     :
+                    // // // Video Post showing here ------->
                     <TouchableOpacity
                         className="w-full h-60 rounded-xl relative justify-center items-center mt-3 overflow-hidden border border-sky-500/50 p-[2px]"
                         activeOpacity={0.7}
-                        onPress={() => {
-                            // setPlay(true);
-                            setPlayingVideo({ mode: true, videoId: item?.$id, videoUri: video })
-
-                            setOpenMenu(false);
-                        }}
+                        onPress={() => playVideo()}
                     >
                         <Image
                             source={{ uri: thumbnail }}

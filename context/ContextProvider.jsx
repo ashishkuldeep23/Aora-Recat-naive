@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { createNewNotification, getAllNotiForThisUser, getCurrentUser } from '../lib/appwrite'
+import { createNewNotification, getAllNotiForThisUser, getCurrentUser, setMineUserId } from '../lib/appwrite'
 import { Alert, Text, View } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 
@@ -32,7 +32,8 @@ const GlobalProvider = ({ children }) => {
     const initialPlayingVideoState = {
         mode: false,
         videoId: "",
-        videoUri: ""
+        videoUri: "",
+        page: ""
     }
 
     const [playingVideo, setPlayingVideo] = useState(initialPlayingVideoState)
@@ -52,6 +53,9 @@ const GlobalProvider = ({ children }) => {
 
     const [allNotifications, setAllNotifications] = useState([])
 
+
+    // // // fixed value for verified user --------->
+    const VerifiedRankValue = 50;
 
 
     // const [theme, setTheme] = useState(true)
@@ -173,6 +177,9 @@ const GlobalProvider = ({ children }) => {
                 singlePostGlobal.comments.unshift(resultData.$id)
 
                 singlePostGlobal.rank = (singlePostGlobal.rank || 0) + 2
+
+                singlePostGlobal.creator.rank = (singlePostGlobal.creator.rank || 0) + 2
+
             }
 
             // updateAllData(resultData)
@@ -194,6 +201,8 @@ const GlobalProvider = ({ children }) => {
                 singlePostGlobal.commentBy.splice(index, 1)
 
                 singlePostGlobal.rank = (singlePostGlobal.rank || 0) - 2
+
+                singlePostGlobal.creator.rank = (singlePostGlobal.creator.rank || 0) - 2
 
             }
 
@@ -236,6 +245,12 @@ const GlobalProvider = ({ children }) => {
                 if (res) {
                     setIsLoggedIn(true)
                     setUser(res)
+
+                    // // Experiment ------------------>>
+                    // // // set userId in appwrite variable form here ------>
+
+                    setMineUserId(res.$id)
+
                 } else {
                     setIsLoggedIn(false)
                     setUser(null)
@@ -312,8 +327,6 @@ const GlobalProvider = ({ children }) => {
 
 
     }
-
-
 
 
 
@@ -455,7 +468,8 @@ const GlobalProvider = ({ children }) => {
                 fetchedNotification,
                 allNotifications,
                 setAllNotifications,
-                createNotification
+                createNotification,
+                VerifiedRankValue
             }}
         >
             {children}
