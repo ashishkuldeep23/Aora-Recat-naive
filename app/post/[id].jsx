@@ -48,7 +48,6 @@ const SinglePostPage = () => {
         if (viewableItems.length > 0) {
             setActiveItem(viewableItems[0].key)
         }
-
     }
 
     const onRefresh = async () => {
@@ -113,7 +112,6 @@ const SinglePostPage = () => {
 
     }
 
-
     // // // Show modal handler hare ----------->
     const ShowModalhandler = () => {
 
@@ -142,7 +140,6 @@ const SinglePostPage = () => {
         setModalContent(MODAL_CONTENT)
 
     }
-
 
 
     // console.log(singlePostGlobal)
@@ -446,7 +443,7 @@ export default SinglePostPage
 
 const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
 
-    const { theme, user, updateComment } = useGlobalContext()
+    const { theme, user, updateComment, createNotification } = useGlobalContext()
 
     const initialValue = {
         usersId: "",
@@ -521,6 +518,22 @@ const CommentDivGiveCmntAndAllCmnt = ({ singlePostGlobal }) => {
                     await updateComment(result, "created")
 
                     setAllCommentData(per => ([result, ...per]))
+
+
+
+                    let notificationData = {
+                        whoSended: user.$id,
+                        notificationFor: singlePostGlobal?.creator?.$id,
+                        type: "Comment",
+                        typeLikeInfo: singlePostGlobal.$id,
+                        typeFollowingInfo: ''
+                    }
+
+                    // // // If someone like own video then don't need to send notifaiction.
+                    if (user.$id !== singlePostGlobal?.creator?.$id) {
+                        await createNotification(notificationData)
+                    }
+
 
                 } else {
 

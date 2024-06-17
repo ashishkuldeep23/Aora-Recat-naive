@@ -37,7 +37,6 @@ const Notification = () => {
     }
 
 
-
     const callToUpdateSeenValue = async (arrOfNoti) => {
 
         try {
@@ -138,14 +137,12 @@ const SingleNotifiaction = ({ data }) => {
     // console.log(data)
 
 
-    // const { } = useGlobalContext()
+    const { theme } = useGlobalContext()
 
 
 
     const goToUser = () => {
-
         router.push(`/user/${data?.whoSended.$id}`)
-
     }
 
 
@@ -175,14 +172,16 @@ const SingleNotifiaction = ({ data }) => {
                     />
 
 
-                    <Text className="text-gray-100 font-semibold" >{data?.whoSended?.username}</Text>
+                    <Text className={`${!theme ? "text-white " : "text-black "}font-semibold`}>{data?.whoSended?.username}</Text>
 
                     <View>
 
                         {
                             data?.type === "Like"
-                                ? <Text className="text-gray-100">liked your video</Text>
-                                : <Text className="text-gray-100">started following you</Text>
+                                ? <Text className={`${!theme ? "text-white" : " text-black"}`}>liked your video</Text>
+                                : data?.type === "Comment"
+                                    ? <Text className={`${!theme ? "text-white" : "text-black"}`}>commented on your video</Text>
+                                    : <Text className={`${!theme ? "text-white" : "text-black"}`}>started following you</Text>
                         }
                     </View>
 
@@ -199,7 +198,7 @@ const SingleNotifiaction = ({ data }) => {
                         ?
                         // // // Post (Video thmnail pic here) details
                         <TouchableOpacity
-                            className=" border border-white rounded "
+                            className={`border rounded ${!theme ? "border-white " : " border-black"} `}
                             onPress={goToPost}
                         >
 
@@ -209,17 +208,34 @@ const SingleNotifiaction = ({ data }) => {
                             />
 
                         </TouchableOpacity>
-
                         :
-                        // // // Here follow and following code present ---------->
-                        <TouchableOpacity
-                            onPress={goToUser}
-                        >
-                            <Text
-                                className=" border rounded border-white p-0.5 px-2 text-white  text-sm font-semibold"
-                            >Profile</Text>
 
-                        </TouchableOpacity>
+                        (data?.type === "Comment")
+                            ?
+                            // // // Post (Video thmnail pic here) details
+                            <TouchableOpacity
+                                className={`border rounded ${!theme ? "border-white " : " border-black"} `}
+                                onPress={goToPost}
+                            >
+
+                                <Image source={{ uri: data?.typeLikeInfo?.thumbnail }}
+                                    className="w-8 h-8 rounded-md border border-secondary-200 p-0.5 "
+                                    resizeMode='contain'
+                                />
+
+                            </TouchableOpacity>
+
+
+                            :
+                            // // // Here follow and following code present ---------->
+                            <TouchableOpacity
+                                onPress={goToUser}
+                            >
+                                <Text
+                                    className={`border rounded p-0.5 px-2  text-sm font-semibold ${!theme ? "text-white border-white " : " text-black border-black"}`}
+                                >Profile</Text>
+
+                            </TouchableOpacity>
                 }
 
             </View>

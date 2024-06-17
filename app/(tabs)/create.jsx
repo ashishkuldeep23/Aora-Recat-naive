@@ -225,7 +225,7 @@ const Create = () => {
                 </View>
             }
           </TouchableOpacity>
-          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-blacak"} `}>Video should less then <Text className='font-psemibold'>10 MB</Text></Text>
+          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}>Video should less then <Text className='font-psemibold'>10 MB</Text></Text>
 
         </View>
 
@@ -257,7 +257,7 @@ const Create = () => {
                 </View>
             }
           </TouchableOpacity>
-          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-blacak"} `}>Image should less then <Text className='font-psemibold'>1 MB</Text></Text>
+          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}>Image should less then <Text className='font-psemibold'>1 MB</Text></Text>
 
         </View>
 
@@ -271,7 +271,7 @@ const Create = () => {
         />
 
 
-        <Text className=" text-center mt-1 text-xs font-pregular"> <Text className='font-psemibold'>*</Text> marked are <Text className='font-psemibold'>optional</Text></Text>
+        <Text className={`text-center mt-1 text-xs font-pregular ${!theme ? "text-white" : "text-black"}`}> <Text className='font-psemibold'>*</Text> marked are <Text className='font-psemibold'>optional</Text></Text>
 
 
         <CBotton

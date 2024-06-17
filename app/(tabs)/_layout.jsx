@@ -8,16 +8,34 @@ import { useGlobalContext } from '../../context/ContextProvider'
 
 const TabIcon = ({ icon, color, name, focused, scale }) => {
 
+  // const { user: { avatar } } = useGlobalContext()
+
   // const { theme } = useGlobalContext()
+
+  // console.log(avatar)
 
   return (
     <View
       className={`justify-center items-center gap-1.5`}
     >
       <Image
+
         source={icon}
+
+        // source={
+        //   name !== "Profile"
+        //     ? icon
+        //     : { uri: user?.avatar }
+        // }
+
+
         resizeMode='contain'
-        className={`w-5 h-5 ${scale}  ${focused ? "-translate-y-2 scale-125" : "translate-y-0 scale-100"} `}
+        className={`w-5 h-5 
+            ${scale}  
+            ${focused
+            ? "-translate-y-2 scale-125"
+            : "translate-y-0 scale-100"}
+          `}
         tintColor={color}
       />
       <Text

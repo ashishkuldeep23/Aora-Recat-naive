@@ -172,7 +172,10 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                     typeFollowingInfo: ''
                 }
 
-                await createNotification(notificationData)
+                // // // If someone like own video then don't need to send notifaiction.
+                if (user.$id !== item?.creator?.$id) {
+                    await createNotification(notificationData)
+                }
 
             } else {
                 // // Call here dislike post ----->
@@ -389,7 +392,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
 
 
                 <TouchableOpacity
-                    className="mt-2 mx-0.5 py-1 px-1.5 rounded border border-white"
+                    className={`odd:mt-2 mx-0.5 py-1 px-1.5 rounded border  ${!theme ? "border-white" : "border-black"}`}
                     onPress={() => { setOpenMenu(!openMenu) }}
                 >
                     {/* <Image
@@ -398,7 +401,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                         resizeMode="contain"
                     /> */}
 
-                    <Text className='text-white'>
+                    <Text className={`${!theme ? "text-white" : "text-black"}`}>
                         {
                             !openMenu
                                 ? '◀'
@@ -427,7 +430,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                             &&
 
                             <View
-                                className={`border px-2 py-1  rounded-xl ${!theme ? " border-white bg-black" : " border-black bg-white"}`}
+                                className={`border px-2 py-1  rounded-xl ${!theme ? " border-white bg-black" : " border-black bg-gray-300"}`}
                             >
 
                                 {
@@ -482,7 +485,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                             item?.creator?.$id === user?.$id
                             &&
 
-                            <View className={` my-1 px-2 border rounded-xl  ${!theme ? " bg-black border-cyan-300 " : "bg-white border-cyan-600 "} `}>
+                            <View className={` my-1 px-2 border rounded-xl  ${!theme ? " bg-black border-cyan-300 " : "bg-gray-300 border-cyan-600 "} `}>
 
                                 {
                                     [

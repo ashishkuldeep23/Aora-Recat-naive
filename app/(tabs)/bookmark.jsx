@@ -67,7 +67,7 @@ const Bookmark = () => {
         }}
 
         ListEmptyComponent={() => <View className='mt-20 flex justify-center items-center'>
-          <Text className="text-white text-center font-pbold text-4xl ">
+          <Text className={` ${theme ? " text-black" : " text-white"} text-center font-pbold text-4xl `}>
             No saved post found.
           </Text>
           <Link
