@@ -45,6 +45,9 @@ And use this point during fetch for all videos✅
 
 5 change loading screen from mom to something else.✅
 
+6. icon of app.✅
+
+7. Name of app.✅
 
 
 ERROR =============================================================================================================================>>

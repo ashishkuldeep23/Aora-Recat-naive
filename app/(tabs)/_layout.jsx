@@ -1,9 +1,11 @@
 import { Text, View, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Tabs } from 'expo-router'
 import { icons } from '../../constants'
 import { StatusBar } from 'expo-status-bar'
 import { useGlobalContext } from '../../context/ContextProvider'
+import * as Animatable from 'react-native-animatable';
+
 
 
 const TabIcon = ({ icon, color, name, focused, scale }) => {
@@ -15,34 +17,29 @@ const TabIcon = ({ icon, color, name, focused, scale }) => {
   // console.log(avatar)
 
   return (
-    <View
+    <Animatable.View
       className={`justify-center items-center gap-1.5`}
     >
       <Image
-
         source={icon}
-
-        // source={
-        //   name !== "Profile"
-        //     ? icon
-        //     : { uri: user?.avatar }
-        // }
-
-
         resizeMode='contain'
-        className={`w-5 h-5 
+        className={`w-5 h-5 relative
             ${scale}  
             ${focused
-            ? "-translate-y-2 scale-125"
-            : "translate-y-0 scale-100"}
+            ? "-translate-y-2 scale-150 top-1.5 w-6 h-6"
+            : "translate-y-0 scale-100 top-0"}
+            transition-all duration-1000
           `}
         tintColor={color}
       />
       <Text
-        className={` ${focused ? `font-psemibold -translate-y-2 scale-125 ` : " font-pregular translate-y-0 scale-90"} transition-all duration-1000 text-xs`}
+        className={` ${focused
+          ? `font-psemibold -translate-y-2 scale-125 hidden`
+          : " font-pregular translate-y-0 scale-90 block"
+          } transition-all duration-1000 text-xs`}
         style={{ color }}
       >{name}</Text>
-    </View>
+    </Animatable.View>
   )
 }
 
@@ -53,26 +50,30 @@ const TabsLayout = () => {
 
 
   return (
-
     <>
-
       <StatusBar
         backgroundColor='#161622'
         style='light'
       />
 
+
+
       <Tabs
+        className=" bg-red-500"
+
         screenOptions={{
           tabBarShowLabel: false,
           tabBarActiveTintColor: `${!theme ? "#FFA001" : "#d48500"}`,
           tabBarInactiveTintColor: `${!theme ? "#fff" : "#808080"}`,
           tabBarStyle: {
             backgroundColor: `${!theme ? "#161622" : "#c4cbd9"}`,
+            // backgroundColor: `${!theme ? "#F9BEF9 " : "#F08080"}`,
             borderTopWidth: 1,
             borderTopColor: `${!theme ? "#232523" : "#c4cbd9"}`,
-            height: 84
-          }
-
+            height: 74,
+            // marginHorizontal: 5,
+            // borderRadius: 50
+          },
         }}
       >
 

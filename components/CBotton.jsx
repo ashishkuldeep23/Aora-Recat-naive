@@ -18,7 +18,7 @@ const CBotton = ({ title, handlePress, containerStyle, textStyle, isLoading }) =
                 // console.log("cccc") 
                 handlePress();
             }}
-            onLongPress={() => Alert.alert("On long press working well in Pressable.")}
+            // onLongPress={() => Alert.alert("On long press working well in Pressable.")}
             activeOpacity={0.7}
             disabled={isLoading}
         >

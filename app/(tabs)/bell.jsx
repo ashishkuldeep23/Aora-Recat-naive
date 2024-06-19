@@ -4,6 +4,7 @@ import { useGlobalContext } from '../../context/ContextProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, router, usePathname } from 'expo-router';
 import { makeNotiSeen } from '../../lib/appwrite';
+import { useSwipe } from '../../lib/swipe';
 // import { addFollow, createNewNotification, removeFollow } from '../../lib/appwrite'
 
 const Notification = () => {
@@ -74,16 +75,36 @@ const Notification = () => {
     }, [allNotifications])
 
 
+    const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 1)
+
+
+    function onSwipeLeft() {
+        // console.log('SWIPE_LEFT')
+        router.push("/profile")
+
+    }
+
+    function onSwipeRight() {
+        // console.log('SWIPE_RIGHT')
+        router.push("/create")
+
+    }
+
+
+
+
     return (
 
-        <SafeAreaView className={` relative px-4 h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
+        <SafeAreaView
+            className={` relative px-4 h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+        >
             {/* <ScrollView className='px-4 my-6'> */}
 
             <FlatList
                 data={allNotifications || []}
-
                 keyExtractor={(item) => item?.$id || ""}
-
 
                 renderItem={({ item }) => <SingleNotifiaction data={item} />}
 

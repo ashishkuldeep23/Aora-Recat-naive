@@ -10,6 +10,7 @@ import { router } from 'expo-router'
 import { createVideoPost, updatePostData } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/ContextProvider'
 import CLoading from '../../components/CLoading'
+import { useSwipe } from '../../lib/swipe'
 
 
 
@@ -131,6 +132,24 @@ const Create = () => {
 
 
 
+  const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 1)
+
+
+  function onSwipeLeft() {
+    // console.log('SWIPE_LEFT')
+    router.push("/bell")
+
+  }
+
+  function onSwipeRight() {
+    // console.log('SWIPE_RIGHT')
+    router.push("/bookmark")
+
+  }
+
+
+
+
   // // // If user data is not getting by any reason then prevent to create new video.
   if (!user.$id) {
     return (
@@ -140,11 +159,17 @@ const Create = () => {
     )
   }
 
-
   return (
 
-    <SafeAreaView className={` relative h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
-      <ScrollView className='px-4 my-6'>
+    <SafeAreaView
+      className={` relative h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+
+      <ScrollView
+        className='px-4 my-6'
+      >
 
         {/* Universal loader heer ------------> */}
         <CLoading isLoading={uploading} />

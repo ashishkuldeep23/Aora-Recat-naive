@@ -12,6 +12,7 @@ import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/ContextProvider'
 import * as Animatable from 'react-native-animatable';
 import { router } from 'expo-router'
+import { useSwipe } from '../../lib/swipe'
 
 const Home = () => {
 
@@ -44,6 +45,25 @@ const Home = () => {
 
     setRefreshing(false)
   }
+
+
+  // // // Experiment of swipe event -------------->>
+
+  const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 1)
+
+  function onSwipeLeft() {
+    // console.log('SWIPE_LEFT')
+    router.push("/bookmark")
+
+  }
+
+  function onSwipeRight() {
+    // console.log('SWIPE_RIGHT')
+    router.push("/profile")
+
+  }
+
+
 
 
   // console.log(JSON.stringify(allPost[0], null, 4))
@@ -102,6 +122,8 @@ const Home = () => {
 
     <SafeAreaView
       className={` min-h-[100vh] ${!theme ? "bg-primary " : "bg-gray-100"}`}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
 
       {/* Loading text here --------> */}
@@ -130,6 +152,7 @@ const Home = () => {
 
       <FlatList
 
+      
         // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
         // data={[]}
         data={allPost}

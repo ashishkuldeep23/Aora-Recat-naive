@@ -7,7 +7,8 @@ import VideoCard from '../../components/VideoCard'
 import CLoading from '../../components/CLoading'
 import EmptyState from '../../components/Empty'
 import useAppwrite from '../../lib/useAppwrite'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
+import { useSwipe } from '../../lib/swipe'
 
 const Bookmark = () => {
 
@@ -29,6 +30,22 @@ const Bookmark = () => {
   }
 
 
+  const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 1)
+
+
+  function onSwipeLeft() {
+    // console.log('SWIPE_LEFT')
+    router.push("/create")
+
+  }
+
+  function onSwipeRight() {
+    // console.log('SWIPE_RIGHT')
+    router.push("/home")
+
+  }
+
+
 
 
   let firstTimeAllSavedPost = true;
@@ -44,7 +61,11 @@ const Bookmark = () => {
 
   return (
 
-    <SafeAreaView className={` relative h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}>
+    <SafeAreaView
+      className={` relative h-full ${!theme ? "bg-primary" : " bg-gray-100"}`}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
 
       <CLoading isLoading={isLoading} />
 

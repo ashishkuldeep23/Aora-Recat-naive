@@ -48,12 +48,12 @@ const CInput = ({ title, value, onChangeHander, placeholder, otherStyles, forCom
 
                         onPress={() => setshowPass(!showPass)}
                         // onPress={() => { Alert.alert("fdfdsffdaf") }}
-                        className=" absolute right-0 w-10 h-16"
+                        className=" absolute right-0 w-10 h-14 rounded-r-full"
                     >
                         <Image
                             source={!showPass ? icons.eye : icons.eyeHide}
                             // source={icons.eye}
-                            className='w-6 absolute left-[20%] z-[10] '
+                            className='w-8 h-8 absolute left-[5%] top-[25%]  z-[10] '
                             resizeMode='contain'
                         />
                     </TouchableOpacity>

@@ -16,6 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import { zoomIn, zoomOut } from '../../components/Tranding'
 import ModalComponent from '../../components/Modal'
 import CLoading from '../../components/CLoading'
+import { useSwipe } from '../../lib/swipe'
 
 
 
@@ -86,7 +87,6 @@ const LoggedInUserProfile = () => {
             }, 100);
         }
     };
-
 
 
     const uploadNewProfileImgHandler = async () => {
@@ -229,6 +229,25 @@ const LoggedInUserProfile = () => {
     }, [user])
 
 
+
+
+    const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 1)
+
+
+    function onSwipeLeft() {
+        // console.log('SWIPE_LEFT')
+        router.push("/home")
+
+    }
+
+    function onSwipeRight() {
+        // console.log('SWIPE_RIGHT')
+        router.push("/bell")
+
+    }
+
+
+
     // console.log(JSON.stringify(user, null, 4))
 
 
@@ -236,6 +255,8 @@ const LoggedInUserProfile = () => {
 
         <SafeAreaView
             className={`h-full ${!theme ? "bg-primary " : " bg-gray-100"}`}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
         >
 
             <ModalComponent />
@@ -256,6 +277,9 @@ const LoggedInUserProfile = () => {
 
                 ListHeaderComponent={() => {
                     return <View className="w-full justify-center items-center mt-6 mb-12 px-4">
+
+
+                        <Text className={` font-psemibold text-lg text-center ${!theme ? "text-white" : "text-black"}`}>{user.username}, Your profile</Text>
 
                         <View className='w-full mb-10 mt-0 flex-row items-center flex-1 '>
 
@@ -709,6 +733,30 @@ const SingleFollowerOrFollowingUser = ({ user, usedFor, setAllFollowers, setAllF
     const removeThisFollowerBtnHandler = async () => {
 
 
+        Alert.alert(
+            'Do you really want to remove.',
+            "Press remove or cancel.",
+
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                    className: " text-red-600"
+                },
+                {
+                    text: 'Remove',
+                    onPress: removeFollowAndFollowingHandler()
+
+                },
+            ]
+
+        )
+
+    }
+
+
+    const removeFollowAndFollowingHandler = async () => {
         try {
 
             let result = await removeOneFollowerAndFollowing(usedFor, yourData.$id, user?.$id)

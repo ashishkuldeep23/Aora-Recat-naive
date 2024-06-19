@@ -133,11 +133,18 @@ export default function App() {
                     className='w-full min-h-[85vh] justify-center items-center px-4'
                 >
 
-                    <Image
+                    <View className='mt-5'>
+
+                        <Text className={`text-3xl font-pbold text-center  ${!theme ? "text-white" : "text-black"}`}>
+                            VidShare
+                        </Text>
+                    </View>
+
+                    {/* <Image
                         source={images.logo}
                         resizeMode='contain'
                         className={"w-[130px] h-[84px] mt-5"}
-                    />
+                    /> */}
 
                     <Image
                         source={images.cards}
@@ -148,12 +155,12 @@ export default function App() {
                     <View className="relative mt-5">
                         <Text className={`text-3xl font-bold text-center ${!theme ? "text-white" : "text-black"}`}>
                             Discover Endless Possibilities {" "}
-                            <Text className="text-secondary">Aora</Text>
+                            <Text className="text-secondary">VidShare</Text>
                         </Text>
 
                         <Image
                             source={images.path}
-                            className="w-[136px] h-[15px] absolute -bottom-2 -right-10"
+                            className="w-[160px] h-[15px] absolute -bottom-2 -right-9"
                             resizeMode='contain'
                         />
 
@@ -161,6 +168,7 @@ export default function App() {
 
 
                     <Text className='text-sm  font-pregular text-gray-100 mt-7 text-center'>Where creativity meets innovation: embark on a journey of limitless exploration with Aora</Text>
+                    <Text className='text-sm  font-pregular text-gray-100 mt-2 text-center'>Share your momvements in the form of video.</Text>
 
                     <CBotton
                         title={'Continue with Email'}

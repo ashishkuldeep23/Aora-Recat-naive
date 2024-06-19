@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "aora",
+    "name": "VidShare",
     "slug": "aora",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/cards.png",
+        "foregroundImage": "./assets/images/mom.png",
         "backgroundColor": "#000"
       },
       "package": "com.ashish.aora"
