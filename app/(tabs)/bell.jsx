@@ -90,9 +90,6 @@ const Notification = () => {
 
     }
 
-
-
-
     return (
 
         <SafeAreaView
@@ -111,7 +108,7 @@ const Notification = () => {
                 ListHeaderComponent={() => {
                     return <View className="my-6 px-4 ">
                         <Text
-                            className="font-pmedium text-2xl text-gray-100"
+                            className={`font-pmedium text-2xl  ${!theme ? "text-gray-100" : " text-gray-900"}`}
                         >
                             Notifications
                         </Text>
@@ -120,7 +117,7 @@ const Notification = () => {
                             onPress={onRefresh}
                         >
                             <Text
-                                className="font-pmedium text-sm text-gray-100"
+                                className={`font-pmedium text-sm text-gray-100  ${!theme ? "text-gray-100" : " text-gray-900"}`}
                             >Refresh the page.</Text>
                         </TouchableOpacity>
                     </View>

@@ -80,7 +80,7 @@ const Bookmark = () => {
         ListHeaderComponent={() => {
           return <View className="my-6 px-4 ">
             {/* <View className="items-center justify-center"> */}
-            <Text className="font-pmedium text-2xl text-gray-100">
+            <Text className={`first:font-pmedium text-2xl ${!theme ? "text-gray-100" : " text-gray-900"}`}>
               Your saved posts
             </Text>
 
