@@ -279,7 +279,7 @@ const LoggedInUserProfile = () => {
                     return <View className="w-full justify-center items-center mt-6 mb-12 px-4">
 
 
-                        <Text className={` font-psemibold text-lg text-center ${!theme ? "text-white" : "text-black"}`}>{user.username}, Your profile</Text>
+                        <Text className={` font-psemibold text-lg text-center ${!theme ? "text-white" : "text-black"}`}>{user?.username}, Your profile</Text>
 
                         <View className='w-full mb-10 mt-0 flex-row items-center flex-1 '>
 
@@ -405,6 +405,18 @@ const LoggedInUserProfile = () => {
                             containerStyle={" -mt-4"}
                             titleStyle="text-xs"
                         />
+
+                        {
+                            user?.email === "ashishkuldeep6@gmail.com"
+                            &&
+
+                            <InfoBox
+                                title={"(Default account)"}
+                                subtite=""
+                                containerStyle={" -mt-4"}
+                                titleStyle="text-xs text-cyan-500"
+                            />
+                        }
 
 
                         {
@@ -847,7 +859,7 @@ const SingleFollowerOrFollowingUser = ({ user, usedFor, setAllFollowers, setAllF
                     onPress={goToThisUser}
                 >
 
-                    <Text className=" text-white font-psemibold -my-1">{user.username}</Text>
+                    <Text className=" text-white font-psemibold -my-1">{user?.username}</Text>
                     <Text className=" text-white">({user.email})</Text>
                 </TouchableOpacity>
 

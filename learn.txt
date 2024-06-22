@@ -49,6 +49,8 @@ And use this point during fetch for all videos✅
 
 7. Name of app.✅
 
+8. Regex on password.
+
 
 ERROR =============================================================================================================================>>
 When you getting npm package outdateed error then you should use these commands

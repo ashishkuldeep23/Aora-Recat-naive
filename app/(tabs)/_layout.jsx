@@ -26,7 +26,7 @@ const TabIcon = ({ icon, color, name, focused, scale }) => {
         className={`w-5 h-5 relative
             ${scale}  
             ${focused
-            ? "-translate-y-2 scale-150 top-1.5 w-6 h-6"
+            ? "-translate-y-2 scale-150 top-1 w-6 h-6"
             : "translate-y-0 scale-100 top-0"}
             transition-all duration-1000
           `}

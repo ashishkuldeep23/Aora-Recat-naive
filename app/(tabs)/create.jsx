@@ -206,7 +206,7 @@ const Create = () => {
             <Text
               className={`text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}
               numberOfLines={1}
-            >Create new post by filling this form properly.</Text>
+            >Create new post by filling below form.</Text>
 
           </View>
         </View>

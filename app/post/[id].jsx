@@ -301,6 +301,13 @@ const SinglePostPage = () => {
                                         <Text className={`${!theme ? "text-white" : "text-black"} `}>{singlePostGlobal?.creator?.email}</Text>
 
                                         {
+                                            singlePostGlobal?.creator?.email === "ashishkuldeep6@gmail.com"
+                                            &&
+                                            <Text className={`${!theme ? "text-cyan-400" : "text-cyan-700"} `}>(Default account)</Text>
+                                        }
+
+
+                                        {
                                             (singlePostGlobal.creator?.rank || 0) >= VerifiedRankValue
                                             &&
                                             <>

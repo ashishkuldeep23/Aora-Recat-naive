@@ -4,16 +4,13 @@ import { useGlobalContext } from '../context/ContextProvider';
 import CBotton from './CBotton';
 import { signIn } from '../lib/appwrite';
 import { router } from 'expo-router';
+import { Default_user_email, Default_user_pass } from '../lib/logInRelatedImpCode';
 
 const LogInByDefaultUser = () => {
 
 
     const { isLoading, setIsLoading, setIsLoggedIn, setUser, isInternetConnected } = useGlobalContext();
 
-
-
-    const Default_user_email = "ashishkuldeep6@gmail.com";
-    const Default_user_pass = '123456789';
 
 
     async function logInDefaultUser() {

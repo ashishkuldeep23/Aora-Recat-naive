@@ -8,6 +8,8 @@ import { useRouter } from 'expo-router'
 import { signIn } from "../../lib/appwrite"
 import { useGlobalContext } from '../../context/ContextProvider'
 import LogInByDefaultUser from '../../components/LogInByDefaultUser'
+import { ADMIN_EMAILS, checkEmailValueWithRegex, checkPassValueWithRegex } from '../../lib/logInRelatedImpCode'
+
 
 const SignIn = () => {
 
@@ -22,16 +24,30 @@ const SignIn = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
+    const [err, setErr] = useState('')
+
 
     const submitForm = async () => {
 
         if (!fromFields.email || !fromFields.password) {
-            return Alert.alert("Error", "Please give all feilds : Email, Password")
+            setErr("Please fill all feilds : Email, Password")
+            return Alert.alert("Error", "Please fill all feilds : Email, Password")
+        }
+
+        if (!checkEmailValueWithRegex(fromFields.email)) {
+            setErr("Given email is invalid")
+            return Alert.alert("Error", "Given email is invalid.")
+        }
+
+        if (!ADMIN_EMAILS.includes(fromFields.email) && !checkPassValueWithRegex(fromFields.password)) {
+            setErr("Use strong password.")
+            return Alert.alert("Error", "Use strong password.")
         }
 
         setIsLoading(true);
 
         try {
+            setErr("")
             const result = await signIn(fromFields.email, fromFields.password)
 
             // // // Set it to global state -------->
@@ -41,6 +57,7 @@ const SignIn = () => {
             router.replace('/home')
 
         } catch (error) {
+            setErr(`${error}`)
             Alert.alert('Error', `${error}`)
         } finally {
             setIsLoading(false);
@@ -48,6 +65,12 @@ const SignIn = () => {
 
     }
 
+
+    const passwordOnChangeHandler = (e) => {
+
+        if (!checkPassValueWithRegex(e)) setErr("Use strong password.(Use combination of characters, numbers and symbols.)");
+        setfromFields({ ...fromFields, password: e })
+    }
 
     return (
 
@@ -72,6 +95,12 @@ const SignIn = () => {
 
                         <Text className=' text-white text-lg font-psemibold my-5 '>Sign in</Text>
 
+                        {
+                            err
+                            &&
+                            <Text className=" text-center text-red-500">Error : {err}</Text>
+                        }
+
 
                         <CInput
                             title={'Email'}
@@ -84,7 +113,7 @@ const SignIn = () => {
                         <CInput
                             title={'Password'}
                             value={fromFields.password}
-                            onChangeHander={(e) => setfromFields({ ...fromFields, password: e })}
+                            onChangeHander={(e) => passwordOnChangeHandler(e)}
                             placeholder={''}
                             otherStyles={''}
                         />

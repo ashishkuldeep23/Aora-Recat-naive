@@ -182,15 +182,17 @@ const SingleNotifiaction = ({ data }) => {
             >
 
                 <View
-                    className=" w-full flex flex-row items-center gap-0.5"
+                    className="w-full flex flex-row items-center gap-0.5"
                 >
 
+                    <View className=" rounded-full w-8 h-8 mr-2  p-0.5 overflow-hidden">
 
-                    <Image
-                        source={{ uri: data?.whoSended?.avatar }}
-                        className="w-8 h-8 rounded-full mr-2  "
-                        resizeMode='contain'
-                    />
+                        <Image
+                            source={{ uri: data?.whoSended?.avatar }}
+                            className="h-full w-full "
+                            resizeMode='contain'
+                        />
+                    </View>
 
 
                     <Text className={`${!theme ? "text-white " : "text-black "}font-semibold`}>{data?.whoSended?.username}</Text>

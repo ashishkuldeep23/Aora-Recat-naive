@@ -243,6 +243,22 @@ const UserProfile = () => {
                     titleStyle="text-xs"
                 />
 
+
+                {
+                    searchUser?.email === "ashishkuldeep6@gmail.com"
+                    &&
+
+                    <InfoBox
+                        title={"(Default account)"}
+                        subtite=""
+                        containerStyle={" -mt-4"}
+                        titleStyle="text-xs text-cyan-500"
+                    />
+                }
+
+
+
+
                 {
                     (searchUser?.rank || 0) >= VerifiedRankValue
                     &&

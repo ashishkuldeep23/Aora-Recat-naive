@@ -8,6 +8,7 @@ import CBotton from '../../components/CBotton'
 import { createNewUser } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/ContextProvider'
 import LogInByDefaultUser from '../../components/LogInByDefaultUser'
+import { ADMIN_EMAILS, checkEmailValueWithRegex, checkPassValueWithRegex, checkUserNameValueWithRegex } from '../../lib/logInRelatedImpCode'
 
 
 const SignUp = () => {
@@ -25,16 +26,35 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false)
 
 
+  const [err, setErr] = useState("")
+
   const submitForm = async () => {
 
     if (!fromFields.email || !fromFields.password || !fromFields.username) {
-      return Alert.alert("Error", "Please give all feilds : Email, Password, Username")
+      setErr("Please fill all feilds : Email, Password, Username")
+      return Alert.alert("Error", "Please fill all feilds : Email, Password, Username")
+    }
+
+    if (!checkUserNameValueWithRegex(fromFields.username)) {
+      setErr("Given username is invalid.(User name only contain characters and space.)")
+      return Alert.alert("Error", "Given username is invalid.(User name only contain characters and space.)")
+    }
+
+    if (!checkEmailValueWithRegex(fromFields.email)) {
+      setErr("Given email is invalid")
+      return Alert.alert("Error", "Given email is invalid.")
+    }
+
+
+    if (!ADMIN_EMAILS.includes(fromFields.email) && !checkPassValueWithRegex(fromFields.password)) {
+      setErr("Use strong password.")
+      return Alert.alert("Error", "Use strong password.")
     }
 
     setIsLoading(true);
 
     try {
-
+      setErr("")
       const result = await createNewUser(fromFields.email, fromFields.password, fromFields.username)
 
       // // // Set it to global state -------->
@@ -44,6 +64,7 @@ const SignUp = () => {
       router.replace('/home')
 
     } catch (error) {
+      setErr(`${error}`)
       Alert.alert('Error', `${error}`)
     } finally {
       setIsLoading(false);
@@ -51,6 +72,11 @@ const SignUp = () => {
 
   }
 
+
+  const passwordOnChangeHandler = (e) => {
+    if (!checkPassValueWithRegex(e)) setErr("Use strong password.(Use combination of characters, numbers and symbols.)");
+    setfromFields({ ...fromFields, password: e })
+  }
 
   return (
 
@@ -76,6 +102,13 @@ const SignUp = () => {
             <Text className=' text-white text-lg font-psemibold my-5 '>Sign Up</Text>
 
 
+            {
+              err
+              &&
+              <Text className=" text-center text-red-500">Error : {err}</Text>
+            }
+
+
             <CInput
               title={'Name'}
               value={fromFields.username}
@@ -98,7 +131,7 @@ const SignUp = () => {
             <CInput
               title={'Password'}
               value={fromFields.password}
-              onChangeHander={(e) => setfromFields({ ...fromFields, password: e })}
+              onChangeHander={(e) => passwordOnChangeHandler(e)}
               placeholder={''}
               otherStyles={''}
             />
