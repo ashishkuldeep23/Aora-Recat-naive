@@ -3,10 +3,12 @@ import React from 'react'
 import { images } from '../constants'
 import CBotton from './CBotton'
 import { router, usePathname } from 'expo-router'
+import { useGlobalContext } from '../context/ContextProvider'
 
 const EmptyState = ({ title, subtite }) => {
 
     const pathname = usePathname()
+    const { theme } = useGlobalContext()
 
     return (
         <View className="justify-center items-center px-4 ">
@@ -16,10 +18,10 @@ const EmptyState = ({ title, subtite }) => {
                 resizeMode='contain'
             />
 
-            <Text className="text-xl font-psemibold text-white text-center mt-2">
+            <Text className={`text-xl font-psemibold text-center mt-2 ${!theme ? " text-gray-100" : " text-black-100"}`}>
                 {title}
             </Text>
-            <Text className="font-pmedium text-sm text-gray-100 text-center">
+            <Text className={`first-line:font-pmedium text-sm text-center ${!theme ? " text-gray-100" : " text-black-100"}`}>
                 {subtite}
             </Text>
 

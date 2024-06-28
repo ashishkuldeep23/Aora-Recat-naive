@@ -8,10 +8,11 @@ import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { router, useLocalSearchParams } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
+import { useGlobalContext } from '../../context/ContextProvider'
 
 const SearchPage = () => {
 
-  // const { user } = useGlobalContext()
+  const { theme } = useGlobalContext()
 
   const { query } = useLocalSearchParams()
 
@@ -29,7 +30,7 @@ const SearchPage = () => {
   return (
 
     <SafeAreaView
-      className=' bg-primary h-full'
+      className={` h-full ${!theme ? " bg-black-100" : " bg-gray-100"}`}
     >
 
       <FlatList
@@ -44,12 +45,12 @@ const SearchPage = () => {
         }}
 
         ListHeaderComponent={() => {
-          return <View className="my-6 px-4 ">
+          return <View className={`my-6 px-4 `}>
             {/* <View className="items-center justify-center"> */}
-            <Text className="font-pmedium text-sm text-gray-100">
-              Search Results
+            <Text className={`font-pmedium text-sm ${!theme ? " text-gray-100" : " text-black-100"}`}>
+              Searching...
             </Text>
-            <Text className="text-xl font-psemibold text-white">
+            <Text className={`text-xl font-psemibold text-white ${!theme ? " text-gray-100" : " text-black-100"}`}>
               {query}
             </Text>
             {/* </View> */}
@@ -80,7 +81,7 @@ const SearchPage = () => {
                     {
                       users && users?.length > 0
                       &&
-                      <Text className="text-2xl text-gray-100 text-center">
+                      <Text className={`text-2xl text-center font-psemibold ${!theme ? " text-gray-100" : " text-black-100"}`}>
                         All Users are :
                       </Text>
                     }
@@ -95,7 +96,7 @@ const SearchPage = () => {
                     <TouchableOpacity
                       onPress={() => router.push(`/user/${item.$id}`)}
 
-                      className=' flex flex-row items-center gap-2 border border-white  px-2 rounded-md py-1'
+                      className={`flex flex-row items-center gap-2 border px-2 rounded-md py-1 ${!theme ? " border-gray-100" : " border-black-100"}`}
                     >
 
                       <Image
@@ -106,8 +107,8 @@ const SearchPage = () => {
 
                       <View>
 
-                        <Text className=" text-white font-psemibold -my-1">{item.username}</Text>
-                        <Text className=" text-white">({item.email})</Text>
+                        <Text className={` font-psemibold -my-1 ${!theme ? " text-gray-100" : " text-black-100"}`}>{item.username}</Text>
+                        <Text className={` ${!theme ? " text-gray-100" : " text-black-100"}`}>({item.email})</Text>
                       </View>
 
                     </TouchableOpacity>
@@ -118,8 +119,7 @@ const SearchPage = () => {
 
               ListEmptyComponent={() => <View>
 
-                <Text className=' text-center text-gray-100 text-xl font-psemibold'>No User Found </Text>
-                <Text className='text-center text-gray-100 text-base font-pregular'>No video found for your query({query})</Text>
+                <Text className={` text-center text-xl font-psemibold ${!theme ? " text-gray-100" : " text-black-100"}`}>No User Found with ({query}) </Text>
               </View>}
 
             />

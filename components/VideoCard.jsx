@@ -348,7 +348,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                 ${width && `w-[32vh] pt-3`} 
                 ${!postPage && "mb-10"}
                 relative overflow-hidden flex-col items-center px-4
-            `}
+            `} c
             animation={activeItem === item?.$id ? zoomIn : zoomOut}
             duration={700}
         >
@@ -392,7 +392,11 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
 
 
                 <TouchableOpacity
-                    className={`odd:mt-2 mx-0.5 py-1 px-1.5 rounded border  ${!theme ? "border-white" : "border-black"}`}
+                    className={`odd:mt-2 mx-0.5 py-1 px-1.5 border  
+                            ${!theme ? "border-white" : "border-black"}
+                            ${openMenu ? "rounded-xl" : "rounded mx-1 px-2.5"}
+                            transition-all duration-1000
+                        `}
                     onPress={() => { setOpenMenu(!openMenu) }}
                 >
                     {/* <Image
@@ -401,10 +405,10 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                         resizeMode="contain"
                     /> */}
 
-                    <Text className={`${!theme ? "text-white" : "text-black"}`}>
+                    <Text className={` font-bold text-xl ${!theme ? "text-white" : "text-black"}`}>
                         {
                             !openMenu
-                                ? '◀'
+                                ? '⁞'
                                 : '✕'
                         }
                     </Text>
@@ -419,7 +423,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                     &&
                     // // // Below div will open when every open menu btn clicked.
                     <Animatable.View
-                        className={`w-[40%] absolute  z-10  rounded-xl top-1  right-[26px] `}
+                        className={`w-[40%] absolute  z-10  rounded-xl top-0.5 right-[35px] `}
                         animation='lightSpeedIn'
                         duration={500}
                         easing="ease-out"

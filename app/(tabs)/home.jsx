@@ -175,11 +175,11 @@ const Home = () => {
 
             <View className=" flex justify-between items-start flex-row mb-6">
 
-              <View className="items-center justify-center">
+              <View className=" flex justify-center">
                 <Text className={`font-pmedium text-sm ${!theme ? 'text-gray-100' : "text-gray-800"} `}>
                   Welcome Back
                 </Text>
-                <Text className={`text-xl font-psemibold   ${!theme ? 'text-white' : "text-black"} `}>
+                <Text className={`text-xl font-psemibold  text-start ${!theme ? 'text-white' : "text-black"} `}>
                   {user?.username}
                 </Text>
               </View>
@@ -233,8 +233,6 @@ const Home = () => {
 }
 
 export default Home
-
-
 
 
 const NewNotificationDivHome = () => {
