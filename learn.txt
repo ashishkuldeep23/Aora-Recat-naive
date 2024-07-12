@@ -49,7 +49,7 @@ And use this point during fetch for all videos✅
 
 7. Name of app.✅
 
-8. Regex on password.
+8. Regex on password.✅
 
 
 ERROR =============================================================================================================================>>

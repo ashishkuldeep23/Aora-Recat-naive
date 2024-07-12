@@ -7,7 +7,7 @@ import { useGlobalContext } from '../context/ContextProvider'
 
 // // // forCommentVideo is a bool value that tells this box used for comment of post.
 
-const CInput = ({ title, value, onChangeHander, placeholder, otherStyles, forCommentVideo, autoFocus, textWidth }) => {
+const CInput = ({ title, value, onChangeHander, placeholder, otherStyles, forCommentVideo, autoFocus, textWidth, numberOfLines }) => {
 
     const { theme } = useGlobalContext()
 
@@ -19,7 +19,6 @@ const CInput = ({ title, value, onChangeHander, placeholder, otherStyles, forCom
         >
             <Text className={` ml-2 text-base ${!theme ? "text-gray-100" : "text-gray-900"} 
              font-pmedium`}>{title}</Text>
-
             <View className={` ${textWidth ? "w-[33vh]" : "w-full"}  relative overflow-hidden flex-1 items-end  h-16 px-4 rounded-2xl   border-2 border-black-200 focus:border-secondary ${!theme ? "bg-black-100" : "bg-gray-100"} `}>
 
 
@@ -34,7 +33,7 @@ const CInput = ({ title, value, onChangeHander, placeholder, otherStyles, forCom
                         // title === 'Password' && setshowPass(false)
                     }}
                     multiline={textWidth ? true : false}
-
+                    // numberOfLine={numberOfLines || 1}
                     autoFocus={autoFocus}
                     // // // Below is used to hide text by default ------->
                     // // Means if your input title is password then make true secureTextEntry prop.

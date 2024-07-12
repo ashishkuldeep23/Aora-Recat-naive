@@ -539,13 +539,18 @@ const LoggedInUserProfile = () => {
                 }}
 
                 ListFooterComponent={() => {
-                    return <Link
-                        href={'/dev'}
+                    return <View className="mb-4">
 
-                        className=" px-5 rounded-full bg-blue-600 my-2 mx-auto"
-                    >
-                        <Text className=' text-center text-white font-psemibold'>Check Developer page</Text>
-                    </Link>
+                        <Link
+                            href={'/dev'}
+
+                            className=" px-5 rounded-full bg-teal-600 mt-2  mx-auto"
+                        >
+                            <Text className=' text-center text-white font-psemibold'>Feedback & Dev Info</Text>
+                        </Link>
+                        <Text className={` font-pregular text-center my-1 ${!theme ? " text-white " : "  text-black"}`}>Please checkout feedback section.☝️</Text>
+
+                    </View>
                 }}
 
                 ListEmptyComponent={() => <EmptyState title="No Video Found" subtite={`Seem like you have't share any video.`} />}
@@ -567,7 +572,7 @@ export default LoggedInUserProfile
 const AllProfilePhoto = () => {
 
 
-    const { user } = useGlobalContext()
+    const { user, theme } = useGlobalContext()
 
     const [activeItem, setActiveItem] = useState('');
 
@@ -586,7 +591,12 @@ const AllProfilePhoto = () => {
 
         <>
 
-            <Text className=" text-white font-psemibold  mt-7">Your all uploaded images.</Text>
+            {
+                user?.allProfilePic && user.allProfilePic.length > 0
+                &&
+                <Text className={`${theme ? " text-black" : "text-white"}  font-psemibold  mt-7`}>Your all uploaded images.</Text>
+            }
+
 
             <FlatList
                 // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
