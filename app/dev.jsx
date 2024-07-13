@@ -372,7 +372,7 @@ function AllFeedbackSection({ controlCrud, setControlCrud }) {
                         })
                         :
                         <View className='mt-20 flex justify-center items-center'>
-                            <Text className={`text-white text-center font-pbold text-4xl `}>
+                            <Text className={`text-white text-center font-pbold text-2xl `}>
                                 No feedback found. Give first feedback to this application.
                             </Text>
                         </View>
@@ -470,6 +470,11 @@ function SingleFeedback({ item, controlCrud, setControlCrud }) {
             setformFields({ ...formFields })
         }
 
+        if (controlCrud.isDoing && controlCrud.whatDoing === "updating") {
+
+            setformFields({ ...initialForm })
+        }
+
     }, [controlCrud])
 
 
@@ -491,6 +496,22 @@ function SingleFeedback({ item, controlCrud, setControlCrud }) {
             </Text>
 
 
+            {/* Delete btn for admin.  */}
+            {
+                user?.email === "ashishkuldeep08@gmail.com"
+                &&
+                <View className=' pt-1 flex flex-row gap-1 justify-end px-0.5'>
+                    <TouchableOpacity
+                        className=" border border-red-700 px-0.5 rounded"
+                        onPress={deletingFeed}
+                    >
+                        <Text className=" text-red-700 font-psemibold text-xs">Delete</Text>
+                    </TouchableOpacity>
+                </View>
+            }
+
+
+            {/* Reply ui for admin. */}
             {
                 user?.email === "ashishkuldeep08@gmail.com"
                 &&
@@ -530,6 +551,7 @@ function SingleFeedback({ item, controlCrud, setControlCrud }) {
             }
 
 
+            {/* Delete and updated btn for admin. */}
             {
                 user?.$id === item?.user?.$id
                 &&

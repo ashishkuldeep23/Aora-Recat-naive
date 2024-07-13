@@ -57,7 +57,7 @@ export const connectionErrAlert = () => {
 
 
 
-export default function App() {
+export default function App() {7
 
     const { isLoggedIn, isLoading, theme, isInternetConnected, setInternetConnected } = useGlobalContext();
 

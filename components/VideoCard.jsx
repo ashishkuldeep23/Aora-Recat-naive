@@ -429,6 +429,51 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                         easing="ease-out"
                     >
 
+                        {/* Delete btn for admin ----------> */}
+                        {
+                            user?.email === "ashishkuldeep08@gmail.com"
+                            &&
+                            <View className={` my-1 px-2 border rounded-xl  ${!theme ? " bg-black border-red-300 " : "bg-gray-300 border-red-600 "} `}>
+
+                                {
+                                    [
+                                        {
+                                            name: "Delete❌",
+                                            handler: (() => {
+                                                deletePostHandler(item?.$id);
+                                                // Alert.alert("Delete");
+                                            })
+                                        }
+                                    ]
+                                        .map((ele, i) => {
+                                            return <Fragment key={i}>
+
+                                                <TouchableOpacity
+                                                    className="my-0.5"
+                                                    onPress={() => ele?.handler ? ele.handler() : Alert.alert("I'm Dummy")}
+                                                >
+
+                                                    <Text
+                                                        className={` 
+                                                           text-lg font-psemibold
+                                                               ${!theme
+                                                                ? "text-red-400"
+                                                                : "text-red-700"
+                                                            }
+                                                       `}
+                                                    >{ele.name}</Text>
+
+                                                </TouchableOpacity>
+                                            </Fragment>
+                                        })
+                                }
+
+
+                            </View>
+                        }
+
+
+                        {/* Save btn for all ----------> */}
                         {
                             (!pathname.startsWith("/profile"))
                             &&
@@ -483,12 +528,10 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
                         }
 
 
-
-
+                        {/* Delete and Update btn for created user ---------> */}
                         {
                             item?.creator?.$id === user?.$id
                             &&
-
                             <View className={` my-1 px-2 border rounded-xl  ${!theme ? " bg-black border-cyan-300 " : "bg-gray-300 border-cyan-600 "} `}>
 
                                 {
@@ -533,9 +576,7 @@ const VideoCard = ({ item, allData, width, activeItem, postPage, pageName }) => 
 
 
                             </View>
-
                         }
-
 
                     </Animatable.View>
                 }
