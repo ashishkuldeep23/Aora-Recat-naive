@@ -229,8 +229,6 @@ const LoggedInUserProfile = () => {
     }, [user])
 
 
-
-
     const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 1)
 
 
@@ -245,7 +243,6 @@ const LoggedInUserProfile = () => {
         router.push("/bell")
 
     }
-
 
 
     // console.log(JSON.stringify(user, null, 4))
@@ -307,6 +304,15 @@ const LoggedInUserProfile = () => {
                             </TouchableOpacity>
 
                         </View>
+
+
+                        {
+                            user?.email === "ashishkuldeep6@gmail.com"
+                            &&
+                            <View >
+                                <Text className={`text-xs font-psemibold  text-start ${!theme ? 'text-red-200' : "text-red-800"} `}>If you find the application and its features valuable, please consider creating a new account using your email address.</Text>
+                            </View>
+                        }
 
 
                         <TouchableOpacity
@@ -555,14 +561,14 @@ const LoggedInUserProfile = () => {
 
                 ListEmptyComponent={() => <EmptyState title="No Video Found" subtite={`Seem like you have't share any video.`} />}
 
-                refreshControl={<RefreshControl
+                refreshControl={< RefreshControl
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                 />}
 
             />
 
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 

@@ -148,8 +148,6 @@ const Create = () => {
   }
 
 
-
-
   // // // If user data is not getting by any reason then prevent to create new video.
   if (!user.$id) {
     return (
@@ -179,6 +177,11 @@ const Create = () => {
           {!updatingPostData.mode ? "Upload" : "Update"} Video
         </Text>
 
+
+        <View >
+          <Text className={`text-xs font-psemibold  text-start ${!theme ? 'text-red-200' : "text-red-800"} `}>NOTE : Please don't post anything irrelevant, vulgar, and bad for others.
+            It has taken numerous late nights and thousands of hairs(I'm talking about hair fall 😀) to meticulously craft this application.</Text>
+        </View>
 
         {/* Show user info to insure user data is comming */}
         <View

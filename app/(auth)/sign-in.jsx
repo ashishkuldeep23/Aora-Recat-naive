@@ -92,15 +92,9 @@ const SignIn = () => {
                             className='w-20 mt-0 '
                         />
 
-
                         <Text className=' text-white text-lg font-psemibold my-5 '>Sign in</Text>
 
-                        {
-                            err
-                            &&
-                            <Text className=" text-center text-red-500">Error : {err}</Text>
-                        }
-
+                        <Text className={` text-center text-red-500 ${err ? "inline" : "hidden"} `}>Error : {err}</Text>
 
                         <CInput
                             title={'Email'}
@@ -118,7 +112,6 @@ const SignIn = () => {
                             otherStyles={''}
                         />
 
-
                         <Text
                             className="text-gray-100  text-right font-pregular mt-4"
                             onPress={() => { Alert.alert("Forgot Pass logic here ------>") }}
@@ -135,7 +128,6 @@ const SignIn = () => {
                                 submitForm();
                             }}
                         />
-
 
                         <Text
                             className=" font-pregular  text-gray-100 mt-4 text-center"

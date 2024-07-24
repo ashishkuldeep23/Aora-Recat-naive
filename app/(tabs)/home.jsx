@@ -24,7 +24,8 @@ const Home = () => {
     allLetestPost,
     setAllLetestPost,
     allNotifications,
-    fetchedNotification
+    fetchedNotification,
+    fetchCurrentUserData
   } = useGlobalContext()
 
   const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts)
@@ -118,6 +119,17 @@ const Home = () => {
 
 
 
+  // // // get user data for first time login (no need to give any dependancy to this fn.) ---------------->
+  useEffect(() => {
+
+    // // // Get current user data --------->
+    fetchCurrentUserData()
+
+
+  }, [])
+
+
+
   return (
 
     <SafeAreaView
@@ -152,7 +164,7 @@ const Home = () => {
 
       <FlatList
 
-      
+
         // data={[{ id: 1 }, { id: 2 }, { id: 2 }, { id: 4 }]}
         // data={[]}
         data={allPost}
@@ -195,6 +207,15 @@ const Home = () => {
               </View>
 
             </View>
+
+            {
+              user?.email === "ashishkuldeep6@gmail.com"
+              &&
+              <View >
+                <Text className={`text-xs font-psemibold  text-start ${!theme ? 'text-red-200' : "text-red-800"} `}>You are using default account. (Please sign up with your email.)</Text>
+              </View>
+            }
+
 
             <SearchInput />
 

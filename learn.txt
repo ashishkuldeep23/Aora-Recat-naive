@@ -64,6 +64,9 @@ While trying to fix the errors (I am also working on the same project), I used t
 command is used to upload as android app ============================================================================================>>
 eas build -p android --profile preview
 
+command is used to upload as IOS app ============================================================================================>>
+eas build --platform ios
+
 
 
 Learn in React Native =================================================================================================================>>
