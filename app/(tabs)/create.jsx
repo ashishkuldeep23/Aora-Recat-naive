@@ -20,7 +20,7 @@ const Create = () => {
   const initialValue = {
     title: "",
     video: null,
-    thumbnail: null,
+    thumbnail: { uri: "https://res.cloudinary.com/dlvq8n2ca/image/upload/v1723523098/sgb4my2nqndxsvx2odup.png" },
     prompt: "",
   }
 
@@ -253,13 +253,13 @@ const Create = () => {
                 </View>
             }
           </TouchableOpacity>
-          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}>Video should less then <Text className='font-psemibold'>10 MB</Text></Text>
+          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}>Video should less then <Text className='font-psemibold'>10 MB</Text>.</Text>
 
         </View>
 
 
         <View className="mt-7 ">
-          <Text className={`text-base font-pmedium ml-2 ${!theme ? "text-gray-100" : "text-gray-900"}`}>Thumbnail Image</Text>
+          <Text className={`text-base font-pmedium ml-2 ${!theme ? "text-gray-100" : "text-gray-900"}`}>*Thumbnail Image</Text>
 
           <TouchableOpacity
             onPress={() => openPicker("image")}
@@ -285,7 +285,8 @@ const Create = () => {
                 </View>
             }
           </TouchableOpacity>
-          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}>Image should less then <Text className='font-psemibold'>1 MB</Text></Text>
+          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}><Text className='font-psemibold'>Click on image</Text> to give your thumbnail.</Text>
+          <Text className={`ml-5 text-xs font-pregular ${!theme ? "text-white" : "text-black"} `}>Image should less then <Text className='font-psemibold'>1 MB</Text>.</Text>
 
         </View>
 

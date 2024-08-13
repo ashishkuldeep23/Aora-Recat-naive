@@ -29,6 +29,12 @@ export const zoomOut = {
 const Tranding = ({ posts }) => {
     const [activeItem, setActiveItem] = useState(posts[1]);
 
+    const [playingTrandingVidHere, setPlayingTrandingVidHere] = useState({
+        mode: false,
+        videoId: "",
+        videoUri: ""
+    })
+
     const ViewableItemsChanges = ({ viewableItems }) => {
         if (viewableItems.length > 0) {
             setActiveItem(viewableItems[0].key)
@@ -49,6 +55,8 @@ const Tranding = ({ posts }) => {
                     item={item}
                     index={index}
                     posts={posts}
+                    playingTrandingVidHere={playingTrandingVidHere}
+                    setPlayingTrandingVidHere={setPlayingTrandingVidHere}
                 />
             }}
             onViewableItemsChanged={ViewableItemsChanges}
@@ -67,7 +75,7 @@ export default Tranding
 
 
 
-const TrandingItem = ({ activeItem, item, index, posts }) => {
+const TrandingItem = ({ activeItem, item, index, posts, playingTrandingVidHere, setPlayingTrandingVidHere }) => {
 
     const userId = useGlobalContext()?.user?.$id
 
@@ -75,11 +83,6 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
     const { username, email, avatar, $id } = creator
 
 
-    const [playingTrandingVidHere, setPlayingTrandingVidHere] = useState({
-        mode: false,
-        videoId: "",
-        videoUri: ""
-    })
 
     // // // Go to profile handler ---------->
 
@@ -94,8 +97,6 @@ const TrandingItem = ({ activeItem, item, index, posts }) => {
 
         router.push(`/user/${$id}`)
     }
-
-
 
 
     return (
